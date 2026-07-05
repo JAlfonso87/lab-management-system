@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS local_stocks(
     local_stock_units INTEGER DEFAULT 0,
     CHECK(local_stock_units > 0),
     FOREIGN KEY(reagent_id) REFERENCES reagents(reagent_id),
-    FOREIGN KEY(location_id) REFERENCES locations(location_id)
+    FOREIGN KEY(location_id) REFERENCES locations(location_id),
+	UNIQUE (reagent_id, location_id)
 );
 
 CREATE TABLE IF NOT EXISTS labs(
@@ -40,11 +41,14 @@ CREATE TABLE IF NOT EXISTS labs(
 
 CREATE TABLE IF NOT EXISTS technicians(
 	technician_id INT AUTO_INCREMENT PRIMARY KEY,
-    lab_id INT NOT NULL UNIQUE,
+    lab_id INT NOT NULL,
     technician_first_name VARCHAR(30) NOT NULL,
     technician_middle_name VARCHAR(20) NOT NULL,
     technician_last_name VARCHAR(20) NULL,
     technician_phone_number VARCHAR(20) NULL,
+    technician_username VARCHAR(20) NOT NULL UNIQUE,
+    technician_password VARCHAR(255) NOT NULL,
+    technician_status INT NOT NULL DEFAULT 0, # WHERE 0 MEANS INACTIVE AND 1 MEANS ACTIVE
     FOREIGN KEY(lab_id) REFERENCES labs(lab_id)
 );
 

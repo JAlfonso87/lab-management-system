@@ -44,6 +44,8 @@ CREATE TABLE IF NOT EXISTS technicians(
     technician_first_name VARCHAR(30) NOT NULL,
     technician_middle_name VARCHAR(20) NOT NULL,
     technician_last_name VARCHAR(20) NULL,
+    technician_username VARCHAR(20) NOT NULL UNIQUE,
+    technician_password VARCHAR(255) NOT NULL,
     technician_phone_number VARCHAR(20) NULL,
     FOREIGN KEY(lab_id) REFERENCES labs(lab_id)
 );

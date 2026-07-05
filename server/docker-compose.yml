@@ -1,19 +1,19 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysql_db
+    container_name: LMS_mysql_db
     restart: always
     env_file:
       - .env
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_USER: ${MYSQL_USER}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "${MYSQL_PORT}:3306"
     volumes:
       - LMSSTORAGE:/var/lib/mysql
-      - ./db/init:/docker-entrypoint-initdb.d
+      - ./.db/init:/docker-entrypoint-initdb.d
 
 volumes:
   LMSSTORAGE:

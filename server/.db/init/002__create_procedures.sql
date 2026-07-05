@@ -17,7 +17,27 @@ BEGIN
 					AND shelves.shelf_category = shelf_category
 	INTO location_id;
 END$$
-    
+
+CREATE PROCEDURE reagentExists(
+		IN reagent_name VARCHAR(100),
+		IN reagent_brand VARCHAR(20),
+		IN reagent_netweight VARCHAR(10),
+		IN reagent_risk VARCHAR(15),
+        OUT checkResult INT
+)
+BEGIN
+	DECLARE result INT;
+    SELECT reagents.reagent_id INTO result
+    FROM reagents
+    WHERE
+        reagents.reagent_name = reagent_name AND
+        reagents.reagent_brand = reagent_brand AND
+        reagents.reagent_netweight = reagent_netweight AND
+        reagents.reagent_risk = reagent_risk
+    LIMIT 1;
+	SELECT CAST(IFNULL(result, -1) AS SIGNED) INTO checkResult;
+END$$
+
 CREATE PROCEDURE get_lab_id(
 	IN lab_name VARCHAR(30),
     OUT lab_id INT
