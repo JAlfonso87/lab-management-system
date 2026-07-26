@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '../.prisma/client.js';
+import { PrismaClient } from '../_prisma_generated/client.js';
 import { PrismaMariaDb as PrismaMysqlAdapter } from '@prisma/adapter-mariadb'
 
 @Injectable()
@@ -13,7 +13,7 @@ export class PrismaService extends PrismaClient {
             password: process.env.MYSQL_ROOT_PASSWORD,
             connectionLimit: 5,
             allowPublicKeyRetrieval: true,
-        }); // DEFINE LAS OPCIONES DEL ADAPTADOR ENTRE LAS OPCIONES DE PRISMA Y JS NATIVO
-        super({adapter}); // EJECUTA EL CONSTRUCTOR DE PrismaClient CON LAS OPCIONES DEL ADAPTADOR COMO PARÁMETRO
+        }); 
+        super({adapter});
     }
 }

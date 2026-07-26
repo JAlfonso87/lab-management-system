@@ -18,11 +18,6 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
- * Model assigned_teachers
- * 
- */
-export type assigned_teachers = Prisma.assigned_teachersModel
-/**
  * Model labs
  * 
  */
@@ -38,15 +33,30 @@ export type local_stocks = Prisma.local_stocksModel
  */
 export type locations = Prisma.locationsModel
 /**
- * Model operations
- * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
- */
-export type operations = Prisma.operationsModel
-/**
  * Model reagents
  * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
  */
 export type reagents = Prisma.reagentsModel
+/**
+ * Model permissions
+ * 
+ */
+export type permissions = Prisma.permissionsModel
+/**
+ * Model roles
+ * 
+ */
+export type roles = Prisma.rolesModel
+/**
+ * Model assigned_teachers
+ * 
+ */
+export type assigned_teachers = Prisma.assigned_teachersModel
+/**
+ * Model operations
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type operations = Prisma.operationsModel
 /**
  * Model request_details
  * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -62,6 +72,11 @@ export type requesters = Prisma.requestersModel
  * 
  */
 export type requests = Prisma.requestsModel
+/**
+ * Model roles_permissions
+ * 
+ */
+export type roles_permissions = Prisma.roles_permissionsModel
 /**
  * Model shelf_levels
  * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -83,12 +98,12 @@ export type subjects = Prisma.subjectsModel
  */
 export type teachers = Prisma.teachersModel
 /**
- * Model technicians
- * 
- */
-export type technicians = Prisma.techniciansModel
-/**
  * Model thesis_authors
  * 
  */
 export type thesis_authors = Prisma.thesis_authorsModel
+/**
+ * Model users
+ * 
+ */
+export type users = Prisma.usersModel

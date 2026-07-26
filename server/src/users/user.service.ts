@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service.js";
+import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
 import { UnboxUnique } from "../.utils/Unbox.js";
 import bcrypt from "bcrypt";
 
@@ -8,11 +8,11 @@ export class UserService {
     constructor(private prisma:PrismaService) {}
 
     async findOne(username:string) {
-        return await this.prisma.technicians.findUnique({where: {technician_username: username}});
+        return await this.prisma.users.findUnique({where: {user_username: username}});
     }
 
     async listAllUsers(){
-        return await this.prisma.technicians.findMany();
+        return await this.prisma.users.findMany();
     }
 
     async newUser (userData:any) {
@@ -22,15 +22,16 @@ export class UserService {
             return UnboxUnique(await tx.$queryRaw`SELECT @lab_id;`);
         })
         const securedPassword = await bcrypt.hash(password, 10);
-        const result = this.prisma.technicians.create({
+        const result = this.prisma.users.create({
             data: {
                 lab_id: lab_id,
-                technician_first_name: firstName,
-                technician_middle_name: middleName,
-                technician_last_name: lastName,
-                technician_phone_number: phoneNumber,
-                technician_username: username,
-                technician_password: securedPassword
+                role_id: 1,
+                user_first_name: firstName,
+                user_middle_name: middleName,
+                user_last_name: lastName,
+                user_phone_number: phoneNumber,
+                user_username: username,
+                user_password: securedPassword
             }
         })
         return result;

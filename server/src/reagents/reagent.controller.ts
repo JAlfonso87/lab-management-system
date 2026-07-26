@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Param, Body, UseGuards } from '@nestjs/common';
 import { ReagentService } from './reagent.service.js';
+import { Authorized_Roles } from '../_nestjs_decorators/roles.decorator.js';
 
+@Authorized_Roles(['ADMIN'])
 @Controller('reagents')
 export class ReagentController{
     constructor(private readonly reagentService : ReagentService) {}

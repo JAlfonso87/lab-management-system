@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from './user.service.js';
-import { PublicRoute } from '../auth/public-decorator.js';
+import { PublicRoute } from '../_nestjs_decorators/public.decorator.js';
+import { Authorized_Roles } from '../_nestjs_decorators/roles.decorator.js';
 
 @Controller('users')
+@Authorized_Roles(['ADMIN'])
 export class UserController {
     constructor(private readonly userService : UserService){}
 

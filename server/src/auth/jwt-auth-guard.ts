@@ -1,8 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { IS_PUBLIC_KEY } from "../_nestjs_decorators/public.decorator.js";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
-import { Observable } from "rxjs";
-import { IS_PUBLIC_KEY } from "./public-decorator.js";
+import { UserService } from "../users/user.service.js";
+import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
@@ -10,7 +11,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
         super();
     }
 
-    canActivate(context: ExecutionContext): Promise<boolean> | boolean | Observable<boolean>{
+    async canActivate(context: ExecutionContext): Promise<any>{
+        const userService: UserService = new UserService(new PrismaService);
         const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_KEY, [
             context.getHandler(),
             context.getClass(),
@@ -19,6 +21,35 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
         if(isPublic)
             return true;
 
-        return super.canActivate(context);
+        const authorizedRoles = this.reflector.getAllAndMerge('AUTHORIZED_ROLES', [
+            context.getHandler(),
+            context.getClass()
+        ])
+
+        //console.log(roles)
+
+        await super.canActivate(context);
+
+        const userPayload = context.switchToHttp().getRequest().user
+        const user = await userService.findOne(userPayload.username)
+
+        if(user)
+        {
+            const prisma: PrismaService = new PrismaService()
+            const user_role= await prisma.roles.findUnique({
+                where: { 
+                    role_id: user.role_id 
+                }
+            })
+            if (!user_role)
+                throw new UnauthorizedException;
+            
+            console.log(authorizedRoles)
+
+            return authorizedRoles.includes(user_role.role_name) ? true : false;
+
+        }
+        else
+            return false
     }
 };

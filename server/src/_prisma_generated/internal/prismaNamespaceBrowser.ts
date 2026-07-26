@@ -51,21 +51,24 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  assigned_teachers: 'assigned_teachers',
   labs: 'labs',
   local_stocks: 'local_stocks',
   locations: 'locations',
-  operations: 'operations',
   reagents: 'reagents',
+  permissions: 'permissions',
+  roles: 'roles',
+  assigned_teachers: 'assigned_teachers',
+  operations: 'operations',
   request_details: 'request_details',
   requesters: 'requesters',
   requests: 'requests',
+  roles_permissions: 'roles_permissions',
   shelf_levels: 'shelf_levels',
   shelves: 'shelves',
   subjects: 'subjects',
   teachers: 'teachers',
-  technicians: 'technicians',
-  thesis_authors: 'thesis_authors'
+  thesis_authors: 'thesis_authors',
+  users: 'users'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -82,16 +85,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
-
-export const Assigned_teachersScalarFieldEnum = {
-  assignation_id: 'assignation_id',
-  subject_id: 'subject_id',
-  teacher_id: 'teacher_id',
-  assigned_working_hours: 'assigned_working_hours'
-} as const
-
-export type Assigned_teachersScalarFieldEnum = (typeof Assigned_teachersScalarFieldEnum)[keyof typeof Assigned_teachersScalarFieldEnum]
 
 
 export const LabsScalarFieldEnum = {
@@ -121,20 +114,6 @@ export const LocationsScalarFieldEnum = {
 export type LocationsScalarFieldEnum = (typeof LocationsScalarFieldEnum)[keyof typeof LocationsScalarFieldEnum]
 
 
-export const OperationsScalarFieldEnum = {
-  operation_id: 'operation_id',
-  reagent_id: 'reagent_id',
-  technician_id: 'technician_id',
-  local_stock_id: 'local_stock_id',
-  operation_type: 'operation_type',
-  stock_difference: 'stock_difference',
-  operation_date: 'operation_date',
-  operation_description: 'operation_description'
-} as const
-
-export type OperationsScalarFieldEnum = (typeof OperationsScalarFieldEnum)[keyof typeof OperationsScalarFieldEnum]
-
-
 export const ReagentsScalarFieldEnum = {
   reagent_id: 'reagent_id',
   reagent_name: 'reagent_name',
@@ -144,6 +123,46 @@ export const ReagentsScalarFieldEnum = {
 } as const
 
 export type ReagentsScalarFieldEnum = (typeof ReagentsScalarFieldEnum)[keyof typeof ReagentsScalarFieldEnum]
+
+
+export const PermissionsScalarFieldEnum = {
+  permission_id: 'permission_id',
+  permission_name: 'permission_name'
+} as const
+
+export type PermissionsScalarFieldEnum = (typeof PermissionsScalarFieldEnum)[keyof typeof PermissionsScalarFieldEnum]
+
+
+export const RolesScalarFieldEnum = {
+  role_id: 'role_id',
+  role_name: 'role_name'
+} as const
+
+export type RolesScalarFieldEnum = (typeof RolesScalarFieldEnum)[keyof typeof RolesScalarFieldEnum]
+
+
+export const Assigned_teachersScalarFieldEnum = {
+  assignation_id: 'assignation_id',
+  subject_id: 'subject_id',
+  teacher_id: 'teacher_id',
+  assigned_working_hours: 'assigned_working_hours'
+} as const
+
+export type Assigned_teachersScalarFieldEnum = (typeof Assigned_teachersScalarFieldEnum)[keyof typeof Assigned_teachersScalarFieldEnum]
+
+
+export const OperationsScalarFieldEnum = {
+  operation_id: 'operation_id',
+  reagent_id: 'reagent_id',
+  user_id: 'user_id',
+  local_stock_id: 'local_stock_id',
+  operation_type: 'operation_type',
+  stock_difference: 'stock_difference',
+  operation_date: 'operation_date',
+  operation_description: 'operation_description'
+} as const
+
+export type OperationsScalarFieldEnum = (typeof OperationsScalarFieldEnum)[keyof typeof OperationsScalarFieldEnum]
 
 
 export const Request_detailsScalarFieldEnum = {
@@ -170,11 +189,19 @@ export type RequestersScalarFieldEnum = (typeof RequestersScalarFieldEnum)[keyof
 export const RequestsScalarFieldEnum = {
   request_id: 'request_id',
   requester_id: 'requester_id',
-  technician_id: 'technician_id',
+  user_id: 'user_id',
   request_date: 'request_date'
 } as const
 
 export type RequestsScalarFieldEnum = (typeof RequestsScalarFieldEnum)[keyof typeof RequestsScalarFieldEnum]
+
+
+export const Roles_permissionsScalarFieldEnum = {
+  role_id: 'role_id',
+  permission_id: 'permission_id'
+} as const
+
+export type Roles_permissionsScalarFieldEnum = (typeof Roles_permissionsScalarFieldEnum)[keyof typeof Roles_permissionsScalarFieldEnum]
 
 
 export const Shelf_levelsScalarFieldEnum = {
@@ -210,21 +237,6 @@ export const TeachersScalarFieldEnum = {
 export type TeachersScalarFieldEnum = (typeof TeachersScalarFieldEnum)[keyof typeof TeachersScalarFieldEnum]
 
 
-export const TechniciansScalarFieldEnum = {
-  technician_id: 'technician_id',
-  lab_id: 'lab_id',
-  technician_first_name: 'technician_first_name',
-  technician_middle_name: 'technician_middle_name',
-  technician_last_name: 'technician_last_name',
-  technician_phone_number: 'technician_phone_number',
-  technician_username: 'technician_username',
-  technician_password: 'technician_password',
-  technician_status: 'technician_status'
-} as const
-
-export type TechniciansScalarFieldEnum = (typeof TechniciansScalarFieldEnum)[keyof typeof TechniciansScalarFieldEnum]
-
-
 export const Thesis_authorsScalarFieldEnum = {
   thesis_author_id: 'thesis_author_id',
   asessor_id: 'asessor_id',
@@ -232,6 +244,22 @@ export const Thesis_authorsScalarFieldEnum = {
 } as const
 
 export type Thesis_authorsScalarFieldEnum = (typeof Thesis_authorsScalarFieldEnum)[keyof typeof Thesis_authorsScalarFieldEnum]
+
+
+export const UsersScalarFieldEnum = {
+  user_id: 'user_id',
+  lab_id: 'lab_id',
+  role_id: 'role_id',
+  user_first_name: 'user_first_name',
+  user_middle_name: 'user_middle_name',
+  user_last_name: 'user_last_name',
+  user_phone_number: 'user_phone_number',
+  user_username: 'user_username',
+  user_password: 'user_password',
+  user_status: 'user_status'
+} as const
+
+export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -265,14 +293,6 @@ export const locationsOrderByRelevanceFieldEnum = {
 export type locationsOrderByRelevanceFieldEnum = (typeof locationsOrderByRelevanceFieldEnum)[keyof typeof locationsOrderByRelevanceFieldEnum]
 
 
-export const operationsOrderByRelevanceFieldEnum = {
-  operation_type: 'operation_type',
-  operation_description: 'operation_description'
-} as const
-
-export type operationsOrderByRelevanceFieldEnum = (typeof operationsOrderByRelevanceFieldEnum)[keyof typeof operationsOrderByRelevanceFieldEnum]
-
-
 export const reagentsOrderByRelevanceFieldEnum = {
   reagent_name: 'reagent_name',
   reagent_brand: 'reagent_brand',
@@ -281,6 +301,28 @@ export const reagentsOrderByRelevanceFieldEnum = {
 } as const
 
 export type reagentsOrderByRelevanceFieldEnum = (typeof reagentsOrderByRelevanceFieldEnum)[keyof typeof reagentsOrderByRelevanceFieldEnum]
+
+
+export const permissionsOrderByRelevanceFieldEnum = {
+  permission_name: 'permission_name'
+} as const
+
+export type permissionsOrderByRelevanceFieldEnum = (typeof permissionsOrderByRelevanceFieldEnum)[keyof typeof permissionsOrderByRelevanceFieldEnum]
+
+
+export const rolesOrderByRelevanceFieldEnum = {
+  role_name: 'role_name'
+} as const
+
+export type rolesOrderByRelevanceFieldEnum = (typeof rolesOrderByRelevanceFieldEnum)[keyof typeof rolesOrderByRelevanceFieldEnum]
+
+
+export const operationsOrderByRelevanceFieldEnum = {
+  operation_type: 'operation_type',
+  operation_description: 'operation_description'
+} as const
+
+export type operationsOrderByRelevanceFieldEnum = (typeof operationsOrderByRelevanceFieldEnum)[keyof typeof operationsOrderByRelevanceFieldEnum]
 
 
 export const requestersOrderByRelevanceFieldEnum = {
@@ -308,21 +350,21 @@ export const subjectsOrderByRelevanceFieldEnum = {
 export type subjectsOrderByRelevanceFieldEnum = (typeof subjectsOrderByRelevanceFieldEnum)[keyof typeof subjectsOrderByRelevanceFieldEnum]
 
 
-export const techniciansOrderByRelevanceFieldEnum = {
-  technician_first_name: 'technician_first_name',
-  technician_middle_name: 'technician_middle_name',
-  technician_last_name: 'technician_last_name',
-  technician_phone_number: 'technician_phone_number',
-  technician_username: 'technician_username',
-  technician_password: 'technician_password'
-} as const
-
-export type techniciansOrderByRelevanceFieldEnum = (typeof techniciansOrderByRelevanceFieldEnum)[keyof typeof techniciansOrderByRelevanceFieldEnum]
-
-
 export const thesis_authorsOrderByRelevanceFieldEnum = {
   project_title: 'project_title'
 } as const
 
 export type thesis_authorsOrderByRelevanceFieldEnum = (typeof thesis_authorsOrderByRelevanceFieldEnum)[keyof typeof thesis_authorsOrderByRelevanceFieldEnum]
+
+
+export const usersOrderByRelevanceFieldEnum = {
+  user_first_name: 'user_first_name',
+  user_middle_name: 'user_middle_name',
+  user_last_name: 'user_last_name',
+  user_phone_number: 'user_phone_number',
+  user_username: 'user_username',
+  user_password: 'user_password'
+} as const
+
+export type usersOrderByRelevanceFieldEnum = (typeof usersOrderByRelevanceFieldEnum)[keyof typeof usersOrderByRelevanceFieldEnum]
 

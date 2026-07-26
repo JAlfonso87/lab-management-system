@@ -7,7 +7,7 @@ import { AuthModule } from '../auth/auth.module.js';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UserModule, ReagentModule, AuthModule, 
+  imports: [UserModule, ReagentModule, AuthModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,

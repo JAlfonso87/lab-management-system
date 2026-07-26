@@ -34,22 +34,42 @@ CREATE TABLE IF NOT EXISTS local_stocks(
 );
 
 CREATE TABLE IF NOT EXISTS labs(
-	lab_id INT PRIMARY KEY NOT NULL,
+	lab_id INTEGER PRIMARY KEY NOT NULL,
     lab_name VARCHAR(30) NOT NULL,
     FOREIGN KEY(lab_id) REFERENCES locations(location_id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS technicians(
-	technician_id INT AUTO_INCREMENT PRIMARY KEY,
-    lab_id INT NOT NULL,
-    technician_first_name VARCHAR(30) NOT NULL,
-    technician_middle_name VARCHAR(20) NOT NULL,
-    technician_last_name VARCHAR(20) NULL,
-    technician_phone_number VARCHAR(20) NULL,
-    technician_username VARCHAR(20) NOT NULL UNIQUE,
-    technician_password VARCHAR(255) NOT NULL,
-    technician_status INT NOT NULL DEFAULT 0, # WHERE 0 MEANS INACTIVE AND 1 MEANS ACTIVE
-    FOREIGN KEY(lab_id) REFERENCES labs(lab_id)
+CREATE TABLE IF NOT EXISTS roles(
+    role_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS permissions(
+    permission_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    permission_name VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS roles_permissions(
+    role_id INTEGER NOT NULL,
+    permission_id INTEGER NOT NULL,
+    PRIMARY KEY(role_id, permission_id),
+    FOREIGN KEY(role_id) REFERENCES roles(role_id),
+    FOREIGN KEY(permission_id) REFERENCES permissions(permission_id)
+);
+
+CREATE TABLE IF NOT EXISTS users(
+	user_id INT AUTO_INCREMENT PRIMARY KEY,
+    lab_id INT NULL,
+    role_id INT NOT NULL,
+    user_first_name VARCHAR(30) NOT NULL,
+    user_middle_name VARCHAR(20) NULL,
+    user_last_name VARCHAR(20) NOT NULL,
+    user_phone_number VARCHAR(20) NULL,
+    user_username VARCHAR(20) NOT NULL UNIQUE,
+    user_password VARCHAR(255) NOT NULL,
+    user_status INT NOT NULL DEFAULT 0, # WHERE 0 MEANS INACTIVE AND 1 MEANS ACTIVE
+    FOREIGN KEY(lab_id) REFERENCES labs(lab_id),
+    FOREIGN KEY(role_id) REFERENCES roles(role_id)
 );
 
 CREATE TABLE IF NOT EXISTS requesters(
@@ -90,10 +110,10 @@ CREATE TABLE IF NOT EXISTS thesis_authors(
 CREATE TABLE IF NOT EXISTS requests(
 	request_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     requester_id INTEGER NOT NULL,
-    technician_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     request_date DATE NOT NULL,
     FOREIGN KEY (requester_id) REFERENCES requesters(requester_id),
-    FOREIGN KEY (technician_id) REFERENCES technicians(technician_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS request_details(
@@ -124,7 +144,7 @@ CREATE TABLE IF NOT EXISTS shelf_levels(
 CREATE TABLE IF NOT EXISTS operations(
 	operation_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     reagent_id INTEGER NOT NULL,
-    technician_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     local_stock_id INTEGER NOT NULL,
     operation_type VARCHAR (10) NOT NULL,
     stock_difference INT NOT NULL DEFAULT 0,
@@ -138,6 +158,6 @@ CREATE TABLE IF NOT EXISTS operations(
     ),
     
     FOREIGN KEY (reagent_id) REFERENCES reagents(reagent_id),
-    FOREIGN KEY (technician_id) REFERENCES technicians(technician_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (local_stock_id) REFERENCES local_stocks(local_stock_id)
 );

@@ -50,83 +50,17 @@ BEGIN
 			AND labs.lab_name = lab_name
 	INTO lab_id;
 END$$
-    
-CREATE PROCEDURE init_levels(
-	IN shelf_id INT,
-	IN location_building CHAR(1)
-)
-BEGIN
-	DECLARE level_idx INT DEFAULT 0;
-    SET level_idx = 1;
-        
-    REPEAT
-		INSERT INTO locations (location_building, location_type) VALUES (location_building, 'NIVEL_ANAQUEL');
-		INSERT INTO shelf_levels (shelf_level_id, shelf_id, shelf_level_number) VALUES (LAST_INSERT_ID(), shelf_id, level_idx);
-        SET level_idx = level_idx + 1;
-	UNTIL level_idx > 4
-    END REPEAT;
-END$$
 
-CREATE PROCEDURE init_storage (
-	IN location_building CHAR(1)
-) 
-BEGIN 
-	DECLARE shelf_idx INT DEFAULT 0;
-	SET shelf_idx = 1;
-	-- INICIALIZAR ANAQUELES
-	INSERT INTO shelves(shelf_category) VALUES ('ROJO'), ('VERDE'), ('BLANCO'), ('AZUL');
-    REPEAT
-		CALL init_levels(shelf_idx, location_building);
-        SET shelf_idx = shelf_idx + 1;
-    UNTIL shelf_idx > 4
-    END REPEAT;
-END$$
-
-CREATE PROCEDURE init_labs(
-	IN location_building CHAR(1)
-)
-BEGIN 
-	INSERT INTO locations (location_building, location_type) VALUES (location_building, 'LABORATORIO');
-	INSERT INTO labs(lab_id, lab_name) VALUES (LAST_INSERT_ID(), 'ALIMENTOS');
-        
-	INSERT INTO locations (location_building, location_type) VALUES (location_building, 'LABORATORIO');
-    INSERT INTO labs(lab_id, lab_name) VALUES (LAST_INSERT_ID(), 'EDAFOLOGIA');
-        
-	INSERT INTO locations (location_building, location_type) VALUES (location_building, 'LABORATORIO');
-    INSERT INTO labs(lab_id, lab_name) VALUES (LAST_INSERT_ID(), 'BIOTECNOLOGIA');
-        
-	INSERT INTO locations (location_building, location_type) VALUES (location_building, 'LABORATORIO');
-    INSERT INTO labs(lab_id, lab_name) VALUES (LAST_INSERT_ID(), 'BIOLOGIA CELULAR');
-END$$
-    
-CREATE PROCEDURE add_lab_technician(
-	IN lab_name VARCHAR(30),
-	IN technician_first_name VARCHAR(30),
-	IN technician_middle_name VARCHAR(20),
-	IN technician_last_name VARCHAR(20),
-	IN technician_phone_number VARCHAR(20)
-)
-BEGIN 
-	CALL get_lab_id(lab_name, @retrieved_lab_id);
-	INSERT INTO technicians(lab_id, technician_first_name, technician_middle_name, technician_last_name, technician_phone_number) VALUES (
-		@retrieved_lab_id, 
-        technician_first_name, 
-        technician_middle_name,
-        technician_last_name,
-        technician_phone_number
-	);
-END$$
-
-CREATE PROCEDURE get_assigned_technician(
+CREATE PROCEDURE get_assigned_user(
 	IN lab_name VARCHAR(30)
 )
 BEGIN 
 	SELECT 
-		CONCAT(technicians.technician_first_name, ' ', technicians.technician_middle_name, ' ', technicians.technician_last_name) AS nombre,
-        technicians.technician_phone_number AS telefono_de_contacto,
+		CONCAT(users.user_first_name, ' ', users.user_middle_name, ' ', users.user_last_name) AS nombre,
+        users.user_phone_number AS telefono_de_contacto,
         labs.lab_name AS laboratorio_asignado
-	FROM technicians INNER JOIN labs
-		ON technicians.lab_id = labs.lab_id
+	FROM users INNER JOIN labs
+		ON users.lab_id = labs.lab_id
         AND labs.lab_name = lab_name;
 END$$
 
@@ -205,7 +139,7 @@ CREATE PROCEDURE execute_operation(
     IN reagent_id INT,
     IN stock_difference INT,
     IN location_id INT,
-    IN technician_id INT
+    IN user_id INT
 )
 BEGIN
 	IF operation_type = 'ENTRADA'
@@ -214,21 +148,14 @@ BEGIN
         IF @state IS NOT NULL
         THEN
 			UPDATE local_stocks SET local_stocks.local_stock_units = local_stocks.local_stock_units + stock_difference;
-            INSERT INTO operations (reagent_id, technician_id, local_stock_id, operation_type, stock_difference, operation_date)
-				VALUES (reagent_id, technician_id, @state, 'ENTRADA', stock_difference, NOW());
+            INSERT INTO operations (reagent_id, user_id, local_stock_id, operation_type, stock_difference, operation_date)
+				VALUES (reagent_id, user_id, @state, 'ENTRADA', stock_difference, NOW());
 		ELSE
 			INSERT INTO local_stocks (reagent_id, location_id, local_stock_units) VALUES (reagent_id, location_id, stock_difference);
-            INSERT INTO operations (reagent_id, technician_id, local_stock_id, operation_type, stock_difference, operation_date)
-				VALUES (reagent_id, technician_id, LAST_INSERT_ID(), 'ENTRADA', stock_difference, NOW());
+            INSERT INTO operations (reagent_id, user_id, local_stock_id, operation_type, stock_difference, operation_date)
+				VALUES (reagent_id, user_id, LAST_INSERT_ID(), 'ENTRADA', stock_difference, NOW());
         END IF;
     END IF;
-END$$
-    
-CREATE PROCEDURE load_template()
-BEGIN
-	CALL init_storage('A');
-	CALL init_labs('A');
-	CALL add_lab_technician('EDAFOLOGIA', 'MARTIN', 'GUERRA', 'SANCHEZ', '+52-000-000-0000');
 END$$
     
 CREATE PROCEDURE get_location_info_by_id(
@@ -253,13 +180,13 @@ BEGIN
     END IF;
 END$$
 
-CREATE PROCEDURE get_technician_by_id(
-	IN technician_id INT,
+CREATE PROCEDURE get_user_by_id(
+	IN user_id INT,
     OUT nombre_tecnico VARCHAR(70)
 )
 BEGIN
-	SELECT CONCAT(technicians.technician_first_name, ' ', technicians.technician_middle_name, ' ', technicians.technician_last_name) INTO nombre_tecnico
-		FROM technicians WHERE technicians.technician_id = technician_id;
+	SELECT CONCAT(users.user_first_name, ' ', users.user_middle_name, ' ', users.user_last_name) INTO nombre_tecnico
+		FROM users WHERE users.user_id = user_id;
 END$$
 
 CREATE PROCEDURE operation_details_by_id(
@@ -268,7 +195,7 @@ CREATE PROCEDURE operation_details_by_id(
 BEGIN
 	# DECLARE stock_location VARCHAR(50);
     DECLARE location_id INT;
-    DECLARE technician_id INT;
+    DECLARE user_id INT;
     
     SELECT local_stocks.location_id INTO location_id FROM local_stocks INNER JOIN operations
     ON local_stocks.local_stock_id = operations.local_stock_id 
@@ -276,8 +203,8 @@ BEGIN
 	
     CALL get_location_info_by_id(location_id, @location);
 	
-    SELECT operations.technician_id INTO technician_id FROM operations WHERE operations.operation_id = operation_id;
-    CALL get_technician_by_id(technician_id, @lab_technician);
+    SELECT operations.user_id INTO user_id FROM operations WHERE operations.operation_id = operation_id;
+    CALL get_user_by_id(user_id, @lab_user);
     
     SELECT
 		operations.operation_id AS ID_MOVIMIENTO,
@@ -287,7 +214,7 @@ BEGIN
         operations.stock_difference AS DIFERENCIA_DE_STOCK,
         operations.operation_type AS TIPO_MOVIMIENTO,
         operations.operation_date AS FECHA_MOVIMIENTO,
-        @lab_technician AS APROBO
+        @lab_user AS APROBO
     FROM operations INNER JOIN reagents ON operations.reagent_id = reagents.reagent_id;
 END$$
 

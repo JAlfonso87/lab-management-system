@@ -29,33 +29,33 @@ export type AggregateRequests = {
 export type RequestsAvgAggregateOutputType = {
   request_id: number | null
   requester_id: number | null
-  technician_id: number | null
+  user_id: number | null
 }
 
 export type RequestsSumAggregateOutputType = {
   request_id: number | null
   requester_id: number | null
-  technician_id: number | null
+  user_id: number | null
 }
 
 export type RequestsMinAggregateOutputType = {
   request_id: number | null
   requester_id: number | null
-  technician_id: number | null
+  user_id: number | null
   request_date: Date | null
 }
 
 export type RequestsMaxAggregateOutputType = {
   request_id: number | null
   requester_id: number | null
-  technician_id: number | null
+  user_id: number | null
   request_date: Date | null
 }
 
 export type RequestsCountAggregateOutputType = {
   request_id: number
   requester_id: number
-  technician_id: number
+  user_id: number
   request_date: number
   _all: number
 }
@@ -64,33 +64,33 @@ export type RequestsCountAggregateOutputType = {
 export type RequestsAvgAggregateInputType = {
   request_id?: true
   requester_id?: true
-  technician_id?: true
+  user_id?: true
 }
 
 export type RequestsSumAggregateInputType = {
   request_id?: true
   requester_id?: true
-  technician_id?: true
+  user_id?: true
 }
 
 export type RequestsMinAggregateInputType = {
   request_id?: true
   requester_id?: true
-  technician_id?: true
+  user_id?: true
   request_date?: true
 }
 
 export type RequestsMaxAggregateInputType = {
   request_id?: true
   requester_id?: true
-  technician_id?: true
+  user_id?: true
   request_date?: true
 }
 
 export type RequestsCountAggregateInputType = {
   request_id?: true
   requester_id?: true
-  technician_id?: true
+  user_id?: true
   request_date?: true
   _all?: true
 }
@@ -184,7 +184,7 @@ export type requestsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type RequestsGroupByOutputType = {
   request_id: number
   requester_id: number
-  technician_id: number
+  user_id: number
   request_date: Date
   _count: RequestsCountAggregateOutputType | null
   _avg: RequestsAvgAggregateOutputType | null
@@ -214,21 +214,21 @@ export type requestsWhereInput = {
   NOT?: Prisma.requestsWhereInput | Prisma.requestsWhereInput[]
   request_id?: Prisma.IntFilter<"requests"> | number
   requester_id?: Prisma.IntFilter<"requests"> | number
-  technician_id?: Prisma.IntFilter<"requests"> | number
+  user_id?: Prisma.IntFilter<"requests"> | number
   request_date?: Prisma.DateTimeFilter<"requests"> | Date | string
   request_details?: Prisma.Request_detailsListRelationFilter
   requesters?: Prisma.XOR<Prisma.RequestersScalarRelationFilter, Prisma.requestersWhereInput>
-  technicians?: Prisma.XOR<Prisma.TechniciansScalarRelationFilter, Prisma.techniciansWhereInput>
+  users?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
 }
 
 export type requestsOrderByWithRelationInput = {
   request_id?: Prisma.SortOrder
   requester_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   request_date?: Prisma.SortOrder
   request_details?: Prisma.request_detailsOrderByRelationAggregateInput
   requesters?: Prisma.requestersOrderByWithRelationInput
-  technicians?: Prisma.techniciansOrderByWithRelationInput
+  users?: Prisma.usersOrderByWithRelationInput
 }
 
 export type requestsWhereUniqueInput = Prisma.AtLeast<{
@@ -237,17 +237,17 @@ export type requestsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.requestsWhereInput[]
   NOT?: Prisma.requestsWhereInput | Prisma.requestsWhereInput[]
   requester_id?: Prisma.IntFilter<"requests"> | number
-  technician_id?: Prisma.IntFilter<"requests"> | number
+  user_id?: Prisma.IntFilter<"requests"> | number
   request_date?: Prisma.DateTimeFilter<"requests"> | Date | string
   request_details?: Prisma.Request_detailsListRelationFilter
   requesters?: Prisma.XOR<Prisma.RequestersScalarRelationFilter, Prisma.requestersWhereInput>
-  technicians?: Prisma.XOR<Prisma.TechniciansScalarRelationFilter, Prisma.techniciansWhereInput>
+  users?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
 }, "request_id">
 
 export type requestsOrderByWithAggregationInput = {
   request_id?: Prisma.SortOrder
   requester_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   request_date?: Prisma.SortOrder
   _count?: Prisma.requestsCountOrderByAggregateInput
   _avg?: Prisma.requestsAvgOrderByAggregateInput
@@ -262,7 +262,7 @@ export type requestsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.requestsScalarWhereWithAggregatesInput | Prisma.requestsScalarWhereWithAggregatesInput[]
   request_id?: Prisma.IntWithAggregatesFilter<"requests"> | number
   requester_id?: Prisma.IntWithAggregatesFilter<"requests"> | number
-  technician_id?: Prisma.IntWithAggregatesFilter<"requests"> | number
+  user_id?: Prisma.IntWithAggregatesFilter<"requests"> | number
   request_date?: Prisma.DateTimeWithAggregatesFilter<"requests"> | Date | string
 }
 
@@ -270,13 +270,13 @@ export type requestsCreateInput = {
   request_date: Date | string
   request_details?: Prisma.request_detailsCreateNestedManyWithoutRequestsInput
   requesters: Prisma.requestersCreateNestedOneWithoutRequestsInput
-  technicians: Prisma.techniciansCreateNestedOneWithoutRequestsInput
+  users: Prisma.usersCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateInput = {
   request_id?: number
   requester_id: number
-  technician_id: number
+  user_id: number
   request_date: Date | string
   request_details?: Prisma.request_detailsUncheckedCreateNestedManyWithoutRequestsInput
 }
@@ -285,13 +285,13 @@ export type requestsUpdateInput = {
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   request_details?: Prisma.request_detailsUpdateManyWithoutRequestsNestedInput
   requesters?: Prisma.requestersUpdateOneRequiredWithoutRequestsNestedInput
-  technicians?: Prisma.techniciansUpdateOneRequiredWithoutRequestsNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateInput = {
   request_id?: Prisma.IntFieldUpdateOperationsInput | number
   requester_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   request_details?: Prisma.request_detailsUncheckedUpdateManyWithoutRequestsNestedInput
 }
@@ -299,7 +299,7 @@ export type requestsUncheckedUpdateInput = {
 export type requestsCreateManyInput = {
   request_id?: number
   requester_id: number
-  technician_id: number
+  user_id: number
   request_date: Date | string
 }
 
@@ -310,7 +310,7 @@ export type requestsUpdateManyMutationInput = {
 export type requestsUncheckedUpdateManyInput = {
   request_id?: Prisma.IntFieldUpdateOperationsInput | number
   requester_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -332,34 +332,34 @@ export type requestsOrderByRelationAggregateInput = {
 export type requestsCountOrderByAggregateInput = {
   request_id?: Prisma.SortOrder
   requester_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   request_date?: Prisma.SortOrder
 }
 
 export type requestsAvgOrderByAggregateInput = {
   request_id?: Prisma.SortOrder
   requester_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
 }
 
 export type requestsMaxOrderByAggregateInput = {
   request_id?: Prisma.SortOrder
   requester_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   request_date?: Prisma.SortOrder
 }
 
 export type requestsMinOrderByAggregateInput = {
   request_id?: Prisma.SortOrder
   requester_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   request_date?: Prisma.SortOrder
 }
 
 export type requestsSumOrderByAggregateInput = {
   request_id?: Prisma.SortOrder
   requester_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
 }
 
 export type requestsCreateNestedOneWithoutRequest_detailsInput = {
@@ -418,58 +418,58 @@ export type requestsUncheckedUpdateManyWithoutRequestersNestedInput = {
   deleteMany?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
 }
 
-export type requestsCreateNestedManyWithoutTechniciansInput = {
-  create?: Prisma.XOR<Prisma.requestsCreateWithoutTechniciansInput, Prisma.requestsUncheckedCreateWithoutTechniciansInput> | Prisma.requestsCreateWithoutTechniciansInput[] | Prisma.requestsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutTechniciansInput | Prisma.requestsCreateOrConnectWithoutTechniciansInput[]
-  createMany?: Prisma.requestsCreateManyTechniciansInputEnvelope
+export type requestsCreateNestedManyWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutUsersInput, Prisma.requestsUncheckedCreateWithoutUsersInput> | Prisma.requestsCreateWithoutUsersInput[] | Prisma.requestsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutUsersInput | Prisma.requestsCreateOrConnectWithoutUsersInput[]
+  createMany?: Prisma.requestsCreateManyUsersInputEnvelope
   connect?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
 }
 
-export type requestsUncheckedCreateNestedManyWithoutTechniciansInput = {
-  create?: Prisma.XOR<Prisma.requestsCreateWithoutTechniciansInput, Prisma.requestsUncheckedCreateWithoutTechniciansInput> | Prisma.requestsCreateWithoutTechniciansInput[] | Prisma.requestsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutTechniciansInput | Prisma.requestsCreateOrConnectWithoutTechniciansInput[]
-  createMany?: Prisma.requestsCreateManyTechniciansInputEnvelope
+export type requestsUncheckedCreateNestedManyWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutUsersInput, Prisma.requestsUncheckedCreateWithoutUsersInput> | Prisma.requestsCreateWithoutUsersInput[] | Prisma.requestsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutUsersInput | Prisma.requestsCreateOrConnectWithoutUsersInput[]
+  createMany?: Prisma.requestsCreateManyUsersInputEnvelope
   connect?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
 }
 
-export type requestsUpdateManyWithoutTechniciansNestedInput = {
-  create?: Prisma.XOR<Prisma.requestsCreateWithoutTechniciansInput, Prisma.requestsUncheckedCreateWithoutTechniciansInput> | Prisma.requestsCreateWithoutTechniciansInput[] | Prisma.requestsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutTechniciansInput | Prisma.requestsCreateOrConnectWithoutTechniciansInput[]
-  upsert?: Prisma.requestsUpsertWithWhereUniqueWithoutTechniciansInput | Prisma.requestsUpsertWithWhereUniqueWithoutTechniciansInput[]
-  createMany?: Prisma.requestsCreateManyTechniciansInputEnvelope
+export type requestsUpdateManyWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutUsersInput, Prisma.requestsUncheckedCreateWithoutUsersInput> | Prisma.requestsCreateWithoutUsersInput[] | Prisma.requestsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutUsersInput | Prisma.requestsCreateOrConnectWithoutUsersInput[]
+  upsert?: Prisma.requestsUpsertWithWhereUniqueWithoutUsersInput | Prisma.requestsUpsertWithWhereUniqueWithoutUsersInput[]
+  createMany?: Prisma.requestsCreateManyUsersInputEnvelope
   set?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
   disconnect?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
   delete?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
   connect?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
-  update?: Prisma.requestsUpdateWithWhereUniqueWithoutTechniciansInput | Prisma.requestsUpdateWithWhereUniqueWithoutTechniciansInput[]
-  updateMany?: Prisma.requestsUpdateManyWithWhereWithoutTechniciansInput | Prisma.requestsUpdateManyWithWhereWithoutTechniciansInput[]
+  update?: Prisma.requestsUpdateWithWhereUniqueWithoutUsersInput | Prisma.requestsUpdateWithWhereUniqueWithoutUsersInput[]
+  updateMany?: Prisma.requestsUpdateManyWithWhereWithoutUsersInput | Prisma.requestsUpdateManyWithWhereWithoutUsersInput[]
   deleteMany?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
 }
 
-export type requestsUncheckedUpdateManyWithoutTechniciansNestedInput = {
-  create?: Prisma.XOR<Prisma.requestsCreateWithoutTechniciansInput, Prisma.requestsUncheckedCreateWithoutTechniciansInput> | Prisma.requestsCreateWithoutTechniciansInput[] | Prisma.requestsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutTechniciansInput | Prisma.requestsCreateOrConnectWithoutTechniciansInput[]
-  upsert?: Prisma.requestsUpsertWithWhereUniqueWithoutTechniciansInput | Prisma.requestsUpsertWithWhereUniqueWithoutTechniciansInput[]
-  createMany?: Prisma.requestsCreateManyTechniciansInputEnvelope
+export type requestsUncheckedUpdateManyWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutUsersInput, Prisma.requestsUncheckedCreateWithoutUsersInput> | Prisma.requestsCreateWithoutUsersInput[] | Prisma.requestsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutUsersInput | Prisma.requestsCreateOrConnectWithoutUsersInput[]
+  upsert?: Prisma.requestsUpsertWithWhereUniqueWithoutUsersInput | Prisma.requestsUpsertWithWhereUniqueWithoutUsersInput[]
+  createMany?: Prisma.requestsCreateManyUsersInputEnvelope
   set?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
   disconnect?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
   delete?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
   connect?: Prisma.requestsWhereUniqueInput | Prisma.requestsWhereUniqueInput[]
-  update?: Prisma.requestsUpdateWithWhereUniqueWithoutTechniciansInput | Prisma.requestsUpdateWithWhereUniqueWithoutTechniciansInput[]
-  updateMany?: Prisma.requestsUpdateManyWithWhereWithoutTechniciansInput | Prisma.requestsUpdateManyWithWhereWithoutTechniciansInput[]
+  update?: Prisma.requestsUpdateWithWhereUniqueWithoutUsersInput | Prisma.requestsUpdateWithWhereUniqueWithoutUsersInput[]
+  updateMany?: Prisma.requestsUpdateManyWithWhereWithoutUsersInput | Prisma.requestsUpdateManyWithWhereWithoutUsersInput[]
   deleteMany?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
 }
 
 export type requestsCreateWithoutRequest_detailsInput = {
   request_date: Date | string
   requesters: Prisma.requestersCreateNestedOneWithoutRequestsInput
-  technicians: Prisma.techniciansCreateNestedOneWithoutRequestsInput
+  users: Prisma.usersCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateWithoutRequest_detailsInput = {
   request_id?: number
   requester_id: number
-  technician_id: number
+  user_id: number
   request_date: Date | string
 }
 
@@ -492,25 +492,25 @@ export type requestsUpdateToOneWithWhereWithoutRequest_detailsInput = {
 export type requestsUpdateWithoutRequest_detailsInput = {
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requesters?: Prisma.requestersUpdateOneRequiredWithoutRequestsNestedInput
-  technicians?: Prisma.techniciansUpdateOneRequiredWithoutRequestsNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateWithoutRequest_detailsInput = {
   request_id?: Prisma.IntFieldUpdateOperationsInput | number
   requester_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type requestsCreateWithoutRequestersInput = {
   request_date: Date | string
   request_details?: Prisma.request_detailsCreateNestedManyWithoutRequestsInput
-  technicians: Prisma.techniciansCreateNestedOneWithoutRequestsInput
+  users: Prisma.usersCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateWithoutRequestersInput = {
   request_id?: number
-  technician_id: number
+  user_id: number
   request_date: Date | string
   request_details?: Prisma.request_detailsUncheckedCreateNestedManyWithoutRequestsInput
 }
@@ -547,94 +547,94 @@ export type requestsScalarWhereInput = {
   NOT?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
   request_id?: Prisma.IntFilter<"requests"> | number
   requester_id?: Prisma.IntFilter<"requests"> | number
-  technician_id?: Prisma.IntFilter<"requests"> | number
+  user_id?: Prisma.IntFilter<"requests"> | number
   request_date?: Prisma.DateTimeFilter<"requests"> | Date | string
 }
 
-export type requestsCreateWithoutTechniciansInput = {
+export type requestsCreateWithoutUsersInput = {
   request_date: Date | string
   request_details?: Prisma.request_detailsCreateNestedManyWithoutRequestsInput
   requesters: Prisma.requestersCreateNestedOneWithoutRequestsInput
 }
 
-export type requestsUncheckedCreateWithoutTechniciansInput = {
+export type requestsUncheckedCreateWithoutUsersInput = {
   request_id?: number
   requester_id: number
   request_date: Date | string
   request_details?: Prisma.request_detailsUncheckedCreateNestedManyWithoutRequestsInput
 }
 
-export type requestsCreateOrConnectWithoutTechniciansInput = {
+export type requestsCreateOrConnectWithoutUsersInput = {
   where: Prisma.requestsWhereUniqueInput
-  create: Prisma.XOR<Prisma.requestsCreateWithoutTechniciansInput, Prisma.requestsUncheckedCreateWithoutTechniciansInput>
+  create: Prisma.XOR<Prisma.requestsCreateWithoutUsersInput, Prisma.requestsUncheckedCreateWithoutUsersInput>
 }
 
-export type requestsCreateManyTechniciansInputEnvelope = {
-  data: Prisma.requestsCreateManyTechniciansInput | Prisma.requestsCreateManyTechniciansInput[]
+export type requestsCreateManyUsersInputEnvelope = {
+  data: Prisma.requestsCreateManyUsersInput | Prisma.requestsCreateManyUsersInput[]
   skipDuplicates?: boolean
 }
 
-export type requestsUpsertWithWhereUniqueWithoutTechniciansInput = {
+export type requestsUpsertWithWhereUniqueWithoutUsersInput = {
   where: Prisma.requestsWhereUniqueInput
-  update: Prisma.XOR<Prisma.requestsUpdateWithoutTechniciansInput, Prisma.requestsUncheckedUpdateWithoutTechniciansInput>
-  create: Prisma.XOR<Prisma.requestsCreateWithoutTechniciansInput, Prisma.requestsUncheckedCreateWithoutTechniciansInput>
+  update: Prisma.XOR<Prisma.requestsUpdateWithoutUsersInput, Prisma.requestsUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.requestsCreateWithoutUsersInput, Prisma.requestsUncheckedCreateWithoutUsersInput>
 }
 
-export type requestsUpdateWithWhereUniqueWithoutTechniciansInput = {
+export type requestsUpdateWithWhereUniqueWithoutUsersInput = {
   where: Prisma.requestsWhereUniqueInput
-  data: Prisma.XOR<Prisma.requestsUpdateWithoutTechniciansInput, Prisma.requestsUncheckedUpdateWithoutTechniciansInput>
+  data: Prisma.XOR<Prisma.requestsUpdateWithoutUsersInput, Prisma.requestsUncheckedUpdateWithoutUsersInput>
 }
 
-export type requestsUpdateManyWithWhereWithoutTechniciansInput = {
+export type requestsUpdateManyWithWhereWithoutUsersInput = {
   where: Prisma.requestsScalarWhereInput
-  data: Prisma.XOR<Prisma.requestsUpdateManyMutationInput, Prisma.requestsUncheckedUpdateManyWithoutTechniciansInput>
+  data: Prisma.XOR<Prisma.requestsUpdateManyMutationInput, Prisma.requestsUncheckedUpdateManyWithoutUsersInput>
 }
 
 export type requestsCreateManyRequestersInput = {
   request_id?: number
-  technician_id: number
+  user_id: number
   request_date: Date | string
 }
 
 export type requestsUpdateWithoutRequestersInput = {
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   request_details?: Prisma.request_detailsUpdateManyWithoutRequestsNestedInput
-  technicians?: Prisma.techniciansUpdateOneRequiredWithoutRequestsNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateWithoutRequestersInput = {
   request_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   request_details?: Prisma.request_detailsUncheckedUpdateManyWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateManyWithoutRequestersInput = {
   request_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type requestsCreateManyTechniciansInput = {
+export type requestsCreateManyUsersInput = {
   request_id?: number
   requester_id: number
   request_date: Date | string
 }
 
-export type requestsUpdateWithoutTechniciansInput = {
+export type requestsUpdateWithoutUsersInput = {
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   request_details?: Prisma.request_detailsUpdateManyWithoutRequestsNestedInput
   requesters?: Prisma.requestersUpdateOneRequiredWithoutRequestsNestedInput
 }
 
-export type requestsUncheckedUpdateWithoutTechniciansInput = {
+export type requestsUncheckedUpdateWithoutUsersInput = {
   request_id?: Prisma.IntFieldUpdateOperationsInput | number
   requester_id?: Prisma.IntFieldUpdateOperationsInput | number
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   request_details?: Prisma.request_detailsUncheckedUpdateManyWithoutRequestsNestedInput
 }
 
-export type requestsUncheckedUpdateManyWithoutTechniciansInput = {
+export type requestsUncheckedUpdateManyWithoutUsersInput = {
   request_id?: Prisma.IntFieldUpdateOperationsInput | number
   requester_id?: Prisma.IntFieldUpdateOperationsInput | number
   request_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -674,11 +674,11 @@ export type RequestsCountOutputTypeCountRequest_detailsArgs<ExtArgs extends runt
 export type requestsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   request_id?: boolean
   requester_id?: boolean
-  technician_id?: boolean
+  user_id?: boolean
   request_date?: boolean
   request_details?: boolean | Prisma.requests$request_detailsArgs<ExtArgs>
   requesters?: boolean | Prisma.requestersDefaultArgs<ExtArgs>
-  technicians?: boolean | Prisma.techniciansDefaultArgs<ExtArgs>
+  users?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.RequestsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["requests"]>
 
@@ -687,15 +687,15 @@ export type requestsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type requestsSelectScalar = {
   request_id?: boolean
   requester_id?: boolean
-  technician_id?: boolean
+  user_id?: boolean
   request_date?: boolean
 }
 
-export type requestsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"request_id" | "requester_id" | "technician_id" | "request_date", ExtArgs["result"]["requests"]>
+export type requestsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"request_id" | "requester_id" | "user_id" | "request_date", ExtArgs["result"]["requests"]>
 export type requestsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   request_details?: boolean | Prisma.requests$request_detailsArgs<ExtArgs>
   requesters?: boolean | Prisma.requestersDefaultArgs<ExtArgs>
-  technicians?: boolean | Prisma.techniciansDefaultArgs<ExtArgs>
+  users?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.RequestsCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -704,12 +704,12 @@ export type $requestsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     request_details: Prisma.$request_detailsPayload<ExtArgs>[]
     requesters: Prisma.$requestersPayload<ExtArgs>
-    technicians: Prisma.$techniciansPayload<ExtArgs>
+    users: Prisma.$usersPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     request_id: number
     requester_id: number
-    technician_id: number
+    user_id: number
     request_date: Date
   }, ExtArgs["result"]["requests"]>
   composites: {}
@@ -1053,7 +1053,7 @@ export interface Prisma__requestsClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   request_details<T extends Prisma.requests$request_detailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$request_detailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$request_detailsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requesters<T extends Prisma.requestersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requestersDefaultArgs<ExtArgs>>): Prisma.Prisma__requestersClient<runtime.Types.Result.GetResult<Prisma.$requestersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  technicians<T extends Prisma.techniciansDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.techniciansDefaultArgs<ExtArgs>>): Prisma.Prisma__techniciansClient<runtime.Types.Result.GetResult<Prisma.$techniciansPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  users<T extends Prisma.usersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.usersDefaultArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1085,7 +1085,7 @@ export interface Prisma__requestsClient<T, Null = never, ExtArgs extends runtime
 export interface requestsFieldRefs {
   readonly request_id: Prisma.FieldRef<"requests", 'Int'>
   readonly requester_id: Prisma.FieldRef<"requests", 'Int'>
-  readonly technician_id: Prisma.FieldRef<"requests", 'Int'>
+  readonly user_id: Prisma.FieldRef<"requests", 'Int'>
   readonly request_date: Prisma.FieldRef<"requests", 'DateTime'>
 }
     

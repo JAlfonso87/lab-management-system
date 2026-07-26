@@ -13,7 +13,12 @@ services:
       - "${MYSQL_PORT}:3306"
     volumes:
       - LMSSTORAGE:/var/lib/mysql
-      - ./.db/init:/docker-entrypoint-initdb.d
+      - ./_db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: mysql --user=root --password=TAIR312FEAE --execute="SHOW DATABASES;"
+      interval: 10s
+      retries: 5
+      timeout: 45s
 
 volumes:
   LMSSTORAGE:

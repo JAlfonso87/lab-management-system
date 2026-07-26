@@ -1,6 +1,6 @@
 USE lab_management_system;
 
-    INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('DIETHYLENETRIAMINEPENTAACETIC- ACID PENTASODIUM SALT', '', '1kg', 'BLANCO');
+INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('DIETHYLENETRIAMINEPENTAACETIC- ACID PENTASODIUM SALT', '', '1kg', 'BLANCO');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('SODIUM BICARBONATE', 'SIGMA ALDRICH', '500g', 'VERDE');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1- PROPANOL', 'J.T.BAKER', '4lt', 'ROJO');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1,3-PHENYLENEDIAMINE', 'ALDRICH', '100g', 'ROJO');

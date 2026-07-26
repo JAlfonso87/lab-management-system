@@ -193,14 +193,14 @@ export type labsWhereInput = {
   lab_id?: Prisma.IntFilter<"labs"> | number
   lab_name?: Prisma.StringFilter<"labs"> | string
   locations?: Prisma.XOR<Prisma.LocationsScalarRelationFilter, Prisma.locationsWhereInput>
-  technicians?: Prisma.TechniciansListRelationFilter
+  users?: Prisma.UsersListRelationFilter
 }
 
 export type labsOrderByWithRelationInput = {
   lab_id?: Prisma.SortOrder
   lab_name?: Prisma.SortOrder
   locations?: Prisma.locationsOrderByWithRelationInput
-  technicians?: Prisma.techniciansOrderByRelationAggregateInput
+  users?: Prisma.usersOrderByRelationAggregateInput
   _relevance?: Prisma.labsOrderByRelevanceInput
 }
 
@@ -211,7 +211,7 @@ export type labsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.labsWhereInput | Prisma.labsWhereInput[]
   lab_name?: Prisma.StringFilter<"labs"> | string
   locations?: Prisma.XOR<Prisma.LocationsScalarRelationFilter, Prisma.locationsWhereInput>
-  technicians?: Prisma.TechniciansListRelationFilter
+  users?: Prisma.UsersListRelationFilter
 }, "lab_id">
 
 export type labsOrderByWithAggregationInput = {
@@ -235,25 +235,25 @@ export type labsScalarWhereWithAggregatesInput = {
 export type labsCreateInput = {
   lab_name: string
   locations: Prisma.locationsCreateNestedOneWithoutLabsInput
-  technicians?: Prisma.techniciansCreateNestedManyWithoutLabsInput
+  users?: Prisma.usersCreateNestedManyWithoutLabsInput
 }
 
 export type labsUncheckedCreateInput = {
   lab_id: number
   lab_name: string
-  technicians?: Prisma.techniciansUncheckedCreateNestedManyWithoutLabsInput
+  users?: Prisma.usersUncheckedCreateNestedManyWithoutLabsInput
 }
 
 export type labsUpdateInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
   locations?: Prisma.locationsUpdateOneRequiredWithoutLabsNestedInput
-  technicians?: Prisma.techniciansUpdateManyWithoutLabsNestedInput
+  users?: Prisma.usersUpdateManyWithoutLabsNestedInput
 }
 
 export type labsUncheckedUpdateInput = {
   lab_id?: Prisma.IntFieldUpdateOperationsInput | number
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
-  technicians?: Prisma.techniciansUncheckedUpdateManyWithoutLabsNestedInput
+  users?: Prisma.usersUncheckedUpdateManyWithoutLabsNestedInput
 }
 
 export type labsCreateManyInput = {
@@ -304,13 +304,16 @@ export type LabsNullableScalarRelationFilter = {
   isNot?: Prisma.labsWhereInput | null
 }
 
-export type LabsScalarRelationFilter = {
-  is?: Prisma.labsWhereInput
-  isNot?: Prisma.labsWhereInput
-}
-
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type labsCreateNestedOneWithoutLocationsInput = {
@@ -345,28 +348,30 @@ export type labsUncheckedUpdateOneWithoutLocationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.labsUpdateToOneWithWhereWithoutLocationsInput, Prisma.labsUpdateWithoutLocationsInput>, Prisma.labsUncheckedUpdateWithoutLocationsInput>
 }
 
-export type labsCreateNestedOneWithoutTechniciansInput = {
-  create?: Prisma.XOR<Prisma.labsCreateWithoutTechniciansInput, Prisma.labsUncheckedCreateWithoutTechniciansInput>
-  connectOrCreate?: Prisma.labsCreateOrConnectWithoutTechniciansInput
+export type labsCreateNestedOneWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.labsCreateWithoutUsersInput, Prisma.labsUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.labsCreateOrConnectWithoutUsersInput
   connect?: Prisma.labsWhereUniqueInput
 }
 
-export type labsUpdateOneRequiredWithoutTechniciansNestedInput = {
-  create?: Prisma.XOR<Prisma.labsCreateWithoutTechniciansInput, Prisma.labsUncheckedCreateWithoutTechniciansInput>
-  connectOrCreate?: Prisma.labsCreateOrConnectWithoutTechniciansInput
-  upsert?: Prisma.labsUpsertWithoutTechniciansInput
+export type labsUpdateOneWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.labsCreateWithoutUsersInput, Prisma.labsUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.labsCreateOrConnectWithoutUsersInput
+  upsert?: Prisma.labsUpsertWithoutUsersInput
+  disconnect?: Prisma.labsWhereInput | boolean
+  delete?: Prisma.labsWhereInput | boolean
   connect?: Prisma.labsWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.labsUpdateToOneWithWhereWithoutTechniciansInput, Prisma.labsUpdateWithoutTechniciansInput>, Prisma.labsUncheckedUpdateWithoutTechniciansInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.labsUpdateToOneWithWhereWithoutUsersInput, Prisma.labsUpdateWithoutUsersInput>, Prisma.labsUncheckedUpdateWithoutUsersInput>
 }
 
 export type labsCreateWithoutLocationsInput = {
   lab_name: string
-  technicians?: Prisma.techniciansCreateNestedManyWithoutLabsInput
+  users?: Prisma.usersCreateNestedManyWithoutLabsInput
 }
 
 export type labsUncheckedCreateWithoutLocationsInput = {
   lab_name: string
-  technicians?: Prisma.techniciansUncheckedCreateNestedManyWithoutLabsInput
+  users?: Prisma.usersUncheckedCreateNestedManyWithoutLabsInput
 }
 
 export type labsCreateOrConnectWithoutLocationsInput = {
@@ -387,46 +392,46 @@ export type labsUpdateToOneWithWhereWithoutLocationsInput = {
 
 export type labsUpdateWithoutLocationsInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
-  technicians?: Prisma.techniciansUpdateManyWithoutLabsNestedInput
+  users?: Prisma.usersUpdateManyWithoutLabsNestedInput
 }
 
 export type labsUncheckedUpdateWithoutLocationsInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
-  technicians?: Prisma.techniciansUncheckedUpdateManyWithoutLabsNestedInput
+  users?: Prisma.usersUncheckedUpdateManyWithoutLabsNestedInput
 }
 
-export type labsCreateWithoutTechniciansInput = {
+export type labsCreateWithoutUsersInput = {
   lab_name: string
   locations: Prisma.locationsCreateNestedOneWithoutLabsInput
 }
 
-export type labsUncheckedCreateWithoutTechniciansInput = {
+export type labsUncheckedCreateWithoutUsersInput = {
   lab_id: number
   lab_name: string
 }
 
-export type labsCreateOrConnectWithoutTechniciansInput = {
+export type labsCreateOrConnectWithoutUsersInput = {
   where: Prisma.labsWhereUniqueInput
-  create: Prisma.XOR<Prisma.labsCreateWithoutTechniciansInput, Prisma.labsUncheckedCreateWithoutTechniciansInput>
+  create: Prisma.XOR<Prisma.labsCreateWithoutUsersInput, Prisma.labsUncheckedCreateWithoutUsersInput>
 }
 
-export type labsUpsertWithoutTechniciansInput = {
-  update: Prisma.XOR<Prisma.labsUpdateWithoutTechniciansInput, Prisma.labsUncheckedUpdateWithoutTechniciansInput>
-  create: Prisma.XOR<Prisma.labsCreateWithoutTechniciansInput, Prisma.labsUncheckedCreateWithoutTechniciansInput>
+export type labsUpsertWithoutUsersInput = {
+  update: Prisma.XOR<Prisma.labsUpdateWithoutUsersInput, Prisma.labsUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.labsCreateWithoutUsersInput, Prisma.labsUncheckedCreateWithoutUsersInput>
   where?: Prisma.labsWhereInput
 }
 
-export type labsUpdateToOneWithWhereWithoutTechniciansInput = {
+export type labsUpdateToOneWithWhereWithoutUsersInput = {
   where?: Prisma.labsWhereInput
-  data: Prisma.XOR<Prisma.labsUpdateWithoutTechniciansInput, Prisma.labsUncheckedUpdateWithoutTechniciansInput>
+  data: Prisma.XOR<Prisma.labsUpdateWithoutUsersInput, Prisma.labsUncheckedUpdateWithoutUsersInput>
 }
 
-export type labsUpdateWithoutTechniciansInput = {
+export type labsUpdateWithoutUsersInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
   locations?: Prisma.locationsUpdateOneRequiredWithoutLabsNestedInput
 }
 
-export type labsUncheckedUpdateWithoutTechniciansInput = {
+export type labsUncheckedUpdateWithoutUsersInput = {
   lab_id?: Prisma.IntFieldUpdateOperationsInput | number
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -437,11 +442,11 @@ export type labsUncheckedUpdateWithoutTechniciansInput = {
  */
 
 export type LabsCountOutputType = {
-  technicians: number
+  users: number
 }
 
 export type LabsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  technicians?: boolean | LabsCountOutputTypeCountTechniciansArgs
+  users?: boolean | LabsCountOutputTypeCountUsersArgs
 }
 
 /**
@@ -457,8 +462,8 @@ export type LabsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * LabsCountOutputType without action
  */
-export type LabsCountOutputTypeCountTechniciansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.techniciansWhereInput
+export type LabsCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.usersWhereInput
 }
 
 
@@ -466,7 +471,7 @@ export type labsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lab_id?: boolean
   lab_name?: boolean
   locations?: boolean | Prisma.locationsDefaultArgs<ExtArgs>
-  technicians?: boolean | Prisma.labs$techniciansArgs<ExtArgs>
+  users?: boolean | Prisma.labs$usersArgs<ExtArgs>
   _count?: boolean | Prisma.LabsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["labs"]>
 
@@ -480,7 +485,7 @@ export type labsSelectScalar = {
 export type labsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"lab_id" | "lab_name", ExtArgs["result"]["labs"]>
 export type labsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   locations?: boolean | Prisma.locationsDefaultArgs<ExtArgs>
-  technicians?: boolean | Prisma.labs$techniciansArgs<ExtArgs>
+  users?: boolean | Prisma.labs$usersArgs<ExtArgs>
   _count?: boolean | Prisma.LabsCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -488,7 +493,7 @@ export type $labsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "labs"
   objects: {
     locations: Prisma.$locationsPayload<ExtArgs>
-    technicians: Prisma.$techniciansPayload<ExtArgs>[]
+    users: Prisma.$usersPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     lab_id: number
@@ -834,7 +839,7 @@ readonly fields: labsFieldRefs;
 export interface Prisma__labsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   locations<T extends Prisma.locationsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.locationsDefaultArgs<ExtArgs>>): Prisma.Prisma__locationsClient<runtime.Types.Result.GetResult<Prisma.$locationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  technicians<T extends Prisma.labs$techniciansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.labs$techniciansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$techniciansPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  users<T extends Prisma.labs$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.labs$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1214,27 +1219,27 @@ export type labsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * labs.technicians
+ * labs.users
  */
-export type labs$techniciansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type labs$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the technicians
+   * Select specific fields to fetch from the users
    */
-  select?: Prisma.techniciansSelect<ExtArgs> | null
+  select?: Prisma.usersSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the technicians
+   * Omit specific fields from the users
    */
-  omit?: Prisma.techniciansOmit<ExtArgs> | null
+  omit?: Prisma.usersOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.techniciansInclude<ExtArgs> | null
-  where?: Prisma.techniciansWhereInput
-  orderBy?: Prisma.techniciansOrderByWithRelationInput | Prisma.techniciansOrderByWithRelationInput[]
-  cursor?: Prisma.techniciansWhereUniqueInput
+  include?: Prisma.usersInclude<ExtArgs> | null
+  where?: Prisma.usersWhereInput
+  orderBy?: Prisma.usersOrderByWithRelationInput | Prisma.usersOrderByWithRelationInput[]
+  cursor?: Prisma.usersWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.TechniciansScalarFieldEnum | Prisma.TechniciansScalarFieldEnum[]
+  distinct?: Prisma.UsersScalarFieldEnum | Prisma.UsersScalarFieldEnum[]
 }
 
 /**

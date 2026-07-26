@@ -431,20 +431,6 @@ export type local_stocksUncheckedUpdateManyWithoutLocationsNestedInput = {
   deleteMany?: Prisma.local_stocksScalarWhereInput | Prisma.local_stocksScalarWhereInput[]
 }
 
-export type local_stocksCreateNestedOneWithoutOperationsInput = {
-  create?: Prisma.XOR<Prisma.local_stocksCreateWithoutOperationsInput, Prisma.local_stocksUncheckedCreateWithoutOperationsInput>
-  connectOrCreate?: Prisma.local_stocksCreateOrConnectWithoutOperationsInput
-  connect?: Prisma.local_stocksWhereUniqueInput
-}
-
-export type local_stocksUpdateOneRequiredWithoutOperationsNestedInput = {
-  create?: Prisma.XOR<Prisma.local_stocksCreateWithoutOperationsInput, Prisma.local_stocksUncheckedCreateWithoutOperationsInput>
-  connectOrCreate?: Prisma.local_stocksCreateOrConnectWithoutOperationsInput
-  upsert?: Prisma.local_stocksUpsertWithoutOperationsInput
-  connect?: Prisma.local_stocksWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.local_stocksUpdateToOneWithWhereWithoutOperationsInput, Prisma.local_stocksUpdateWithoutOperationsInput>, Prisma.local_stocksUncheckedUpdateWithoutOperationsInput>
-}
-
 export type local_stocksCreateNestedManyWithoutReagentsInput = {
   create?: Prisma.XOR<Prisma.local_stocksCreateWithoutReagentsInput, Prisma.local_stocksUncheckedCreateWithoutReagentsInput> | Prisma.local_stocksCreateWithoutReagentsInput[] | Prisma.local_stocksUncheckedCreateWithoutReagentsInput[]
   connectOrCreate?: Prisma.local_stocksCreateOrConnectWithoutReagentsInput | Prisma.local_stocksCreateOrConnectWithoutReagentsInput[]
@@ -485,6 +471,20 @@ export type local_stocksUncheckedUpdateManyWithoutReagentsNestedInput = {
   update?: Prisma.local_stocksUpdateWithWhereUniqueWithoutReagentsInput | Prisma.local_stocksUpdateWithWhereUniqueWithoutReagentsInput[]
   updateMany?: Prisma.local_stocksUpdateManyWithWhereWithoutReagentsInput | Prisma.local_stocksUpdateManyWithWhereWithoutReagentsInput[]
   deleteMany?: Prisma.local_stocksScalarWhereInput | Prisma.local_stocksScalarWhereInput[]
+}
+
+export type local_stocksCreateNestedOneWithoutOperationsInput = {
+  create?: Prisma.XOR<Prisma.local_stocksCreateWithoutOperationsInput, Prisma.local_stocksUncheckedCreateWithoutOperationsInput>
+  connectOrCreate?: Prisma.local_stocksCreateOrConnectWithoutOperationsInput
+  connect?: Prisma.local_stocksWhereUniqueInput
+}
+
+export type local_stocksUpdateOneRequiredWithoutOperationsNestedInput = {
+  create?: Prisma.XOR<Prisma.local_stocksCreateWithoutOperationsInput, Prisma.local_stocksUncheckedCreateWithoutOperationsInput>
+  connectOrCreate?: Prisma.local_stocksCreateOrConnectWithoutOperationsInput
+  upsert?: Prisma.local_stocksUpsertWithoutOperationsInput
+  connect?: Prisma.local_stocksWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.local_stocksUpdateToOneWithWhereWithoutOperationsInput, Prisma.local_stocksUpdateWithoutOperationsInput>, Prisma.local_stocksUncheckedUpdateWithoutOperationsInput>
 }
 
 export type local_stocksCreateNestedOneWithoutRequest_detailsInput = {
@@ -552,6 +552,47 @@ export type local_stocksScalarWhereInput = {
   local_stock_units?: Prisma.IntNullableFilter<"local_stocks"> | number | null
 }
 
+export type local_stocksCreateWithoutReagentsInput = {
+  local_stock_units?: number | null
+  locations: Prisma.locationsCreateNestedOneWithoutLocal_stocksInput
+  operations?: Prisma.operationsCreateNestedManyWithoutLocal_stocksInput
+  request_details?: Prisma.request_detailsCreateNestedManyWithoutLocal_stocksInput
+}
+
+export type local_stocksUncheckedCreateWithoutReagentsInput = {
+  local_stock_id?: number
+  location_id: number
+  local_stock_units?: number | null
+  operations?: Prisma.operationsUncheckedCreateNestedManyWithoutLocal_stocksInput
+  request_details?: Prisma.request_detailsUncheckedCreateNestedManyWithoutLocal_stocksInput
+}
+
+export type local_stocksCreateOrConnectWithoutReagentsInput = {
+  where: Prisma.local_stocksWhereUniqueInput
+  create: Prisma.XOR<Prisma.local_stocksCreateWithoutReagentsInput, Prisma.local_stocksUncheckedCreateWithoutReagentsInput>
+}
+
+export type local_stocksCreateManyReagentsInputEnvelope = {
+  data: Prisma.local_stocksCreateManyReagentsInput | Prisma.local_stocksCreateManyReagentsInput[]
+  skipDuplicates?: boolean
+}
+
+export type local_stocksUpsertWithWhereUniqueWithoutReagentsInput = {
+  where: Prisma.local_stocksWhereUniqueInput
+  update: Prisma.XOR<Prisma.local_stocksUpdateWithoutReagentsInput, Prisma.local_stocksUncheckedUpdateWithoutReagentsInput>
+  create: Prisma.XOR<Prisma.local_stocksCreateWithoutReagentsInput, Prisma.local_stocksUncheckedCreateWithoutReagentsInput>
+}
+
+export type local_stocksUpdateWithWhereUniqueWithoutReagentsInput = {
+  where: Prisma.local_stocksWhereUniqueInput
+  data: Prisma.XOR<Prisma.local_stocksUpdateWithoutReagentsInput, Prisma.local_stocksUncheckedUpdateWithoutReagentsInput>
+}
+
+export type local_stocksUpdateManyWithWhereWithoutReagentsInput = {
+  where: Prisma.local_stocksScalarWhereInput
+  data: Prisma.XOR<Prisma.local_stocksUpdateManyMutationInput, Prisma.local_stocksUncheckedUpdateManyWithoutReagentsInput>
+}
+
 export type local_stocksCreateWithoutOperationsInput = {
   local_stock_units?: number | null
   reagents: Prisma.reagentsCreateNestedOneWithoutLocal_stocksInput
@@ -596,47 +637,6 @@ export type local_stocksUncheckedUpdateWithoutOperationsInput = {
   location_id?: Prisma.IntFieldUpdateOperationsInput | number
   local_stock_units?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   request_details?: Prisma.request_detailsUncheckedUpdateManyWithoutLocal_stocksNestedInput
-}
-
-export type local_stocksCreateWithoutReagentsInput = {
-  local_stock_units?: number | null
-  locations: Prisma.locationsCreateNestedOneWithoutLocal_stocksInput
-  operations?: Prisma.operationsCreateNestedManyWithoutLocal_stocksInput
-  request_details?: Prisma.request_detailsCreateNestedManyWithoutLocal_stocksInput
-}
-
-export type local_stocksUncheckedCreateWithoutReagentsInput = {
-  local_stock_id?: number
-  location_id: number
-  local_stock_units?: number | null
-  operations?: Prisma.operationsUncheckedCreateNestedManyWithoutLocal_stocksInput
-  request_details?: Prisma.request_detailsUncheckedCreateNestedManyWithoutLocal_stocksInput
-}
-
-export type local_stocksCreateOrConnectWithoutReagentsInput = {
-  where: Prisma.local_stocksWhereUniqueInput
-  create: Prisma.XOR<Prisma.local_stocksCreateWithoutReagentsInput, Prisma.local_stocksUncheckedCreateWithoutReagentsInput>
-}
-
-export type local_stocksCreateManyReagentsInputEnvelope = {
-  data: Prisma.local_stocksCreateManyReagentsInput | Prisma.local_stocksCreateManyReagentsInput[]
-  skipDuplicates?: boolean
-}
-
-export type local_stocksUpsertWithWhereUniqueWithoutReagentsInput = {
-  where: Prisma.local_stocksWhereUniqueInput
-  update: Prisma.XOR<Prisma.local_stocksUpdateWithoutReagentsInput, Prisma.local_stocksUncheckedUpdateWithoutReagentsInput>
-  create: Prisma.XOR<Prisma.local_stocksCreateWithoutReagentsInput, Prisma.local_stocksUncheckedCreateWithoutReagentsInput>
-}
-
-export type local_stocksUpdateWithWhereUniqueWithoutReagentsInput = {
-  where: Prisma.local_stocksWhereUniqueInput
-  data: Prisma.XOR<Prisma.local_stocksUpdateWithoutReagentsInput, Prisma.local_stocksUncheckedUpdateWithoutReagentsInput>
-}
-
-export type local_stocksUpdateManyWithWhereWithoutReagentsInput = {
-  where: Prisma.local_stocksScalarWhereInput
-  data: Prisma.XOR<Prisma.local_stocksUpdateManyMutationInput, Prisma.local_stocksUncheckedUpdateManyWithoutReagentsInput>
 }
 
 export type local_stocksCreateWithoutRequest_detailsInput = {

@@ -356,14 +356,6 @@ export type assigned_teachersOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type assigned_teachersCreateNestedManyWithoutSubjectsInput = {
   create?: Prisma.XOR<Prisma.assigned_teachersCreateWithoutSubjectsInput, Prisma.assigned_teachersUncheckedCreateWithoutSubjectsInput> | Prisma.assigned_teachersCreateWithoutSubjectsInput[] | Prisma.assigned_teachersUncheckedCreateWithoutSubjectsInput[]
   connectOrCreate?: Prisma.assigned_teachersCreateOrConnectWithoutSubjectsInput | Prisma.assigned_teachersCreateOrConnectWithoutSubjectsInput[]

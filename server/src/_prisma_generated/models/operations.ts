@@ -29,7 +29,7 @@ export type AggregateOperations = {
 export type OperationsAvgAggregateOutputType = {
   operation_id: number | null
   reagent_id: number | null
-  technician_id: number | null
+  user_id: number | null
   local_stock_id: number | null
   stock_difference: number | null
 }
@@ -37,7 +37,7 @@ export type OperationsAvgAggregateOutputType = {
 export type OperationsSumAggregateOutputType = {
   operation_id: number | null
   reagent_id: number | null
-  technician_id: number | null
+  user_id: number | null
   local_stock_id: number | null
   stock_difference: number | null
 }
@@ -45,7 +45,7 @@ export type OperationsSumAggregateOutputType = {
 export type OperationsMinAggregateOutputType = {
   operation_id: number | null
   reagent_id: number | null
-  technician_id: number | null
+  user_id: number | null
   local_stock_id: number | null
   operation_type: string | null
   stock_difference: number | null
@@ -56,7 +56,7 @@ export type OperationsMinAggregateOutputType = {
 export type OperationsMaxAggregateOutputType = {
   operation_id: number | null
   reagent_id: number | null
-  technician_id: number | null
+  user_id: number | null
   local_stock_id: number | null
   operation_type: string | null
   stock_difference: number | null
@@ -67,7 +67,7 @@ export type OperationsMaxAggregateOutputType = {
 export type OperationsCountAggregateOutputType = {
   operation_id: number
   reagent_id: number
-  technician_id: number
+  user_id: number
   local_stock_id: number
   operation_type: number
   stock_difference: number
@@ -80,7 +80,7 @@ export type OperationsCountAggregateOutputType = {
 export type OperationsAvgAggregateInputType = {
   operation_id?: true
   reagent_id?: true
-  technician_id?: true
+  user_id?: true
   local_stock_id?: true
   stock_difference?: true
 }
@@ -88,7 +88,7 @@ export type OperationsAvgAggregateInputType = {
 export type OperationsSumAggregateInputType = {
   operation_id?: true
   reagent_id?: true
-  technician_id?: true
+  user_id?: true
   local_stock_id?: true
   stock_difference?: true
 }
@@ -96,7 +96,7 @@ export type OperationsSumAggregateInputType = {
 export type OperationsMinAggregateInputType = {
   operation_id?: true
   reagent_id?: true
-  technician_id?: true
+  user_id?: true
   local_stock_id?: true
   operation_type?: true
   stock_difference?: true
@@ -107,7 +107,7 @@ export type OperationsMinAggregateInputType = {
 export type OperationsMaxAggregateInputType = {
   operation_id?: true
   reagent_id?: true
-  technician_id?: true
+  user_id?: true
   local_stock_id?: true
   operation_type?: true
   stock_difference?: true
@@ -118,7 +118,7 @@ export type OperationsMaxAggregateInputType = {
 export type OperationsCountAggregateInputType = {
   operation_id?: true
   reagent_id?: true
-  technician_id?: true
+  user_id?: true
   local_stock_id?: true
   operation_type?: true
   stock_difference?: true
@@ -216,7 +216,7 @@ export type operationsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type OperationsGroupByOutputType = {
   operation_id: number
   reagent_id: number
-  technician_id: number
+  user_id: number
   local_stock_id: number
   operation_type: string
   stock_difference: number
@@ -250,28 +250,28 @@ export type operationsWhereInput = {
   NOT?: Prisma.operationsWhereInput | Prisma.operationsWhereInput[]
   operation_id?: Prisma.IntFilter<"operations"> | number
   reagent_id?: Prisma.IntFilter<"operations"> | number
-  technician_id?: Prisma.IntFilter<"operations"> | number
+  user_id?: Prisma.IntFilter<"operations"> | number
   local_stock_id?: Prisma.IntFilter<"operations"> | number
   operation_type?: Prisma.StringFilter<"operations"> | string
   stock_difference?: Prisma.IntFilter<"operations"> | number
   operation_date?: Prisma.DateTimeFilter<"operations"> | Date | string
   operation_description?: Prisma.StringNullableFilter<"operations"> | string | null
   reagents?: Prisma.XOR<Prisma.ReagentsScalarRelationFilter, Prisma.reagentsWhereInput>
-  technicians?: Prisma.XOR<Prisma.TechniciansScalarRelationFilter, Prisma.techniciansWhereInput>
+  users?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
   local_stocks?: Prisma.XOR<Prisma.Local_stocksScalarRelationFilter, Prisma.local_stocksWhereInput>
 }
 
 export type operationsOrderByWithRelationInput = {
   operation_id?: Prisma.SortOrder
   reagent_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   local_stock_id?: Prisma.SortOrder
   operation_type?: Prisma.SortOrder
   stock_difference?: Prisma.SortOrder
   operation_date?: Prisma.SortOrder
   operation_description?: Prisma.SortOrderInput | Prisma.SortOrder
   reagents?: Prisma.reagentsOrderByWithRelationInput
-  technicians?: Prisma.techniciansOrderByWithRelationInput
+  users?: Prisma.usersOrderByWithRelationInput
   local_stocks?: Prisma.local_stocksOrderByWithRelationInput
   _relevance?: Prisma.operationsOrderByRelevanceInput
 }
@@ -282,21 +282,21 @@ export type operationsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.operationsWhereInput[]
   NOT?: Prisma.operationsWhereInput | Prisma.operationsWhereInput[]
   reagent_id?: Prisma.IntFilter<"operations"> | number
-  technician_id?: Prisma.IntFilter<"operations"> | number
+  user_id?: Prisma.IntFilter<"operations"> | number
   local_stock_id?: Prisma.IntFilter<"operations"> | number
   operation_type?: Prisma.StringFilter<"operations"> | string
   stock_difference?: Prisma.IntFilter<"operations"> | number
   operation_date?: Prisma.DateTimeFilter<"operations"> | Date | string
   operation_description?: Prisma.StringNullableFilter<"operations"> | string | null
   reagents?: Prisma.XOR<Prisma.ReagentsScalarRelationFilter, Prisma.reagentsWhereInput>
-  technicians?: Prisma.XOR<Prisma.TechniciansScalarRelationFilter, Prisma.techniciansWhereInput>
+  users?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
   local_stocks?: Prisma.XOR<Prisma.Local_stocksScalarRelationFilter, Prisma.local_stocksWhereInput>
 }, "operation_id">
 
 export type operationsOrderByWithAggregationInput = {
   operation_id?: Prisma.SortOrder
   reagent_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   local_stock_id?: Prisma.SortOrder
   operation_type?: Prisma.SortOrder
   stock_difference?: Prisma.SortOrder
@@ -315,7 +315,7 @@ export type operationsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.operationsScalarWhereWithAggregatesInput | Prisma.operationsScalarWhereWithAggregatesInput[]
   operation_id?: Prisma.IntWithAggregatesFilter<"operations"> | number
   reagent_id?: Prisma.IntWithAggregatesFilter<"operations"> | number
-  technician_id?: Prisma.IntWithAggregatesFilter<"operations"> | number
+  user_id?: Prisma.IntWithAggregatesFilter<"operations"> | number
   local_stock_id?: Prisma.IntWithAggregatesFilter<"operations"> | number
   operation_type?: Prisma.StringWithAggregatesFilter<"operations"> | string
   stock_difference?: Prisma.IntWithAggregatesFilter<"operations"> | number
@@ -329,14 +329,14 @@ export type operationsCreateInput = {
   operation_date: Date | string
   operation_description?: string | null
   reagents: Prisma.reagentsCreateNestedOneWithoutOperationsInput
-  technicians: Prisma.techniciansCreateNestedOneWithoutOperationsInput
+  users: Prisma.usersCreateNestedOneWithoutOperationsInput
   local_stocks: Prisma.local_stocksCreateNestedOneWithoutOperationsInput
 }
 
 export type operationsUncheckedCreateInput = {
   operation_id?: number
   reagent_id: number
-  technician_id: number
+  user_id: number
   local_stock_id: number
   operation_type: string
   stock_difference?: number
@@ -350,14 +350,14 @@ export type operationsUpdateInput = {
   operation_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   operation_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reagents?: Prisma.reagentsUpdateOneRequiredWithoutOperationsNestedInput
-  technicians?: Prisma.techniciansUpdateOneRequiredWithoutOperationsNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutOperationsNestedInput
   local_stocks?: Prisma.local_stocksUpdateOneRequiredWithoutOperationsNestedInput
 }
 
 export type operationsUncheckedUpdateInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
   reagent_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   local_stock_id?: Prisma.IntFieldUpdateOperationsInput | number
   operation_type?: Prisma.StringFieldUpdateOperationsInput | string
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
@@ -368,7 +368,7 @@ export type operationsUncheckedUpdateInput = {
 export type operationsCreateManyInput = {
   operation_id?: number
   reagent_id: number
-  technician_id: number
+  user_id: number
   local_stock_id: number
   operation_type: string
   stock_difference?: number
@@ -386,7 +386,7 @@ export type operationsUpdateManyMutationInput = {
 export type operationsUncheckedUpdateManyInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
   reagent_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   local_stock_id?: Prisma.IntFieldUpdateOperationsInput | number
   operation_type?: Prisma.StringFieldUpdateOperationsInput | string
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
@@ -413,7 +413,7 @@ export type operationsOrderByRelevanceInput = {
 export type operationsCountOrderByAggregateInput = {
   operation_id?: Prisma.SortOrder
   reagent_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   local_stock_id?: Prisma.SortOrder
   operation_type?: Prisma.SortOrder
   stock_difference?: Prisma.SortOrder
@@ -424,7 +424,7 @@ export type operationsCountOrderByAggregateInput = {
 export type operationsAvgOrderByAggregateInput = {
   operation_id?: Prisma.SortOrder
   reagent_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   local_stock_id?: Prisma.SortOrder
   stock_difference?: Prisma.SortOrder
 }
@@ -432,7 +432,7 @@ export type operationsAvgOrderByAggregateInput = {
 export type operationsMaxOrderByAggregateInput = {
   operation_id?: Prisma.SortOrder
   reagent_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   local_stock_id?: Prisma.SortOrder
   operation_type?: Prisma.SortOrder
   stock_difference?: Prisma.SortOrder
@@ -443,7 +443,7 @@ export type operationsMaxOrderByAggregateInput = {
 export type operationsMinOrderByAggregateInput = {
   operation_id?: Prisma.SortOrder
   reagent_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   local_stock_id?: Prisma.SortOrder
   operation_type?: Prisma.SortOrder
   stock_difference?: Prisma.SortOrder
@@ -454,7 +454,7 @@ export type operationsMinOrderByAggregateInput = {
 export type operationsSumOrderByAggregateInput = {
   operation_id?: Prisma.SortOrder
   reagent_id?: Prisma.SortOrder
-  technician_id?: Prisma.SortOrder
+  user_id?: Prisma.SortOrder
   local_stock_id?: Prisma.SortOrder
   stock_difference?: Prisma.SortOrder
 }
@@ -501,14 +501,6 @@ export type operationsUncheckedUpdateManyWithoutLocal_stocksNestedInput = {
   deleteMany?: Prisma.operationsScalarWhereInput | Prisma.operationsScalarWhereInput[]
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type operationsCreateNestedManyWithoutReagentsInput = {
   create?: Prisma.XOR<Prisma.operationsCreateWithoutReagentsInput, Prisma.operationsUncheckedCreateWithoutReagentsInput> | Prisma.operationsCreateWithoutReagentsInput[] | Prisma.operationsUncheckedCreateWithoutReagentsInput[]
   connectOrCreate?: Prisma.operationsCreateOrConnectWithoutReagentsInput | Prisma.operationsCreateOrConnectWithoutReagentsInput[]
@@ -551,45 +543,49 @@ export type operationsUncheckedUpdateManyWithoutReagentsNestedInput = {
   deleteMany?: Prisma.operationsScalarWhereInput | Prisma.operationsScalarWhereInput[]
 }
 
-export type operationsCreateNestedManyWithoutTechniciansInput = {
-  create?: Prisma.XOR<Prisma.operationsCreateWithoutTechniciansInput, Prisma.operationsUncheckedCreateWithoutTechniciansInput> | Prisma.operationsCreateWithoutTechniciansInput[] | Prisma.operationsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutTechniciansInput | Prisma.operationsCreateOrConnectWithoutTechniciansInput[]
-  createMany?: Prisma.operationsCreateManyTechniciansInputEnvelope
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
+export type operationsCreateNestedManyWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.operationsCreateWithoutUsersInput, Prisma.operationsUncheckedCreateWithoutUsersInput> | Prisma.operationsCreateWithoutUsersInput[] | Prisma.operationsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutUsersInput | Prisma.operationsCreateOrConnectWithoutUsersInput[]
+  createMany?: Prisma.operationsCreateManyUsersInputEnvelope
   connect?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
 }
 
-export type operationsUncheckedCreateNestedManyWithoutTechniciansInput = {
-  create?: Prisma.XOR<Prisma.operationsCreateWithoutTechniciansInput, Prisma.operationsUncheckedCreateWithoutTechniciansInput> | Prisma.operationsCreateWithoutTechniciansInput[] | Prisma.operationsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutTechniciansInput | Prisma.operationsCreateOrConnectWithoutTechniciansInput[]
-  createMany?: Prisma.operationsCreateManyTechniciansInputEnvelope
+export type operationsUncheckedCreateNestedManyWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.operationsCreateWithoutUsersInput, Prisma.operationsUncheckedCreateWithoutUsersInput> | Prisma.operationsCreateWithoutUsersInput[] | Prisma.operationsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutUsersInput | Prisma.operationsCreateOrConnectWithoutUsersInput[]
+  createMany?: Prisma.operationsCreateManyUsersInputEnvelope
   connect?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
 }
 
-export type operationsUpdateManyWithoutTechniciansNestedInput = {
-  create?: Prisma.XOR<Prisma.operationsCreateWithoutTechniciansInput, Prisma.operationsUncheckedCreateWithoutTechniciansInput> | Prisma.operationsCreateWithoutTechniciansInput[] | Prisma.operationsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutTechniciansInput | Prisma.operationsCreateOrConnectWithoutTechniciansInput[]
-  upsert?: Prisma.operationsUpsertWithWhereUniqueWithoutTechniciansInput | Prisma.operationsUpsertWithWhereUniqueWithoutTechniciansInput[]
-  createMany?: Prisma.operationsCreateManyTechniciansInputEnvelope
+export type operationsUpdateManyWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.operationsCreateWithoutUsersInput, Prisma.operationsUncheckedCreateWithoutUsersInput> | Prisma.operationsCreateWithoutUsersInput[] | Prisma.operationsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutUsersInput | Prisma.operationsCreateOrConnectWithoutUsersInput[]
+  upsert?: Prisma.operationsUpsertWithWhereUniqueWithoutUsersInput | Prisma.operationsUpsertWithWhereUniqueWithoutUsersInput[]
+  createMany?: Prisma.operationsCreateManyUsersInputEnvelope
   set?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
   disconnect?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
   delete?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
   connect?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
-  update?: Prisma.operationsUpdateWithWhereUniqueWithoutTechniciansInput | Prisma.operationsUpdateWithWhereUniqueWithoutTechniciansInput[]
-  updateMany?: Prisma.operationsUpdateManyWithWhereWithoutTechniciansInput | Prisma.operationsUpdateManyWithWhereWithoutTechniciansInput[]
+  update?: Prisma.operationsUpdateWithWhereUniqueWithoutUsersInput | Prisma.operationsUpdateWithWhereUniqueWithoutUsersInput[]
+  updateMany?: Prisma.operationsUpdateManyWithWhereWithoutUsersInput | Prisma.operationsUpdateManyWithWhereWithoutUsersInput[]
   deleteMany?: Prisma.operationsScalarWhereInput | Prisma.operationsScalarWhereInput[]
 }
 
-export type operationsUncheckedUpdateManyWithoutTechniciansNestedInput = {
-  create?: Prisma.XOR<Prisma.operationsCreateWithoutTechniciansInput, Prisma.operationsUncheckedCreateWithoutTechniciansInput> | Prisma.operationsCreateWithoutTechniciansInput[] | Prisma.operationsUncheckedCreateWithoutTechniciansInput[]
-  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutTechniciansInput | Prisma.operationsCreateOrConnectWithoutTechniciansInput[]
-  upsert?: Prisma.operationsUpsertWithWhereUniqueWithoutTechniciansInput | Prisma.operationsUpsertWithWhereUniqueWithoutTechniciansInput[]
-  createMany?: Prisma.operationsCreateManyTechniciansInputEnvelope
+export type operationsUncheckedUpdateManyWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.operationsCreateWithoutUsersInput, Prisma.operationsUncheckedCreateWithoutUsersInput> | Prisma.operationsCreateWithoutUsersInput[] | Prisma.operationsUncheckedCreateWithoutUsersInput[]
+  connectOrCreate?: Prisma.operationsCreateOrConnectWithoutUsersInput | Prisma.operationsCreateOrConnectWithoutUsersInput[]
+  upsert?: Prisma.operationsUpsertWithWhereUniqueWithoutUsersInput | Prisma.operationsUpsertWithWhereUniqueWithoutUsersInput[]
+  createMany?: Prisma.operationsCreateManyUsersInputEnvelope
   set?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
   disconnect?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
   delete?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
   connect?: Prisma.operationsWhereUniqueInput | Prisma.operationsWhereUniqueInput[]
-  update?: Prisma.operationsUpdateWithWhereUniqueWithoutTechniciansInput | Prisma.operationsUpdateWithWhereUniqueWithoutTechniciansInput[]
-  updateMany?: Prisma.operationsUpdateManyWithWhereWithoutTechniciansInput | Prisma.operationsUpdateManyWithWhereWithoutTechniciansInput[]
+  update?: Prisma.operationsUpdateWithWhereUniqueWithoutUsersInput | Prisma.operationsUpdateWithWhereUniqueWithoutUsersInput[]
+  updateMany?: Prisma.operationsUpdateManyWithWhereWithoutUsersInput | Prisma.operationsUpdateManyWithWhereWithoutUsersInput[]
   deleteMany?: Prisma.operationsScalarWhereInput | Prisma.operationsScalarWhereInput[]
 }
 
@@ -599,13 +595,13 @@ export type operationsCreateWithoutLocal_stocksInput = {
   operation_date: Date | string
   operation_description?: string | null
   reagents: Prisma.reagentsCreateNestedOneWithoutOperationsInput
-  technicians: Prisma.techniciansCreateNestedOneWithoutOperationsInput
+  users: Prisma.usersCreateNestedOneWithoutOperationsInput
 }
 
 export type operationsUncheckedCreateWithoutLocal_stocksInput = {
   operation_id?: number
   reagent_id: number
-  technician_id: number
+  user_id: number
   operation_type: string
   stock_difference?: number
   operation_date: Date | string
@@ -644,7 +640,7 @@ export type operationsScalarWhereInput = {
   NOT?: Prisma.operationsScalarWhereInput | Prisma.operationsScalarWhereInput[]
   operation_id?: Prisma.IntFilter<"operations"> | number
   reagent_id?: Prisma.IntFilter<"operations"> | number
-  technician_id?: Prisma.IntFilter<"operations"> | number
+  user_id?: Prisma.IntFilter<"operations"> | number
   local_stock_id?: Prisma.IntFilter<"operations"> | number
   operation_type?: Prisma.StringFilter<"operations"> | string
   stock_difference?: Prisma.IntFilter<"operations"> | number
@@ -657,13 +653,13 @@ export type operationsCreateWithoutReagentsInput = {
   stock_difference?: number
   operation_date: Date | string
   operation_description?: string | null
-  technicians: Prisma.techniciansCreateNestedOneWithoutOperationsInput
+  users: Prisma.usersCreateNestedOneWithoutOperationsInput
   local_stocks: Prisma.local_stocksCreateNestedOneWithoutOperationsInput
 }
 
 export type operationsUncheckedCreateWithoutReagentsInput = {
   operation_id?: number
-  technician_id: number
+  user_id: number
   local_stock_id: number
   operation_type: string
   stock_difference?: number
@@ -697,7 +693,7 @@ export type operationsUpdateManyWithWhereWithoutReagentsInput = {
   data: Prisma.XOR<Prisma.operationsUpdateManyMutationInput, Prisma.operationsUncheckedUpdateManyWithoutReagentsInput>
 }
 
-export type operationsCreateWithoutTechniciansInput = {
+export type operationsCreateWithoutUsersInput = {
   operation_type: string
   stock_difference?: number
   operation_date: Date | string
@@ -706,7 +702,7 @@ export type operationsCreateWithoutTechniciansInput = {
   local_stocks: Prisma.local_stocksCreateNestedOneWithoutOperationsInput
 }
 
-export type operationsUncheckedCreateWithoutTechniciansInput = {
+export type operationsUncheckedCreateWithoutUsersInput = {
   operation_id?: number
   reagent_id: number
   local_stock_id: number
@@ -716,36 +712,36 @@ export type operationsUncheckedCreateWithoutTechniciansInput = {
   operation_description?: string | null
 }
 
-export type operationsCreateOrConnectWithoutTechniciansInput = {
+export type operationsCreateOrConnectWithoutUsersInput = {
   where: Prisma.operationsWhereUniqueInput
-  create: Prisma.XOR<Prisma.operationsCreateWithoutTechniciansInput, Prisma.operationsUncheckedCreateWithoutTechniciansInput>
+  create: Prisma.XOR<Prisma.operationsCreateWithoutUsersInput, Prisma.operationsUncheckedCreateWithoutUsersInput>
 }
 
-export type operationsCreateManyTechniciansInputEnvelope = {
-  data: Prisma.operationsCreateManyTechniciansInput | Prisma.operationsCreateManyTechniciansInput[]
+export type operationsCreateManyUsersInputEnvelope = {
+  data: Prisma.operationsCreateManyUsersInput | Prisma.operationsCreateManyUsersInput[]
   skipDuplicates?: boolean
 }
 
-export type operationsUpsertWithWhereUniqueWithoutTechniciansInput = {
+export type operationsUpsertWithWhereUniqueWithoutUsersInput = {
   where: Prisma.operationsWhereUniqueInput
-  update: Prisma.XOR<Prisma.operationsUpdateWithoutTechniciansInput, Prisma.operationsUncheckedUpdateWithoutTechniciansInput>
-  create: Prisma.XOR<Prisma.operationsCreateWithoutTechniciansInput, Prisma.operationsUncheckedCreateWithoutTechniciansInput>
+  update: Prisma.XOR<Prisma.operationsUpdateWithoutUsersInput, Prisma.operationsUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.operationsCreateWithoutUsersInput, Prisma.operationsUncheckedCreateWithoutUsersInput>
 }
 
-export type operationsUpdateWithWhereUniqueWithoutTechniciansInput = {
+export type operationsUpdateWithWhereUniqueWithoutUsersInput = {
   where: Prisma.operationsWhereUniqueInput
-  data: Prisma.XOR<Prisma.operationsUpdateWithoutTechniciansInput, Prisma.operationsUncheckedUpdateWithoutTechniciansInput>
+  data: Prisma.XOR<Prisma.operationsUpdateWithoutUsersInput, Prisma.operationsUncheckedUpdateWithoutUsersInput>
 }
 
-export type operationsUpdateManyWithWhereWithoutTechniciansInput = {
+export type operationsUpdateManyWithWhereWithoutUsersInput = {
   where: Prisma.operationsScalarWhereInput
-  data: Prisma.XOR<Prisma.operationsUpdateManyMutationInput, Prisma.operationsUncheckedUpdateManyWithoutTechniciansInput>
+  data: Prisma.XOR<Prisma.operationsUpdateManyMutationInput, Prisma.operationsUncheckedUpdateManyWithoutUsersInput>
 }
 
 export type operationsCreateManyLocal_stocksInput = {
   operation_id?: number
   reagent_id: number
-  technician_id: number
+  user_id: number
   operation_type: string
   stock_difference?: number
   operation_date: Date | string
@@ -758,13 +754,13 @@ export type operationsUpdateWithoutLocal_stocksInput = {
   operation_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   operation_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reagents?: Prisma.reagentsUpdateOneRequiredWithoutOperationsNestedInput
-  technicians?: Prisma.techniciansUpdateOneRequiredWithoutOperationsNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutOperationsNestedInput
 }
 
 export type operationsUncheckedUpdateWithoutLocal_stocksInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
   reagent_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   operation_type?: Prisma.StringFieldUpdateOperationsInput | string
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
   operation_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -774,7 +770,7 @@ export type operationsUncheckedUpdateWithoutLocal_stocksInput = {
 export type operationsUncheckedUpdateManyWithoutLocal_stocksInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
   reagent_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   operation_type?: Prisma.StringFieldUpdateOperationsInput | string
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
   operation_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -783,7 +779,7 @@ export type operationsUncheckedUpdateManyWithoutLocal_stocksInput = {
 
 export type operationsCreateManyReagentsInput = {
   operation_id?: number
-  technician_id: number
+  user_id: number
   local_stock_id: number
   operation_type: string
   stock_difference?: number
@@ -796,13 +792,13 @@ export type operationsUpdateWithoutReagentsInput = {
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
   operation_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   operation_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  technicians?: Prisma.techniciansUpdateOneRequiredWithoutOperationsNestedInput
+  users?: Prisma.usersUpdateOneRequiredWithoutOperationsNestedInput
   local_stocks?: Prisma.local_stocksUpdateOneRequiredWithoutOperationsNestedInput
 }
 
 export type operationsUncheckedUpdateWithoutReagentsInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   local_stock_id?: Prisma.IntFieldUpdateOperationsInput | number
   operation_type?: Prisma.StringFieldUpdateOperationsInput | string
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
@@ -812,7 +808,7 @@ export type operationsUncheckedUpdateWithoutReagentsInput = {
 
 export type operationsUncheckedUpdateManyWithoutReagentsInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
-  technician_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   local_stock_id?: Prisma.IntFieldUpdateOperationsInput | number
   operation_type?: Prisma.StringFieldUpdateOperationsInput | string
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
@@ -820,7 +816,7 @@ export type operationsUncheckedUpdateManyWithoutReagentsInput = {
   operation_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type operationsCreateManyTechniciansInput = {
+export type operationsCreateManyUsersInput = {
   operation_id?: number
   reagent_id: number
   local_stock_id: number
@@ -830,7 +826,7 @@ export type operationsCreateManyTechniciansInput = {
   operation_description?: string | null
 }
 
-export type operationsUpdateWithoutTechniciansInput = {
+export type operationsUpdateWithoutUsersInput = {
   operation_type?: Prisma.StringFieldUpdateOperationsInput | string
   stock_difference?: Prisma.IntFieldUpdateOperationsInput | number
   operation_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -839,7 +835,7 @@ export type operationsUpdateWithoutTechniciansInput = {
   local_stocks?: Prisma.local_stocksUpdateOneRequiredWithoutOperationsNestedInput
 }
 
-export type operationsUncheckedUpdateWithoutTechniciansInput = {
+export type operationsUncheckedUpdateWithoutUsersInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
   reagent_id?: Prisma.IntFieldUpdateOperationsInput | number
   local_stock_id?: Prisma.IntFieldUpdateOperationsInput | number
@@ -849,7 +845,7 @@ export type operationsUncheckedUpdateWithoutTechniciansInput = {
   operation_description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type operationsUncheckedUpdateManyWithoutTechniciansInput = {
+export type operationsUncheckedUpdateManyWithoutUsersInput = {
   operation_id?: Prisma.IntFieldUpdateOperationsInput | number
   reagent_id?: Prisma.IntFieldUpdateOperationsInput | number
   local_stock_id?: Prisma.IntFieldUpdateOperationsInput | number
@@ -864,14 +860,14 @@ export type operationsUncheckedUpdateManyWithoutTechniciansInput = {
 export type operationsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   operation_id?: boolean
   reagent_id?: boolean
-  technician_id?: boolean
+  user_id?: boolean
   local_stock_id?: boolean
   operation_type?: boolean
   stock_difference?: boolean
   operation_date?: boolean
   operation_description?: boolean
   reagents?: boolean | Prisma.reagentsDefaultArgs<ExtArgs>
-  technicians?: boolean | Prisma.techniciansDefaultArgs<ExtArgs>
+  users?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   local_stocks?: boolean | Prisma.local_stocksDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["operations"]>
 
@@ -880,7 +876,7 @@ export type operationsSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type operationsSelectScalar = {
   operation_id?: boolean
   reagent_id?: boolean
-  technician_id?: boolean
+  user_id?: boolean
   local_stock_id?: boolean
   operation_type?: boolean
   stock_difference?: boolean
@@ -888,10 +884,10 @@ export type operationsSelectScalar = {
   operation_description?: boolean
 }
 
-export type operationsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"operation_id" | "reagent_id" | "technician_id" | "local_stock_id" | "operation_type" | "stock_difference" | "operation_date" | "operation_description", ExtArgs["result"]["operations"]>
+export type operationsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"operation_id" | "reagent_id" | "user_id" | "local_stock_id" | "operation_type" | "stock_difference" | "operation_date" | "operation_description", ExtArgs["result"]["operations"]>
 export type operationsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reagents?: boolean | Prisma.reagentsDefaultArgs<ExtArgs>
-  technicians?: boolean | Prisma.techniciansDefaultArgs<ExtArgs>
+  users?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   local_stocks?: boolean | Prisma.local_stocksDefaultArgs<ExtArgs>
 }
 
@@ -899,13 +895,13 @@ export type $operationsPayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "operations"
   objects: {
     reagents: Prisma.$reagentsPayload<ExtArgs>
-    technicians: Prisma.$techniciansPayload<ExtArgs>
+    users: Prisma.$usersPayload<ExtArgs>
     local_stocks: Prisma.$local_stocksPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     operation_id: number
     reagent_id: number
-    technician_id: number
+    user_id: number
     local_stock_id: number
     operation_type: string
     stock_difference: number
@@ -1252,7 +1248,7 @@ readonly fields: operationsFieldRefs;
 export interface Prisma__operationsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   reagents<T extends Prisma.reagentsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.reagentsDefaultArgs<ExtArgs>>): Prisma.Prisma__reagentsClient<runtime.Types.Result.GetResult<Prisma.$reagentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  technicians<T extends Prisma.techniciansDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.techniciansDefaultArgs<ExtArgs>>): Prisma.Prisma__techniciansClient<runtime.Types.Result.GetResult<Prisma.$techniciansPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  users<T extends Prisma.usersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.usersDefaultArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   local_stocks<T extends Prisma.local_stocksDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.local_stocksDefaultArgs<ExtArgs>>): Prisma.Prisma__local_stocksClient<runtime.Types.Result.GetResult<Prisma.$local_stocksPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1285,7 +1281,7 @@ export interface Prisma__operationsClient<T, Null = never, ExtArgs extends runti
 export interface operationsFieldRefs {
   readonly operation_id: Prisma.FieldRef<"operations", 'Int'>
   readonly reagent_id: Prisma.FieldRef<"operations", 'Int'>
-  readonly technician_id: Prisma.FieldRef<"operations", 'Int'>
+  readonly user_id: Prisma.FieldRef<"operations", 'Int'>
   readonly local_stock_id: Prisma.FieldRef<"operations", 'Int'>
   readonly operation_type: Prisma.FieldRef<"operations", 'String'>
   readonly stock_difference: Prisma.FieldRef<"operations", 'Int'>

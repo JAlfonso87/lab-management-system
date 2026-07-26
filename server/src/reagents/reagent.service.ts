@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
+import { PrismaService } from '../_prisma_nestjs/prisma.service.js';
 import { UnboxUnique } from '../.utils/Unbox.js';
 
 @Injectable()

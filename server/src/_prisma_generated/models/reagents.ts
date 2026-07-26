@@ -386,6 +386,10 @@ export type reagentsUpdateOneRequiredWithoutLocal_stocksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.reagentsUpdateToOneWithWhereWithoutLocal_stocksInput, Prisma.reagentsUpdateWithoutLocal_stocksInput>, Prisma.reagentsUncheckedUpdateWithoutLocal_stocksInput>
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type reagentsCreateNestedOneWithoutOperationsInput = {
   create?: Prisma.XOR<Prisma.reagentsCreateWithoutOperationsInput, Prisma.reagentsUncheckedCreateWithoutOperationsInput>
   connectOrCreate?: Prisma.reagentsCreateOrConnectWithoutOperationsInput
