@@ -9,7 +9,7 @@ datasource db {
 
 model labs {
   lab_id    Int       @id
-  lab_name  String    @db.VarChar(30)
+  lab_name  String    @unique(map: "lab_name") @db.VarChar(30)
   locations locations @relation(fields: [lab_id], references: [location_id], onDelete: Cascade, onUpdate: NoAction, map: "labs_ibfk_1")
   users     users[]
 }
@@ -52,7 +52,7 @@ model reagents {
 
 model permissions {
   permission_id     Int                 @id @default(autoincrement())
-  permission_name   String              @db.VarChar(30)
+  permission_name   String              @unique(map: "permission_name") @db.VarChar(100)
   roles_permissions roles_permissions[]
 }
 

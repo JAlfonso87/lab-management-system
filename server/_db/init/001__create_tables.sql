@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS local_stocks(
 
 CREATE TABLE IF NOT EXISTS labs(
 	lab_id INTEGER PRIMARY KEY NOT NULL,
-    lab_name VARCHAR(30) NOT NULL,
+    lab_name VARCHAR(30) NOT NULL UNIQUE,
     FOREIGN KEY(lab_id) REFERENCES locations(location_id) ON DELETE CASCADE
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS roles(
 
 CREATE TABLE IF NOT EXISTS permissions(
     permission_id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    permission_name VARCHAR(30) NOT NULL
+    permission_name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS roles_permissions(

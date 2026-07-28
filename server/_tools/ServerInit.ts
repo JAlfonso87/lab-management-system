@@ -12,8 +12,8 @@ const nestManager = new NestManager();
 const seederManager = new Seeder();
 
 async function main(){
-    //await dockerManager.start()
-    //await dockerManager.waitUntilHealthy()
+    await dockerManager.start()
+    await dockerManager.waitUntilHealthy()
     await seederManager.start()
     await nestManager.start()
 }

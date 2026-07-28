@@ -206,13 +206,13 @@ export type labsOrderByWithRelationInput = {
 
 export type labsWhereUniqueInput = Prisma.AtLeast<{
   lab_id?: number
+  lab_name?: string
   AND?: Prisma.labsWhereInput | Prisma.labsWhereInput[]
   OR?: Prisma.labsWhereInput[]
   NOT?: Prisma.labsWhereInput | Prisma.labsWhereInput[]
-  lab_name?: Prisma.StringFilter<"labs"> | string
   locations?: Prisma.XOR<Prisma.LocationsScalarRelationFilter, Prisma.locationsWhereInput>
   users?: Prisma.UsersListRelationFilter
-}, "lab_id">
+}, "lab_id" | "lab_name">
 
 export type labsOrderByWithAggregationInput = {
   lab_id?: Prisma.SortOrder
