@@ -40,6 +40,7 @@ export type ReagentsMinAggregateOutputType = {
   reagent_brand: string | null
   reagent_netweight: string | null
   reagent_risk: string | null
+  reagent_code: string | null
 }
 
 export type ReagentsMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type ReagentsMaxAggregateOutputType = {
   reagent_brand: string | null
   reagent_netweight: string | null
   reagent_risk: string | null
+  reagent_code: string | null
 }
 
 export type ReagentsCountAggregateOutputType = {
@@ -56,6 +58,7 @@ export type ReagentsCountAggregateOutputType = {
   reagent_brand: number
   reagent_netweight: number
   reagent_risk: number
+  reagent_code: number
   _all: number
 }
 
@@ -74,6 +77,7 @@ export type ReagentsMinAggregateInputType = {
   reagent_brand?: true
   reagent_netweight?: true
   reagent_risk?: true
+  reagent_code?: true
 }
 
 export type ReagentsMaxAggregateInputType = {
@@ -82,6 +86,7 @@ export type ReagentsMaxAggregateInputType = {
   reagent_brand?: true
   reagent_netweight?: true
   reagent_risk?: true
+  reagent_code?: true
 }
 
 export type ReagentsCountAggregateInputType = {
@@ -90,6 +95,7 @@ export type ReagentsCountAggregateInputType = {
   reagent_brand?: true
   reagent_netweight?: true
   reagent_risk?: true
+  reagent_code?: true
   _all?: true
 }
 
@@ -185,6 +191,7 @@ export type ReagentsGroupByOutputType = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk: string | null
+  reagent_code: string | null
   _count: ReagentsCountAggregateOutputType | null
   _avg: ReagentsAvgAggregateOutputType | null
   _sum: ReagentsSumAggregateOutputType | null
@@ -216,6 +223,7 @@ export type reagentsWhereInput = {
   reagent_brand?: Prisma.StringFilter<"reagents"> | string
   reagent_netweight?: Prisma.StringFilter<"reagents"> | string
   reagent_risk?: Prisma.StringNullableFilter<"reagents"> | string | null
+  reagent_code?: Prisma.StringNullableFilter<"reagents"> | string | null
   local_stocks?: Prisma.Local_stocksListRelationFilter
   operations?: Prisma.OperationsListRelationFilter
 }
@@ -226,6 +234,7 @@ export type reagentsOrderByWithRelationInput = {
   reagent_brand?: Prisma.SortOrder
   reagent_netweight?: Prisma.SortOrder
   reagent_risk?: Prisma.SortOrderInput | Prisma.SortOrder
+  reagent_code?: Prisma.SortOrderInput | Prisma.SortOrder
   local_stocks?: Prisma.local_stocksOrderByRelationAggregateInput
   operations?: Prisma.operationsOrderByRelationAggregateInput
   _relevance?: Prisma.reagentsOrderByRelevanceInput
@@ -233,6 +242,7 @@ export type reagentsOrderByWithRelationInput = {
 
 export type reagentsWhereUniqueInput = Prisma.AtLeast<{
   reagent_id?: number
+  reagent_code?: string
   AND?: Prisma.reagentsWhereInput | Prisma.reagentsWhereInput[]
   OR?: Prisma.reagentsWhereInput[]
   NOT?: Prisma.reagentsWhereInput | Prisma.reagentsWhereInput[]
@@ -242,7 +252,7 @@ export type reagentsWhereUniqueInput = Prisma.AtLeast<{
   reagent_risk?: Prisma.StringNullableFilter<"reagents"> | string | null
   local_stocks?: Prisma.Local_stocksListRelationFilter
   operations?: Prisma.OperationsListRelationFilter
-}, "reagent_id">
+}, "reagent_id" | "reagent_code">
 
 export type reagentsOrderByWithAggregationInput = {
   reagent_id?: Prisma.SortOrder
@@ -250,6 +260,7 @@ export type reagentsOrderByWithAggregationInput = {
   reagent_brand?: Prisma.SortOrder
   reagent_netweight?: Prisma.SortOrder
   reagent_risk?: Prisma.SortOrderInput | Prisma.SortOrder
+  reagent_code?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.reagentsCountOrderByAggregateInput
   _avg?: Prisma.reagentsAvgOrderByAggregateInput
   _max?: Prisma.reagentsMaxOrderByAggregateInput
@@ -266,6 +277,7 @@ export type reagentsScalarWhereWithAggregatesInput = {
   reagent_brand?: Prisma.StringWithAggregatesFilter<"reagents"> | string
   reagent_netweight?: Prisma.StringWithAggregatesFilter<"reagents"> | string
   reagent_risk?: Prisma.StringNullableWithAggregatesFilter<"reagents"> | string | null
+  reagent_code?: Prisma.StringNullableWithAggregatesFilter<"reagents"> | string | null
 }
 
 export type reagentsCreateInput = {
@@ -273,6 +285,7 @@ export type reagentsCreateInput = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk?: string | null
+  reagent_code?: string | null
   local_stocks?: Prisma.local_stocksCreateNestedManyWithoutReagentsInput
   operations?: Prisma.operationsCreateNestedManyWithoutReagentsInput
 }
@@ -283,6 +296,7 @@ export type reagentsUncheckedCreateInput = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk?: string | null
+  reagent_code?: string | null
   local_stocks?: Prisma.local_stocksUncheckedCreateNestedManyWithoutReagentsInput
   operations?: Prisma.operationsUncheckedCreateNestedManyWithoutReagentsInput
 }
@@ -292,6 +306,7 @@ export type reagentsUpdateInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   local_stocks?: Prisma.local_stocksUpdateManyWithoutReagentsNestedInput
   operations?: Prisma.operationsUpdateManyWithoutReagentsNestedInput
 }
@@ -302,6 +317,7 @@ export type reagentsUncheckedUpdateInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   local_stocks?: Prisma.local_stocksUncheckedUpdateManyWithoutReagentsNestedInput
   operations?: Prisma.operationsUncheckedUpdateManyWithoutReagentsNestedInput
 }
@@ -312,6 +328,7 @@ export type reagentsCreateManyInput = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk?: string | null
+  reagent_code?: string | null
 }
 
 export type reagentsUpdateManyMutationInput = {
@@ -319,6 +336,7 @@ export type reagentsUpdateManyMutationInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type reagentsUncheckedUpdateManyInput = {
@@ -327,6 +345,7 @@ export type reagentsUncheckedUpdateManyInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ReagentsScalarRelationFilter = {
@@ -346,6 +365,7 @@ export type reagentsCountOrderByAggregateInput = {
   reagent_brand?: Prisma.SortOrder
   reagent_netweight?: Prisma.SortOrder
   reagent_risk?: Prisma.SortOrder
+  reagent_code?: Prisma.SortOrder
 }
 
 export type reagentsAvgOrderByAggregateInput = {
@@ -358,6 +378,7 @@ export type reagentsMaxOrderByAggregateInput = {
   reagent_brand?: Prisma.SortOrder
   reagent_netweight?: Prisma.SortOrder
   reagent_risk?: Prisma.SortOrder
+  reagent_code?: Prisma.SortOrder
 }
 
 export type reagentsMinOrderByAggregateInput = {
@@ -366,6 +387,7 @@ export type reagentsMinOrderByAggregateInput = {
   reagent_brand?: Prisma.SortOrder
   reagent_netweight?: Prisma.SortOrder
   reagent_risk?: Prisma.SortOrder
+  reagent_code?: Prisma.SortOrder
 }
 
 export type reagentsSumOrderByAggregateInput = {
@@ -409,6 +431,7 @@ export type reagentsCreateWithoutLocal_stocksInput = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk?: string | null
+  reagent_code?: string | null
   operations?: Prisma.operationsCreateNestedManyWithoutReagentsInput
 }
 
@@ -418,6 +441,7 @@ export type reagentsUncheckedCreateWithoutLocal_stocksInput = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk?: string | null
+  reagent_code?: string | null
   operations?: Prisma.operationsUncheckedCreateNestedManyWithoutReagentsInput
 }
 
@@ -442,6 +466,7 @@ export type reagentsUpdateWithoutLocal_stocksInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   operations?: Prisma.operationsUpdateManyWithoutReagentsNestedInput
 }
 
@@ -451,6 +476,7 @@ export type reagentsUncheckedUpdateWithoutLocal_stocksInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   operations?: Prisma.operationsUncheckedUpdateManyWithoutReagentsNestedInput
 }
 
@@ -459,6 +485,7 @@ export type reagentsCreateWithoutOperationsInput = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk?: string | null
+  reagent_code?: string | null
   local_stocks?: Prisma.local_stocksCreateNestedManyWithoutReagentsInput
 }
 
@@ -468,6 +495,7 @@ export type reagentsUncheckedCreateWithoutOperationsInput = {
   reagent_brand: string
   reagent_netweight: string
   reagent_risk?: string | null
+  reagent_code?: string | null
   local_stocks?: Prisma.local_stocksUncheckedCreateNestedManyWithoutReagentsInput
 }
 
@@ -492,6 +520,7 @@ export type reagentsUpdateWithoutOperationsInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   local_stocks?: Prisma.local_stocksUpdateManyWithoutReagentsNestedInput
 }
 
@@ -501,6 +530,7 @@ export type reagentsUncheckedUpdateWithoutOperationsInput = {
   reagent_brand?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_netweight?: Prisma.StringFieldUpdateOperationsInput | string
   reagent_risk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reagent_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   local_stocks?: Prisma.local_stocksUncheckedUpdateManyWithoutReagentsNestedInput
 }
 
@@ -550,6 +580,7 @@ export type reagentsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   reagent_brand?: boolean
   reagent_netweight?: boolean
   reagent_risk?: boolean
+  reagent_code?: boolean
   local_stocks?: boolean | Prisma.reagents$local_stocksArgs<ExtArgs>
   operations?: boolean | Prisma.reagents$operationsArgs<ExtArgs>
   _count?: boolean | Prisma.ReagentsCountOutputTypeDefaultArgs<ExtArgs>
@@ -563,9 +594,10 @@ export type reagentsSelectScalar = {
   reagent_brand?: boolean
   reagent_netweight?: boolean
   reagent_risk?: boolean
+  reagent_code?: boolean
 }
 
-export type reagentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"reagent_id" | "reagent_name" | "reagent_brand" | "reagent_netweight" | "reagent_risk", ExtArgs["result"]["reagents"]>
+export type reagentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"reagent_id" | "reagent_name" | "reagent_brand" | "reagent_netweight" | "reagent_risk" | "reagent_code", ExtArgs["result"]["reagents"]>
 export type reagentsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   local_stocks?: boolean | Prisma.reagents$local_stocksArgs<ExtArgs>
   operations?: boolean | Prisma.reagents$operationsArgs<ExtArgs>
@@ -584,6 +616,7 @@ export type $reagentsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     reagent_brand: string
     reagent_netweight: string
     reagent_risk: string | null
+    reagent_code: string | null
   }, ExtArgs["result"]["reagents"]>
   composites: {}
 }
@@ -960,6 +993,7 @@ export interface reagentsFieldRefs {
   readonly reagent_brand: Prisma.FieldRef<"reagents", 'String'>
   readonly reagent_netweight: Prisma.FieldRef<"reagents", 'String'>
   readonly reagent_risk: Prisma.FieldRef<"reagents", 'String'>
+  readonly reagent_code: Prisma.FieldRef<"reagents", 'String'>
 }
     
 

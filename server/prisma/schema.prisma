@@ -46,6 +46,7 @@ model reagents {
   reagent_brand     String         @db.VarChar(20)
   reagent_netweight String         @db.VarChar(10)
   reagent_risk      String?        @db.VarChar(15)
+  reagent_code      String?        @unique(map: "reagent_code") @db.VarChar(50)
   local_stocks      local_stocks[]
   operations        operations[]
 }

@@ -4,7 +4,6 @@ INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_ri
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('SODIUM BICARBONATE', 'SIGMA ALDRICH', '500g', 'VERDE');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1- PROPANOL', 'J.T.BAKER', '4lt', 'ROJO');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1,3-PHENYLENEDIAMINE', 'ALDRICH', '100g', 'ROJO');
-INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1,3-PHENYLENEDIAMINE', 'ALDRICH', '100g', 'ROJO');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1,5-DIPHENYLCARBAZIDE', 'SIGMA ALDRICH', '100g', 'AZUL');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1-CHLORO-2-NITROBENZENE', 'SIGMA ALDRICH', '1kg', 'AZUL');
 INSERT INTO reagents (reagent_name, reagent_brand, reagent_netweight, reagent_risk) VALUES ('1-CHLORO-2-NITROBENZENE', 'ALDRICH', '157.55g', 'AZUL');

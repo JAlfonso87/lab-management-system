@@ -12,6 +12,16 @@ export class ReagentController{
         return this.reagentService.fetchAllReagents();
     }
 
+    @Get('/reagent/:id')
+    getReagent(@Param('id') id:string):Promise<any> {
+        return this.reagentService.getReagent(parseInt(id));
+    }
+
+    @Get('/code/:id')
+    generateCode(@Param('id') id:string):Promise<any> {
+        return this.reagentService.generateCode(parseInt(id));
+    }
+
     @Get('risk/:id')
     fetchByRisk(@Param('id') id : string) : Promise<any> {
         return this.reagentService.fetchByRisk(id)

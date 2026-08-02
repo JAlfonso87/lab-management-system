@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS reagents(
     reagent_brand VARCHAR(20) NOT NULL,
     reagent_netweight VARCHAR(10) NOT NULL,
     reagent_risk VARCHAR(15),
+    reagent_code VARCHAR(50) NULL UNIQUE,
     CHECK(
 		reagent_risk = 'ROJO' OR
         reagent_risk = 'VERDE' OR

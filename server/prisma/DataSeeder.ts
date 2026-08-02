@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import bcrypt from "bcrypt";
 import { PrismaService } from "../src/_prisma_nestjs/prisma.service.js";
+import { ReagentService } from '../src/reagents/reagent.service.js';
 
 export class Seeder {
     async start(){
@@ -300,5 +301,30 @@ export class Seeder {
             ],
             skipDuplicates: true
         })
+
+        const reagents = await prisma.reagents.findMany({
+            select: {
+                reagent_id: true,
+            },
+        });
+
+        if(reagents.length == 0){
+            const reagentService = new ReagentService(prisma);
+            let counter = 1;
+            for (const reagent of reagents) {
+
+                const reagent_code:string = await reagentService.generateCode(reagent.reagent_id);
+                console.log(counter + ".- " + reagent_code)
+                counter += 1
+                await prisma.reagents.update({
+                    where: {
+                        reagent_id: reagent.reagent_id,
+                    },
+                    data: {
+                        reagent_code: reagent_code,
+                    },
+                });
+            }
+        }   
     }
 }
