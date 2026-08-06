@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS reagents(
     reagent_brand VARCHAR(20) NOT NULL,
     reagent_netweight VARCHAR(10) NOT NULL,
     reagent_risk VARCHAR(15),
+    reagent_code VARCHAR(50) NULL UNIQUE,
     CHECK(
 		reagent_risk = 'ROJO' OR
         reagent_risk = 'VERDE' OR
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS local_stocks(
 
 CREATE TABLE IF NOT EXISTS labs(
 	lab_id INTEGER PRIMARY KEY NOT NULL,
-    lab_name VARCHAR(30) NOT NULL,
+    lab_name VARCHAR(30) NOT NULL UNIQUE,
     FOREIGN KEY(lab_id) REFERENCES locations(location_id) ON DELETE CASCADE
 );
 
@@ -46,7 +47,7 @@ CREATE TABLE IF NOT EXISTS roles(
 
 CREATE TABLE IF NOT EXISTS permissions(
     permission_id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    permission_name VARCHAR(30) NOT NULL
+    permission_name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS roles_permissions(

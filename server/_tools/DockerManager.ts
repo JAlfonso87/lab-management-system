@@ -15,7 +15,7 @@ export class DockerManager {
             })
 
             docker.on('error', (error) =>{
-                console.error(chalk.blue("< DOCKER >: SE HA PRODUCIDO UN ERROR EN LA INICIALIZACIÓN DEL CONTENEDOR:" + error.message))
+            console.error(chalk.blue("< DOCKER >: SE HA PRODUCIDO UN ERROR EN LA INICIALIZACIÓN DEL CONTENEDOR:" + error.message))
                 spawn('docker', ['compose', 'down', '-v'], {
                     stdio: 'inherit'
                 })
@@ -27,6 +27,7 @@ export class DockerManager {
                 else
                     return reject()
             })
+            
         }) 
     }
 

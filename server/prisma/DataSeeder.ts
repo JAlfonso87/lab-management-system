@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import bcrypt from "bcrypt";
 import { PrismaService } from "../src/_prisma_nestjs/prisma.service.js";
+import { ReagentService } from '../src/reagents/reagent.service.js';
 
 export class Seeder {
     async start(){
@@ -20,16 +21,35 @@ export class Seeder {
         const permissions = await prisma.permissions.createMany({
             data: [
                 {
-                    permission_name: "users.modify_self"
+                    permission_name: "permissions.users.modify_self"
                 },
                 {
-                    permission_name: "users.modify_others"
+                    permission_name: "permissions.users.modify_others"
                 },
                 {
-                    permission_name: "users.approve_new_signups"
+                    permission_name: "permissions.users.approve_new_signups"
+                }
+            ],
+            skipDuplicates: true
+        })
+
+        const permissions_per_role = await prisma.roles_permissions.createMany({
+            data: [
+                {
+                    role_id: 1,         //ROLE: ADMIN
+                    permission_id: 1    //PERMIT: permissions.users.modify_self
                 },
                 {
-                    permission_name: "users.visualize_confidential"
+                    role_id: 1,         //ROLE: ADMIN
+                    permission_id: 2    //PERMIT: permissions.users.modify_others
+                },
+                {
+                    role_id: 1,         //ROLE: ADMIN
+                    permission_id: 3    //PERMIT: permissions.users.approve_new_signups
+                },
+                {
+                    role_id: 2,         //ROLE: USER
+                    permission_id: 1    //PERMIT: permissions.users.approve_new_signups
                 }
             ],
             skipDuplicates: true
@@ -281,5 +301,30 @@ export class Seeder {
             ],
             skipDuplicates: true
         })
+
+        const reagents = await prisma.reagents.findMany({
+            select: {
+                reagent_id: true,
+            },
+        });
+
+        if(reagents.length == 0){
+            const reagentService = new ReagentService(prisma);
+            let counter = 1;
+            for (const reagent of reagents) {
+
+                const reagent_code:string = await reagentService.generateCode(reagent.reagent_id);
+                console.log(counter + ".- " + reagent_code)
+                counter += 1
+                await prisma.reagents.update({
+                    where: {
+                        reagent_id: reagent.reagent_id,
+                    },
+                    data: {
+                        reagent_code: reagent_code,
+                    },
+                });
+            }
+        }   
     }
 }

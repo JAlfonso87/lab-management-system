@@ -119,7 +119,8 @@ export const ReagentsScalarFieldEnum = {
   reagent_name: 'reagent_name',
   reagent_brand: 'reagent_brand',
   reagent_netweight: 'reagent_netweight',
-  reagent_risk: 'reagent_risk'
+  reagent_risk: 'reagent_risk',
+  reagent_code: 'reagent_code'
 } as const
 
 export type ReagentsScalarFieldEnum = (typeof ReagentsScalarFieldEnum)[keyof typeof ReagentsScalarFieldEnum]
@@ -297,7 +298,8 @@ export const reagentsOrderByRelevanceFieldEnum = {
   reagent_name: 'reagent_name',
   reagent_brand: 'reagent_brand',
   reagent_netweight: 'reagent_netweight',
-  reagent_risk: 'reagent_risk'
+  reagent_risk: 'reagent_risk',
+  reagent_code: 'reagent_code'
 } as const
 
 export type reagentsOrderByRelevanceFieldEnum = (typeof reagentsOrderByRelevanceFieldEnum)[keyof typeof reagentsOrderByRelevanceFieldEnum]

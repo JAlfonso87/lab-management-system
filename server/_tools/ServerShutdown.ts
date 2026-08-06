@@ -10,7 +10,7 @@ export class ServerShutdown{
             else if (mode == 1)
                 console.log(chalk.yellow("< SISTEMA >: SE PRODUJO UN ERROR FATAL, COMENZANDO APAGADO ALTERNATIVO DEL SISTEMA."))
 
-            //await dockerManager.stop();
+            await dockerManager.stop();
 
             console.log(chalk.green("< SISTEMA >: TODOS LOS PROCESOS HAN SIDO FINALIZADOS."))
             process.exit(mode == 0 ? 0 : 1)

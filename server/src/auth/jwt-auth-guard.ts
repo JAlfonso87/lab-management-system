@@ -26,12 +26,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
             context.getClass()
         ])
 
-        //console.log(roles)
-
         await super.canActivate(context);
 
         const userPayload = context.switchToHttp().getRequest().user
-        const user = await userService.findOne(userPayload.username)
+        const user = await userService.findUser(userPayload.username)
 
         if(user)
         {
@@ -44,8 +42,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
             if (!user_role)
                 throw new UnauthorizedException;
             
-            console.log(authorizedRoles)
-
             return authorizedRoles.includes(user_role.role_name) ? true : false;
 
         }

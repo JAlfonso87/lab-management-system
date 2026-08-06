@@ -20,12 +20,12 @@ export class AuthService {
         
     async validateUser(username: string, password: string){
         if(!username || !password)
-            throw new HttpException('Todos los campos son requeridos.', HttpStatus.BAD_REQUEST)
+            throw new HttpException('ERR_EMPTY_FIELDS_DETECTED', HttpStatus.BAD_REQUEST)
 
-        const user = await this.userService.findOne(username);
+        const user = await this.userService.findUser(username);
 
         if(!user)
-            throw new HttpException('Usuario o contraseña inválidos.', HttpStatus.BAD_REQUEST)
+            throw new HttpException('ERR_INVALID_CREDENTIALS', HttpStatus.BAD_REQUEST)
 
         const isPwdValid = await bcrypt.compare(password, user.user_password);
         if(isPwdValid) {
