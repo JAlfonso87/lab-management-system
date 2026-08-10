@@ -268,8 +268,9 @@ export type usersWhereInput = {
   user_username?: Prisma.StringFilter<"users"> | string
   user_password?: Prisma.StringFilter<"users"> | string
   user_status?: Prisma.IntFilter<"users"> | number
-  operations?: Prisma.OperationsListRelationFilter
   requests?: Prisma.RequestsListRelationFilter
+  restocks?: Prisma.RestocksListRelationFilter
+  transfer?: Prisma.TransferListRelationFilter
   labs?: Prisma.XOR<Prisma.LabsNullableScalarRelationFilter, Prisma.labsWhereInput> | null
   roles?: Prisma.XOR<Prisma.RolesScalarRelationFilter, Prisma.rolesWhereInput>
 }
@@ -285,8 +286,9 @@ export type usersOrderByWithRelationInput = {
   user_username?: Prisma.SortOrder
   user_password?: Prisma.SortOrder
   user_status?: Prisma.SortOrder
-  operations?: Prisma.operationsOrderByRelationAggregateInput
   requests?: Prisma.requestsOrderByRelationAggregateInput
+  restocks?: Prisma.restocksOrderByRelationAggregateInput
+  transfer?: Prisma.transferOrderByRelationAggregateInput
   labs?: Prisma.labsOrderByWithRelationInput
   roles?: Prisma.rolesOrderByWithRelationInput
   _relevance?: Prisma.usersOrderByRelevanceInput
@@ -306,8 +308,9 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   user_phone_number?: Prisma.StringNullableFilter<"users"> | string | null
   user_password?: Prisma.StringFilter<"users"> | string
   user_status?: Prisma.IntFilter<"users"> | number
-  operations?: Prisma.OperationsListRelationFilter
   requests?: Prisma.RequestsListRelationFilter
+  restocks?: Prisma.RestocksListRelationFilter
+  transfer?: Prisma.TransferListRelationFilter
   labs?: Prisma.XOR<Prisma.LabsNullableScalarRelationFilter, Prisma.labsWhereInput> | null
   roles?: Prisma.XOR<Prisma.RolesScalarRelationFilter, Prisma.rolesWhereInput>
 }, "user_id" | "user_username">
@@ -354,8 +357,9 @@ export type usersCreateInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsCreateNestedManyWithoutUsersInput
   requests?: Prisma.requestsCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferCreateNestedManyWithoutUsersInput
   labs?: Prisma.labsCreateNestedOneWithoutUsersInput
   roles: Prisma.rolesCreateNestedOneWithoutUsersInput
 }
@@ -371,8 +375,9 @@ export type usersUncheckedCreateInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsUncheckedCreateNestedManyWithoutUsersInput
   requests?: Prisma.requestsUncheckedCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksUncheckedCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type usersUpdateInput = {
@@ -383,8 +388,9 @@ export type usersUpdateInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUpdateManyWithoutUsersNestedInput
   requests?: Prisma.requestsUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUpdateManyWithoutUsersNestedInput
   labs?: Prisma.labsUpdateOneWithoutUsersNestedInput
   roles?: Prisma.rolesUpdateOneRequiredWithoutUsersNestedInput
 }
@@ -400,8 +406,9 @@ export type usersUncheckedUpdateInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUncheckedUpdateManyWithoutUsersNestedInput
   requests?: Prisma.requestsUncheckedUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUncheckedUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type usersCreateManyInput = {
@@ -598,20 +605,6 @@ export type usersUncheckedUpdateManyWithoutRolesNestedInput = {
   deleteMany?: Prisma.usersScalarWhereInput | Prisma.usersScalarWhereInput[]
 }
 
-export type usersCreateNestedOneWithoutOperationsInput = {
-  create?: Prisma.XOR<Prisma.usersCreateWithoutOperationsInput, Prisma.usersUncheckedCreateWithoutOperationsInput>
-  connectOrCreate?: Prisma.usersCreateOrConnectWithoutOperationsInput
-  connect?: Prisma.usersWhereUniqueInput
-}
-
-export type usersUpdateOneRequiredWithoutOperationsNestedInput = {
-  create?: Prisma.XOR<Prisma.usersCreateWithoutOperationsInput, Prisma.usersUncheckedCreateWithoutOperationsInput>
-  connectOrCreate?: Prisma.usersCreateOrConnectWithoutOperationsInput
-  upsert?: Prisma.usersUpsertWithoutOperationsInput
-  connect?: Prisma.usersWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutOperationsInput, Prisma.usersUpdateWithoutOperationsInput>, Prisma.usersUncheckedUpdateWithoutOperationsInput>
-}
-
 export type usersCreateNestedOneWithoutRequestsInput = {
   create?: Prisma.XOR<Prisma.usersCreateWithoutRequestsInput, Prisma.usersUncheckedCreateWithoutRequestsInput>
   connectOrCreate?: Prisma.usersCreateOrConnectWithoutRequestsInput
@@ -626,6 +619,34 @@ export type usersUpdateOneRequiredWithoutRequestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutRequestsInput, Prisma.usersUpdateWithoutRequestsInput>, Prisma.usersUncheckedUpdateWithoutRequestsInput>
 }
 
+export type usersCreateNestedOneWithoutRestocksInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutRestocksInput, Prisma.usersUncheckedCreateWithoutRestocksInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutRestocksInput
+  connect?: Prisma.usersWhereUniqueInput
+}
+
+export type usersUpdateOneRequiredWithoutRestocksNestedInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutRestocksInput, Prisma.usersUncheckedCreateWithoutRestocksInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutRestocksInput
+  upsert?: Prisma.usersUpsertWithoutRestocksInput
+  connect?: Prisma.usersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutRestocksInput, Prisma.usersUpdateWithoutRestocksInput>, Prisma.usersUncheckedUpdateWithoutRestocksInput>
+}
+
+export type usersCreateNestedOneWithoutTransferInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutTransferInput, Prisma.usersUncheckedCreateWithoutTransferInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutTransferInput
+  connect?: Prisma.usersWhereUniqueInput
+}
+
+export type usersUpdateOneRequiredWithoutTransferNestedInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutTransferInput, Prisma.usersUncheckedCreateWithoutTransferInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutTransferInput
+  upsert?: Prisma.usersUpsertWithoutTransferInput
+  connect?: Prisma.usersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutTransferInput, Prisma.usersUpdateWithoutTransferInput>, Prisma.usersUncheckedUpdateWithoutTransferInput>
+}
+
 export type usersCreateWithoutLabsInput = {
   user_first_name: string
   user_middle_name?: string | null
@@ -634,8 +655,9 @@ export type usersCreateWithoutLabsInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsCreateNestedManyWithoutUsersInput
   requests?: Prisma.requestsCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferCreateNestedManyWithoutUsersInput
   roles: Prisma.rolesCreateNestedOneWithoutUsersInput
 }
 
@@ -649,8 +671,9 @@ export type usersUncheckedCreateWithoutLabsInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsUncheckedCreateNestedManyWithoutUsersInput
   requests?: Prisma.requestsUncheckedCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksUncheckedCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type usersCreateOrConnectWithoutLabsInput = {
@@ -703,8 +726,9 @@ export type usersCreateWithoutRolesInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsCreateNestedManyWithoutUsersInput
   requests?: Prisma.requestsCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferCreateNestedManyWithoutUsersInput
   labs?: Prisma.labsCreateNestedOneWithoutUsersInput
 }
 
@@ -718,8 +742,9 @@ export type usersUncheckedCreateWithoutRolesInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsUncheckedCreateNestedManyWithoutUsersInput
   requests?: Prisma.requestsUncheckedCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksUncheckedCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type usersCreateOrConnectWithoutRolesInput = {
@@ -748,76 +773,6 @@ export type usersUpdateManyWithWhereWithoutRolesInput = {
   data: Prisma.XOR<Prisma.usersUpdateManyMutationInput, Prisma.usersUncheckedUpdateManyWithoutRolesInput>
 }
 
-export type usersCreateWithoutOperationsInput = {
-  user_first_name: string
-  user_middle_name?: string | null
-  user_last_name: string
-  user_phone_number?: string | null
-  user_username: string
-  user_password: string
-  user_status?: number
-  requests?: Prisma.requestsCreateNestedManyWithoutUsersInput
-  labs?: Prisma.labsCreateNestedOneWithoutUsersInput
-  roles: Prisma.rolesCreateNestedOneWithoutUsersInput
-}
-
-export type usersUncheckedCreateWithoutOperationsInput = {
-  user_id?: number
-  lab_id?: number | null
-  role_id: number
-  user_first_name: string
-  user_middle_name?: string | null
-  user_last_name: string
-  user_phone_number?: string | null
-  user_username: string
-  user_password: string
-  user_status?: number
-  requests?: Prisma.requestsUncheckedCreateNestedManyWithoutUsersInput
-}
-
-export type usersCreateOrConnectWithoutOperationsInput = {
-  where: Prisma.usersWhereUniqueInput
-  create: Prisma.XOR<Prisma.usersCreateWithoutOperationsInput, Prisma.usersUncheckedCreateWithoutOperationsInput>
-}
-
-export type usersUpsertWithoutOperationsInput = {
-  update: Prisma.XOR<Prisma.usersUpdateWithoutOperationsInput, Prisma.usersUncheckedUpdateWithoutOperationsInput>
-  create: Prisma.XOR<Prisma.usersCreateWithoutOperationsInput, Prisma.usersUncheckedCreateWithoutOperationsInput>
-  where?: Prisma.usersWhereInput
-}
-
-export type usersUpdateToOneWithWhereWithoutOperationsInput = {
-  where?: Prisma.usersWhereInput
-  data: Prisma.XOR<Prisma.usersUpdateWithoutOperationsInput, Prisma.usersUncheckedUpdateWithoutOperationsInput>
-}
-
-export type usersUpdateWithoutOperationsInput = {
-  user_first_name?: Prisma.StringFieldUpdateOperationsInput | string
-  user_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user_last_name?: Prisma.StringFieldUpdateOperationsInput | string
-  user_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user_username?: Prisma.StringFieldUpdateOperationsInput | string
-  user_password?: Prisma.StringFieldUpdateOperationsInput | string
-  user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  requests?: Prisma.requestsUpdateManyWithoutUsersNestedInput
-  labs?: Prisma.labsUpdateOneWithoutUsersNestedInput
-  roles?: Prisma.rolesUpdateOneRequiredWithoutUsersNestedInput
-}
-
-export type usersUncheckedUpdateWithoutOperationsInput = {
-  user_id?: Prisma.IntFieldUpdateOperationsInput | number
-  lab_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  role_id?: Prisma.IntFieldUpdateOperationsInput | number
-  user_first_name?: Prisma.StringFieldUpdateOperationsInput | string
-  user_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user_last_name?: Prisma.StringFieldUpdateOperationsInput | string
-  user_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user_username?: Prisma.StringFieldUpdateOperationsInput | string
-  user_password?: Prisma.StringFieldUpdateOperationsInput | string
-  user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  requests?: Prisma.requestsUncheckedUpdateManyWithoutUsersNestedInput
-}
-
 export type usersCreateWithoutRequestsInput = {
   user_first_name: string
   user_middle_name?: string | null
@@ -826,7 +781,8 @@ export type usersCreateWithoutRequestsInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferCreateNestedManyWithoutUsersInput
   labs?: Prisma.labsCreateNestedOneWithoutUsersInput
   roles: Prisma.rolesCreateNestedOneWithoutUsersInput
 }
@@ -842,7 +798,8 @@ export type usersUncheckedCreateWithoutRequestsInput = {
   user_username: string
   user_password: string
   user_status?: number
-  operations?: Prisma.operationsUncheckedCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksUncheckedCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type usersCreateOrConnectWithoutRequestsInput = {
@@ -869,7 +826,8 @@ export type usersUpdateWithoutRequestsInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUpdateManyWithoutUsersNestedInput
   labs?: Prisma.labsUpdateOneWithoutUsersNestedInput
   roles?: Prisma.rolesUpdateOneRequiredWithoutUsersNestedInput
 }
@@ -885,7 +843,156 @@ export type usersUncheckedUpdateWithoutRequestsInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUncheckedUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUncheckedUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUncheckedUpdateManyWithoutUsersNestedInput
+}
+
+export type usersCreateWithoutRestocksInput = {
+  user_first_name: string
+  user_middle_name?: string | null
+  user_last_name: string
+  user_phone_number?: string | null
+  user_username: string
+  user_password: string
+  user_status?: number
+  requests?: Prisma.requestsCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferCreateNestedManyWithoutUsersInput
+  labs?: Prisma.labsCreateNestedOneWithoutUsersInput
+  roles: Prisma.rolesCreateNestedOneWithoutUsersInput
+}
+
+export type usersUncheckedCreateWithoutRestocksInput = {
+  user_id?: number
+  lab_id?: number | null
+  role_id: number
+  user_first_name: string
+  user_middle_name?: string | null
+  user_last_name: string
+  user_phone_number?: string | null
+  user_username: string
+  user_password: string
+  user_status?: number
+  requests?: Prisma.requestsUncheckedCreateNestedManyWithoutUsersInput
+  transfer?: Prisma.transferUncheckedCreateNestedManyWithoutUsersInput
+}
+
+export type usersCreateOrConnectWithoutRestocksInput = {
+  where: Prisma.usersWhereUniqueInput
+  create: Prisma.XOR<Prisma.usersCreateWithoutRestocksInput, Prisma.usersUncheckedCreateWithoutRestocksInput>
+}
+
+export type usersUpsertWithoutRestocksInput = {
+  update: Prisma.XOR<Prisma.usersUpdateWithoutRestocksInput, Prisma.usersUncheckedUpdateWithoutRestocksInput>
+  create: Prisma.XOR<Prisma.usersCreateWithoutRestocksInput, Prisma.usersUncheckedCreateWithoutRestocksInput>
+  where?: Prisma.usersWhereInput
+}
+
+export type usersUpdateToOneWithWhereWithoutRestocksInput = {
+  where?: Prisma.usersWhereInput
+  data: Prisma.XOR<Prisma.usersUpdateWithoutRestocksInput, Prisma.usersUncheckedUpdateWithoutRestocksInput>
+}
+
+export type usersUpdateWithoutRestocksInput = {
+  user_first_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_last_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_username?: Prisma.StringFieldUpdateOperationsInput | string
+  user_password?: Prisma.StringFieldUpdateOperationsInput | string
+  user_status?: Prisma.IntFieldUpdateOperationsInput | number
+  requests?: Prisma.requestsUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUpdateManyWithoutUsersNestedInput
+  labs?: Prisma.labsUpdateOneWithoutUsersNestedInput
+  roles?: Prisma.rolesUpdateOneRequiredWithoutUsersNestedInput
+}
+
+export type usersUncheckedUpdateWithoutRestocksInput = {
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  lab_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  role_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_first_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_last_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_username?: Prisma.StringFieldUpdateOperationsInput | string
+  user_password?: Prisma.StringFieldUpdateOperationsInput | string
+  user_status?: Prisma.IntFieldUpdateOperationsInput | number
+  requests?: Prisma.requestsUncheckedUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUncheckedUpdateManyWithoutUsersNestedInput
+}
+
+export type usersCreateWithoutTransferInput = {
+  user_first_name: string
+  user_middle_name?: string | null
+  user_last_name: string
+  user_phone_number?: string | null
+  user_username: string
+  user_password: string
+  user_status?: number
+  requests?: Prisma.requestsCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksCreateNestedManyWithoutUsersInput
+  labs?: Prisma.labsCreateNestedOneWithoutUsersInput
+  roles: Prisma.rolesCreateNestedOneWithoutUsersInput
+}
+
+export type usersUncheckedCreateWithoutTransferInput = {
+  user_id?: number
+  lab_id?: number | null
+  role_id: number
+  user_first_name: string
+  user_middle_name?: string | null
+  user_last_name: string
+  user_phone_number?: string | null
+  user_username: string
+  user_password: string
+  user_status?: number
+  requests?: Prisma.requestsUncheckedCreateNestedManyWithoutUsersInput
+  restocks?: Prisma.restocksUncheckedCreateNestedManyWithoutUsersInput
+}
+
+export type usersCreateOrConnectWithoutTransferInput = {
+  where: Prisma.usersWhereUniqueInput
+  create: Prisma.XOR<Prisma.usersCreateWithoutTransferInput, Prisma.usersUncheckedCreateWithoutTransferInput>
+}
+
+export type usersUpsertWithoutTransferInput = {
+  update: Prisma.XOR<Prisma.usersUpdateWithoutTransferInput, Prisma.usersUncheckedUpdateWithoutTransferInput>
+  create: Prisma.XOR<Prisma.usersCreateWithoutTransferInput, Prisma.usersUncheckedCreateWithoutTransferInput>
+  where?: Prisma.usersWhereInput
+}
+
+export type usersUpdateToOneWithWhereWithoutTransferInput = {
+  where?: Prisma.usersWhereInput
+  data: Prisma.XOR<Prisma.usersUpdateWithoutTransferInput, Prisma.usersUncheckedUpdateWithoutTransferInput>
+}
+
+export type usersUpdateWithoutTransferInput = {
+  user_first_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_last_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_username?: Prisma.StringFieldUpdateOperationsInput | string
+  user_password?: Prisma.StringFieldUpdateOperationsInput | string
+  user_status?: Prisma.IntFieldUpdateOperationsInput | number
+  requests?: Prisma.requestsUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUpdateManyWithoutUsersNestedInput
+  labs?: Prisma.labsUpdateOneWithoutUsersNestedInput
+  roles?: Prisma.rolesUpdateOneRequiredWithoutUsersNestedInput
+}
+
+export type usersUncheckedUpdateWithoutTransferInput = {
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  lab_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  role_id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_first_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_last_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_username?: Prisma.StringFieldUpdateOperationsInput | string
+  user_password?: Prisma.StringFieldUpdateOperationsInput | string
+  user_status?: Prisma.IntFieldUpdateOperationsInput | number
+  requests?: Prisma.requestsUncheckedUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type usersCreateManyLabsInput = {
@@ -908,8 +1015,9 @@ export type usersUpdateWithoutLabsInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUpdateManyWithoutUsersNestedInput
   requests?: Prisma.requestsUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUpdateManyWithoutUsersNestedInput
   roles?: Prisma.rolesUpdateOneRequiredWithoutUsersNestedInput
 }
 
@@ -923,8 +1031,9 @@ export type usersUncheckedUpdateWithoutLabsInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUncheckedUpdateManyWithoutUsersNestedInput
   requests?: Prisma.requestsUncheckedUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUncheckedUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type usersUncheckedUpdateManyWithoutLabsInput = {
@@ -959,8 +1068,9 @@ export type usersUpdateWithoutRolesInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUpdateManyWithoutUsersNestedInput
   requests?: Prisma.requestsUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUpdateManyWithoutUsersNestedInput
   labs?: Prisma.labsUpdateOneWithoutUsersNestedInput
 }
 
@@ -974,8 +1084,9 @@ export type usersUncheckedUpdateWithoutRolesInput = {
   user_username?: Prisma.StringFieldUpdateOperationsInput | string
   user_password?: Prisma.StringFieldUpdateOperationsInput | string
   user_status?: Prisma.IntFieldUpdateOperationsInput | number
-  operations?: Prisma.operationsUncheckedUpdateManyWithoutUsersNestedInput
   requests?: Prisma.requestsUncheckedUpdateManyWithoutUsersNestedInput
+  restocks?: Prisma.restocksUncheckedUpdateManyWithoutUsersNestedInput
+  transfer?: Prisma.transferUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type usersUncheckedUpdateManyWithoutRolesInput = {
@@ -996,13 +1107,15 @@ export type usersUncheckedUpdateManyWithoutRolesInput = {
  */
 
 export type UsersCountOutputType = {
-  operations: number
   requests: number
+  restocks: number
+  transfer: number
 }
 
 export type UsersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  operations?: boolean | UsersCountOutputTypeCountOperationsArgs
   requests?: boolean | UsersCountOutputTypeCountRequestsArgs
+  restocks?: boolean | UsersCountOutputTypeCountRestocksArgs
+  transfer?: boolean | UsersCountOutputTypeCountTransferArgs
 }
 
 /**
@@ -1018,15 +1131,22 @@ export type UsersCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
 /**
  * UsersCountOutputType without action
  */
-export type UsersCountOutputTypeCountOperationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.operationsWhereInput
+export type UsersCountOutputTypeCountRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.requestsWhereInput
 }
 
 /**
  * UsersCountOutputType without action
  */
-export type UsersCountOutputTypeCountRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.requestsWhereInput
+export type UsersCountOutputTypeCountRestocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.restocksWhereInput
+}
+
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountTransferArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.transferWhereInput
 }
 
 
@@ -1041,8 +1161,9 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   user_username?: boolean
   user_password?: boolean
   user_status?: boolean
-  operations?: boolean | Prisma.users$operationsArgs<ExtArgs>
   requests?: boolean | Prisma.users$requestsArgs<ExtArgs>
+  restocks?: boolean | Prisma.users$restocksArgs<ExtArgs>
+  transfer?: boolean | Prisma.users$transferArgs<ExtArgs>
   labs?: boolean | Prisma.users$labsArgs<ExtArgs>
   roles?: boolean | Prisma.rolesDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -1065,8 +1186,9 @@ export type usersSelectScalar = {
 
 export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"user_id" | "lab_id" | "role_id" | "user_first_name" | "user_middle_name" | "user_last_name" | "user_phone_number" | "user_username" | "user_password" | "user_status", ExtArgs["result"]["users"]>
 export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  operations?: boolean | Prisma.users$operationsArgs<ExtArgs>
   requests?: boolean | Prisma.users$requestsArgs<ExtArgs>
+  restocks?: boolean | Prisma.users$restocksArgs<ExtArgs>
+  transfer?: boolean | Prisma.users$transferArgs<ExtArgs>
   labs?: boolean | Prisma.users$labsArgs<ExtArgs>
   roles?: boolean | Prisma.rolesDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -1075,8 +1197,9 @@ export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "users"
   objects: {
-    operations: Prisma.$operationsPayload<ExtArgs>[]
     requests: Prisma.$requestsPayload<ExtArgs>[]
+    restocks: Prisma.$restocksPayload<ExtArgs>[]
+    transfer: Prisma.$transferPayload<ExtArgs>[]
     labs: Prisma.$labsPayload<ExtArgs> | null
     roles: Prisma.$rolesPayload<ExtArgs>
   }
@@ -1431,8 +1554,9 @@ readonly fields: usersFieldRefs;
  */
 export interface Prisma__usersClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  operations<T extends Prisma.users$operationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$operationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$operationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requests<T extends Prisma.users$requestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$requestsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  restocks<T extends Prisma.users$restocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$restocksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$restocksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transfer<T extends Prisma.users$transferArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$transferArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$transferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   labs<T extends Prisma.users$labsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$labsArgs<ExtArgs>>): Prisma.Prisma__labsClient<runtime.Types.Result.GetResult<Prisma.$labsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   roles<T extends Prisma.rolesDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.rolesDefaultArgs<ExtArgs>>): Prisma.Prisma__rolesClient<runtime.Types.Result.GetResult<Prisma.$rolesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1822,30 +1946,6 @@ export type usersDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * users.operations
- */
-export type users$operationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the operations
-   */
-  select?: Prisma.operationsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the operations
-   */
-  omit?: Prisma.operationsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.operationsInclude<ExtArgs> | null
-  where?: Prisma.operationsWhereInput
-  orderBy?: Prisma.operationsOrderByWithRelationInput | Prisma.operationsOrderByWithRelationInput[]
-  cursor?: Prisma.operationsWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.OperationsScalarFieldEnum | Prisma.OperationsScalarFieldEnum[]
-}
-
-/**
  * users.requests
  */
 export type users$requestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1867,6 +1967,54 @@ export type users$requestsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.RequestsScalarFieldEnum | Prisma.RequestsScalarFieldEnum[]
+}
+
+/**
+ * users.restocks
+ */
+export type users$restocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the restocks
+   */
+  select?: Prisma.restocksSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the restocks
+   */
+  omit?: Prisma.restocksOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.restocksInclude<ExtArgs> | null
+  where?: Prisma.restocksWhereInput
+  orderBy?: Prisma.restocksOrderByWithRelationInput | Prisma.restocksOrderByWithRelationInput[]
+  cursor?: Prisma.restocksWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RestocksScalarFieldEnum | Prisma.RestocksScalarFieldEnum[]
+}
+
+/**
+ * users.transfer
+ */
+export type users$transferArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the transfer
+   */
+  select?: Prisma.transferSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the transfer
+   */
+  omit?: Prisma.transferOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.transferInclude<ExtArgs> | null
+  where?: Prisma.transferWhereInput
+  orderBy?: Prisma.transferOrderByWithRelationInput | Prisma.transferOrderByWithRelationInput[]
+  cursor?: Prisma.transferWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransferScalarFieldEnum | Prisma.TransferScalarFieldEnum[]
 }
 
 /**

@@ -53,11 +53,6 @@ export type roles = Prisma.rolesModel
  */
 export type assigned_teachers = Prisma.assigned_teachersModel
 /**
- * Model operations
- * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
- */
-export type operations = Prisma.operationsModel
-/**
  * Model request_details
  * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
  */
@@ -107,3 +102,18 @@ export type thesis_authors = Prisma.thesis_authorsModel
  * 
  */
 export type users = Prisma.usersModel
+/**
+ * Model restocks
+ * 
+ */
+export type restocks = Prisma.restocksModel
+/**
+ * Model transfer
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type transfer = Prisma.transferModel
+/**
+ * Model seeder_status
+ * 
+ */
+export type seeder_status = Prisma.seeder_statusModel

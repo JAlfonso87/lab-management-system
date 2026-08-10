@@ -1,5 +1,12 @@
 USE lab_management_system;
 
+CREATE TABLE IF NOT EXISTS seeder_status(
+    seeder_id INT AUTO_INCREMENT PRIMARY KEY,
+    seeder_status INT DEFAULT 0
+);
+
+INSERT INTO seeder_status (seeder_id, seeder_status) VALUES (1, 0);
+
 CREATE TABLE IF NOT EXISTS reagents(
 	reagent_id INT AUTO_INCREMENT PRIMARY KEY,
     reagent_name VARCHAR(100) NOT NULL,
@@ -18,9 +25,8 @@ CREATE TABLE IF NOT EXISTS reagents(
 
 CREATE TABLE IF NOT EXISTS locations(
 	location_id INT AUTO_INCREMENT PRIMARY KEY,
-    location_building CHAR NOT NULL,
     location_type VARCHAR(15) NOT NULL,
-    CHECK (location_type = 'NIVEL_ANAQUEL' OR location_type = 'LABORATORIO')
+    CHECK (location_type = 'SHELF_LVL' OR location_type = 'LAB')
 );
 
 CREATE TABLE IF NOT EXISTS local_stocks(
@@ -37,6 +43,7 @@ CREATE TABLE IF NOT EXISTS local_stocks(
 CREATE TABLE IF NOT EXISTS labs(
 	lab_id INTEGER PRIMARY KEY NOT NULL,
     lab_name VARCHAR(30) NOT NULL UNIQUE,
+    host_building CHAR NOT NULL,
     FOREIGN KEY(lab_id) REFERENCES locations(location_id) ON DELETE CASCADE
 );
 
@@ -129,7 +136,10 @@ CREATE TABLE IF NOT EXISTS request_details(
 
 CREATE TABLE IF NOT EXISTS shelves(
 	shelf_id INT AUTO_INCREMENT PRIMARY KEY,
-    shelf_category VARCHAR(20) NOT NULL
+    shelf_number INT NOT NULL,
+    shelf_category VARCHAR(20) NOT NULL,
+    host_building CHAR NOT NULL,
+    CONSTRAINT uq_sh_per_building UNIQUE (host_building, shelf_number)
 );
 
 CREATE TABLE IF NOT EXISTS shelf_levels(
@@ -142,23 +152,35 @@ CREATE TABLE IF NOT EXISTS shelf_levels(
     CONSTRAINT shelf_level_uniqueness UNIQUE (shelf_id, shelf_level_number)
 );
 
-CREATE TABLE IF NOT EXISTS operations(
-	operation_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS transfer(
+	transfer_id INT AUTO_INCREMENT PRIMARY KEY,
+    reagent_id INT NOT NULL,
+    user_id INT NOT NULL,
+    local_stock_id INTEGER NOT NULL,
+    transfer_type VARCHAR (10) NOT NULL,
+    stock_difference INT NOT NULL DEFAULT 0,
+    transfer_date DATE NOT NULL,
+
+    CHECK (stock_difference >= 0),
+    CHECK (
+		transfer_type = 'IN' OR
+        transfer_type = 'OUT'
+    ),
+    
+    FOREIGN KEY (local_stock_id) REFERENCES local_stocks(local_stock_id),
+    FOREIGN KEY (reagent_id) REFERENCES reagents(reagent_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS restocks(
+    restock_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     reagent_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     local_stock_id INTEGER NOT NULL,
-    operation_type VARCHAR (10) NOT NULL,
-    stock_difference INT NOT NULL DEFAULT 0,
-    operation_date DATE NOT NULL,
-    operation_description VARCHAR (150) DEFAULT 'DEFAULT DESCRIPTION.',
+    restock_units INT NOT NULL DEFAULT 0,
+    restock_date DATE NOT NULL,
     
-    CHECK (stock_difference >= 0),
-    CHECK (
-		operation_type = 'ENTRADA' OR
-        operation_type = 'SALIDA'
-    ),
-    
+    FOREIGN KEY (local_stock_id) REFERENCES local_stocks(local_stock_id),
     FOREIGN KEY (reagent_id) REFERENCES reagents(reagent_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (local_stock_id) REFERENCES local_stocks(local_stock_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

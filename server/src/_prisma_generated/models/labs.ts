@@ -37,16 +37,19 @@ export type LabsSumAggregateOutputType = {
 export type LabsMinAggregateOutputType = {
   lab_id: number | null
   lab_name: string | null
+  host_building: string | null
 }
 
 export type LabsMaxAggregateOutputType = {
   lab_id: number | null
   lab_name: string | null
+  host_building: string | null
 }
 
 export type LabsCountAggregateOutputType = {
   lab_id: number
   lab_name: number
+  host_building: number
   _all: number
 }
 
@@ -62,16 +65,19 @@ export type LabsSumAggregateInputType = {
 export type LabsMinAggregateInputType = {
   lab_id?: true
   lab_name?: true
+  host_building?: true
 }
 
 export type LabsMaxAggregateInputType = {
   lab_id?: true
   lab_name?: true
+  host_building?: true
 }
 
 export type LabsCountAggregateInputType = {
   lab_id?: true
   lab_name?: true
+  host_building?: true
   _all?: true
 }
 
@@ -164,6 +170,7 @@ export type labsGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type LabsGroupByOutputType = {
   lab_id: number
   lab_name: string
+  host_building: string
   _count: LabsCountAggregateOutputType | null
   _avg: LabsAvgAggregateOutputType | null
   _sum: LabsSumAggregateOutputType | null
@@ -192,6 +199,7 @@ export type labsWhereInput = {
   NOT?: Prisma.labsWhereInput | Prisma.labsWhereInput[]
   lab_id?: Prisma.IntFilter<"labs"> | number
   lab_name?: Prisma.StringFilter<"labs"> | string
+  host_building?: Prisma.StringFilter<"labs"> | string
   locations?: Prisma.XOR<Prisma.LocationsScalarRelationFilter, Prisma.locationsWhereInput>
   users?: Prisma.UsersListRelationFilter
 }
@@ -199,6 +207,7 @@ export type labsWhereInput = {
 export type labsOrderByWithRelationInput = {
   lab_id?: Prisma.SortOrder
   lab_name?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
   locations?: Prisma.locationsOrderByWithRelationInput
   users?: Prisma.usersOrderByRelationAggregateInput
   _relevance?: Prisma.labsOrderByRelevanceInput
@@ -210,6 +219,7 @@ export type labsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.labsWhereInput | Prisma.labsWhereInput[]
   OR?: Prisma.labsWhereInput[]
   NOT?: Prisma.labsWhereInput | Prisma.labsWhereInput[]
+  host_building?: Prisma.StringFilter<"labs"> | string
   locations?: Prisma.XOR<Prisma.LocationsScalarRelationFilter, Prisma.locationsWhereInput>
   users?: Prisma.UsersListRelationFilter
 }, "lab_id" | "lab_name">
@@ -217,6 +227,7 @@ export type labsWhereUniqueInput = Prisma.AtLeast<{
 export type labsOrderByWithAggregationInput = {
   lab_id?: Prisma.SortOrder
   lab_name?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
   _count?: Prisma.labsCountOrderByAggregateInput
   _avg?: Prisma.labsAvgOrderByAggregateInput
   _max?: Prisma.labsMaxOrderByAggregateInput
@@ -230,10 +241,12 @@ export type labsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.labsScalarWhereWithAggregatesInput | Prisma.labsScalarWhereWithAggregatesInput[]
   lab_id?: Prisma.IntWithAggregatesFilter<"labs"> | number
   lab_name?: Prisma.StringWithAggregatesFilter<"labs"> | string
+  host_building?: Prisma.StringWithAggregatesFilter<"labs"> | string
 }
 
 export type labsCreateInput = {
   lab_name: string
+  host_building: string
   locations: Prisma.locationsCreateNestedOneWithoutLabsInput
   users?: Prisma.usersCreateNestedManyWithoutLabsInput
 }
@@ -241,11 +254,13 @@ export type labsCreateInput = {
 export type labsUncheckedCreateInput = {
   lab_id: number
   lab_name: string
+  host_building: string
   users?: Prisma.usersUncheckedCreateNestedManyWithoutLabsInput
 }
 
 export type labsUpdateInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
   locations?: Prisma.locationsUpdateOneRequiredWithoutLabsNestedInput
   users?: Prisma.usersUpdateManyWithoutLabsNestedInput
 }
@@ -253,21 +268,25 @@ export type labsUpdateInput = {
 export type labsUncheckedUpdateInput = {
   lab_id?: Prisma.IntFieldUpdateOperationsInput | number
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
   users?: Prisma.usersUncheckedUpdateManyWithoutLabsNestedInput
 }
 
 export type labsCreateManyInput = {
   lab_id: number
   lab_name: string
+  host_building: string
 }
 
 export type labsUpdateManyMutationInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type labsUncheckedUpdateManyInput = {
   lab_id?: Prisma.IntFieldUpdateOperationsInput | number
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type labsOrderByRelevanceInput = {
@@ -279,6 +298,7 @@ export type labsOrderByRelevanceInput = {
 export type labsCountOrderByAggregateInput = {
   lab_id?: Prisma.SortOrder
   lab_name?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
 }
 
 export type labsAvgOrderByAggregateInput = {
@@ -288,11 +308,13 @@ export type labsAvgOrderByAggregateInput = {
 export type labsMaxOrderByAggregateInput = {
   lab_id?: Prisma.SortOrder
   lab_name?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
 }
 
 export type labsMinOrderByAggregateInput = {
   lab_id?: Prisma.SortOrder
   lab_name?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
 }
 
 export type labsSumOrderByAggregateInput = {
@@ -366,11 +388,13 @@ export type labsUpdateOneWithoutUsersNestedInput = {
 
 export type labsCreateWithoutLocationsInput = {
   lab_name: string
+  host_building: string
   users?: Prisma.usersCreateNestedManyWithoutLabsInput
 }
 
 export type labsUncheckedCreateWithoutLocationsInput = {
   lab_name: string
+  host_building: string
   users?: Prisma.usersUncheckedCreateNestedManyWithoutLabsInput
 }
 
@@ -392,22 +416,26 @@ export type labsUpdateToOneWithWhereWithoutLocationsInput = {
 
 export type labsUpdateWithoutLocationsInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
   users?: Prisma.usersUpdateManyWithoutLabsNestedInput
 }
 
 export type labsUncheckedUpdateWithoutLocationsInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
   users?: Prisma.usersUncheckedUpdateManyWithoutLabsNestedInput
 }
 
 export type labsCreateWithoutUsersInput = {
   lab_name: string
+  host_building: string
   locations: Prisma.locationsCreateNestedOneWithoutLabsInput
 }
 
 export type labsUncheckedCreateWithoutUsersInput = {
   lab_id: number
   lab_name: string
+  host_building: string
 }
 
 export type labsCreateOrConnectWithoutUsersInput = {
@@ -428,12 +456,14 @@ export type labsUpdateToOneWithWhereWithoutUsersInput = {
 
 export type labsUpdateWithoutUsersInput = {
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
   locations?: Prisma.locationsUpdateOneRequiredWithoutLabsNestedInput
 }
 
 export type labsUncheckedUpdateWithoutUsersInput = {
   lab_id?: Prisma.IntFieldUpdateOperationsInput | number
   lab_name?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -470,6 +500,7 @@ export type LabsCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Exte
 export type labsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   lab_id?: boolean
   lab_name?: boolean
+  host_building?: boolean
   locations?: boolean | Prisma.locationsDefaultArgs<ExtArgs>
   users?: boolean | Prisma.labs$usersArgs<ExtArgs>
   _count?: boolean | Prisma.LabsCountOutputTypeDefaultArgs<ExtArgs>
@@ -480,9 +511,10 @@ export type labsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type labsSelectScalar = {
   lab_id?: boolean
   lab_name?: boolean
+  host_building?: boolean
 }
 
-export type labsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"lab_id" | "lab_name", ExtArgs["result"]["labs"]>
+export type labsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"lab_id" | "lab_name" | "host_building", ExtArgs["result"]["labs"]>
 export type labsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   locations?: boolean | Prisma.locationsDefaultArgs<ExtArgs>
   users?: boolean | Prisma.labs$usersArgs<ExtArgs>
@@ -498,6 +530,7 @@ export type $labsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     lab_id: number
     lab_name: string
+    host_building: string
   }, ExtArgs["result"]["labs"]>
   composites: {}
 }
@@ -871,6 +904,7 @@ export interface Prisma__labsClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface labsFieldRefs {
   readonly lab_id: Prisma.FieldRef<"labs", 'Int'>
   readonly lab_name: Prisma.FieldRef<"labs", 'String'>
+  readonly host_building: Prisma.FieldRef<"labs", 'String'>
 }
     
 
