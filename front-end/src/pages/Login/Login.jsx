@@ -1,5 +1,7 @@
 import "./Login.css"
+
 import logo from "../../assets/images/logo.png"
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -27,9 +29,13 @@ function Login() {
 
         <div className="form-container">
 
-          <h1 className="login-title">Lab Managment <br /> System</h1>
+          <h1 className="login-title">
+            Lab Managment <br /> System
+          </h1>
 
-          <p className="login-subtitle">Ingresa las credenciales para iniciar sesión</p>
+          <p className="login-subtitle">
+            Ingresa las credenciales para iniciar sesión
+          </p>
 
           <form
             className="login-form"
