@@ -1,12 +1,13 @@
 import "./Home.css"
 
-import logo from "../../assets/images/logo.png"
-import homeIcon from "../../assets/images/home.png"
 import searchIcon from "../../assets/images/search.png"
 import addIcon from "../../assets/images/add.png"
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
+
+import Header from "../../components/Header/Header.jsx"
+import Sidebar from "../../components/Sidebar/Sidebar.jsx"
 
 function Home() {
 
@@ -20,78 +21,11 @@ function Home() {
 
     <div className="home-page">
 
-      <header className="header-content">
+      <Header />
 
-        <img
-          src={logo}
-          alt="Logo del sistema"
-          className="header-img"
-        />
-        <span>LMS | Lab Management System</span>
+      <div className="home-content">
 
-      </header>
-
-      <div className="content">
-
-        <nav className="nav-bar">
-
-          <Link
-            to={"/home"}
-            className={
-              `nav-link ${location.pathname === "/home"
-                ? "selected-link"
-                : ""
-              }`
-            }
-          >
-            <img
-              src={homeIcon}
-              alt="Icono de home"
-              className="nav-img"
-            />
-            <p className="nav-text">
-              Inicio
-            </p>
-          </Link>
-
-          <Link
-            to={"/materials"}
-            className={
-              `nav-link ${location.pathname === "/materials"
-                ? "selected-link"
-                : ""
-              }`
-            }
-          >
-            <img
-              src={searchIcon}
-              alt="Icono de materiales"
-              className="nav-img"
-            />
-            <p className="nav-text">
-              Materiales
-            </p>
-          </Link>
-
-          <Link
-            to={"/create-material"}
-            className={
-              `nav-link ${location.pathname === "create-material"
-                ? "selected-link" : ""
-              }`
-            }
-          >
-            <img
-              src={addIcon}
-              alt="Icono de agregar"
-              className="nav-img"
-            />
-            <p className="nav-text">
-              Agregar
-            </p>
-          </Link>
-
-        </nav>
+        <Sidebar />
 
         <main className="main-section">
 

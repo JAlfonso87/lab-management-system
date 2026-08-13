@@ -4,32 +4,19 @@
   height: 100vh;
 }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  height: 50px;
-  padding: 5px 20px;
-  box-shadow: 0 0 20px rgb(221, 221, 221);
-}
-
-.header-img {
-  width: 40px;
-  margin-right: 15px;
-}
-
-.content {
+.home-page .home-content {
   display: flex;
   flex: 1;
 }
 
-.main-section {
+.home-page .main-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 1;
 }
 
-.home-title {
+.home-page .home-title {
   text-align: left;
   font-size: 38px;
   font-weight: 400;
@@ -38,24 +25,24 @@
   padding-left: 150px;
 }
 
-.home-subtitle {
+.home-page .home-subtitle {
   text-align: left;
   font-size: 24px;
   font-weight: 400;
   width: 100%;
 }
 
-.tools-section {
+.home-page .tools-section {
   margin-bottom: 150px;
 }
 
-.search-form {
+.home-page .search-form {
   display: flex;
   align-items: center;
   margin-bottom: 25px;
 }
 
-.search-input {
+.home-page .search-input {
   width: 480px;
   height: 35px;
   padding-left: 25px;
@@ -67,11 +54,11 @@
   transition: 0.2s;
 }
 
-.search-input:focus {
+.home-page .search-input:focus {
   border-color: #4A90E2;
 }
 
-.search-button {
+.home-page .search-button {
   background-color: #E4E4E4;
   display: flex;
   justify-content: center;
@@ -85,16 +72,16 @@
   transition: 0.2s;
 }
 
-.search-button img {
+.home-page .search-button img {
   width: 23px;
 }
 
-.search-button:hover,
-.add-button:hover {
+.home-page .search-button:hover,
+.home-page .add-button:hover {
   background-color: #dddddd;
 }
 
-.add-button {
+.home-page .add-button {
   background-color: #E4E4E4;
   font-size: 14px;
   padding: 2px 8px 2px 3px;
@@ -108,50 +95,13 @@
   transition: 0.2s;
 }
 
-.add-button img {
+.home-page .add-button img {
   width: 25px;
   margin-right: 8px;
 }
 
-.welcome-text {
+.home-page .welcome-text {
   font-size: 35px;
   line-height: 45px;
   justify-content: center;
-}
-
-.nav-bar {
-  width: 200px;
-  box-shadow: 0 10px 20px rgb(221, 221, 221);
-}
-
-.nav-link {
-  display: flex;
-  text-decoration: none;
-  cursor: pointer;
-  padding: 3px 0;
-  margin: 25px 5px;
-  border-radius: 10px;
-  transition: 0.2s;
-}
-
-.nav-link:hover {
-  background-color: #dddddd;
-}
-
-.nav-img {
-  width: 25px;
-  margin: 0 10px
-}
-
-.nav-text {
-  flex: 1;
-  text-align: left;
-}
-
-.selected-link {
-  background-color: #dddddd;
-}
-
-.selected-link:hover {
-  background-color: #dddddd;
 }

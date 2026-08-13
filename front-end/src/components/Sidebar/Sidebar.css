@@ -1,0 +1,36 @@
+.sidebar {
+  width: 200px;
+  box-shadow: 0 10px 20px rgb(221, 221, 221);
+}
+
+.sidebar-link {
+  display: flex;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 3px 0;
+  margin: 25px 5px;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.sidebar-link:hover {
+  background-color: #dddddd;
+}
+
+.sidebar-img {
+  width: 25px;
+  margin: 0 10px
+}
+
+.sidebar-text {
+  flex: 1;
+  text-align: left;
+}
+
+.selected-link {
+  background-color: #dddddd;
+}
+
+.selected-link:hover {
+  background-color: #dddddd;
+}
