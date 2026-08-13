@@ -36,19 +36,16 @@ export type LocationsSumAggregateOutputType = {
 
 export type LocationsMinAggregateOutputType = {
   location_id: number | null
-  location_building: string | null
   location_type: string | null
 }
 
 export type LocationsMaxAggregateOutputType = {
   location_id: number | null
-  location_building: string | null
   location_type: string | null
 }
 
 export type LocationsCountAggregateOutputType = {
   location_id: number
-  location_building: number
   location_type: number
   _all: number
 }
@@ -64,19 +61,16 @@ export type LocationsSumAggregateInputType = {
 
 export type LocationsMinAggregateInputType = {
   location_id?: true
-  location_building?: true
   location_type?: true
 }
 
 export type LocationsMaxAggregateInputType = {
   location_id?: true
-  location_building?: true
   location_type?: true
 }
 
 export type LocationsCountAggregateInputType = {
   location_id?: true
-  location_building?: true
   location_type?: true
   _all?: true
 }
@@ -169,7 +163,6 @@ export type locationsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type LocationsGroupByOutputType = {
   location_id: number
-  location_building: string
   location_type: string
   _count: LocationsCountAggregateOutputType | null
   _avg: LocationsAvgAggregateOutputType | null
@@ -198,7 +191,6 @@ export type locationsWhereInput = {
   OR?: Prisma.locationsWhereInput[]
   NOT?: Prisma.locationsWhereInput | Prisma.locationsWhereInput[]
   location_id?: Prisma.IntFilter<"locations"> | number
-  location_building?: Prisma.StringFilter<"locations"> | string
   location_type?: Prisma.StringFilter<"locations"> | string
   labs?: Prisma.XOR<Prisma.LabsNullableScalarRelationFilter, Prisma.labsWhereInput> | null
   local_stocks?: Prisma.Local_stocksListRelationFilter
@@ -207,7 +199,6 @@ export type locationsWhereInput = {
 
 export type locationsOrderByWithRelationInput = {
   location_id?: Prisma.SortOrder
-  location_building?: Prisma.SortOrder
   location_type?: Prisma.SortOrder
   labs?: Prisma.labsOrderByWithRelationInput
   local_stocks?: Prisma.local_stocksOrderByRelationAggregateInput
@@ -220,7 +211,6 @@ export type locationsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.locationsWhereInput | Prisma.locationsWhereInput[]
   OR?: Prisma.locationsWhereInput[]
   NOT?: Prisma.locationsWhereInput | Prisma.locationsWhereInput[]
-  location_building?: Prisma.StringFilter<"locations"> | string
   location_type?: Prisma.StringFilter<"locations"> | string
   labs?: Prisma.XOR<Prisma.LabsNullableScalarRelationFilter, Prisma.labsWhereInput> | null
   local_stocks?: Prisma.Local_stocksListRelationFilter
@@ -229,7 +219,6 @@ export type locationsWhereUniqueInput = Prisma.AtLeast<{
 
 export type locationsOrderByWithAggregationInput = {
   location_id?: Prisma.SortOrder
-  location_building?: Prisma.SortOrder
   location_type?: Prisma.SortOrder
   _count?: Prisma.locationsCountOrderByAggregateInput
   _avg?: Prisma.locationsAvgOrderByAggregateInput
@@ -243,12 +232,10 @@ export type locationsScalarWhereWithAggregatesInput = {
   OR?: Prisma.locationsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.locationsScalarWhereWithAggregatesInput | Prisma.locationsScalarWhereWithAggregatesInput[]
   location_id?: Prisma.IntWithAggregatesFilter<"locations"> | number
-  location_building?: Prisma.StringWithAggregatesFilter<"locations"> | string
   location_type?: Prisma.StringWithAggregatesFilter<"locations"> | string
 }
 
 export type locationsCreateInput = {
-  location_building: string
   location_type: string
   labs?: Prisma.labsCreateNestedOneWithoutLocationsInput
   local_stocks?: Prisma.local_stocksCreateNestedManyWithoutLocationsInput
@@ -257,7 +244,6 @@ export type locationsCreateInput = {
 
 export type locationsUncheckedCreateInput = {
   location_id?: number
-  location_building: string
   location_type: string
   labs?: Prisma.labsUncheckedCreateNestedOneWithoutLocationsInput
   local_stocks?: Prisma.local_stocksUncheckedCreateNestedManyWithoutLocationsInput
@@ -265,7 +251,6 @@ export type locationsUncheckedCreateInput = {
 }
 
 export type locationsUpdateInput = {
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   labs?: Prisma.labsUpdateOneWithoutLocationsNestedInput
   local_stocks?: Prisma.local_stocksUpdateManyWithoutLocationsNestedInput
@@ -274,7 +259,6 @@ export type locationsUpdateInput = {
 
 export type locationsUncheckedUpdateInput = {
   location_id?: Prisma.IntFieldUpdateOperationsInput | number
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   labs?: Prisma.labsUncheckedUpdateOneWithoutLocationsNestedInput
   local_stocks?: Prisma.local_stocksUncheckedUpdateManyWithoutLocationsNestedInput
@@ -283,18 +267,15 @@ export type locationsUncheckedUpdateInput = {
 
 export type locationsCreateManyInput = {
   location_id?: number
-  location_building: string
   location_type: string
 }
 
 export type locationsUpdateManyMutationInput = {
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type locationsUncheckedUpdateManyInput = {
   location_id?: Prisma.IntFieldUpdateOperationsInput | number
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -311,7 +292,6 @@ export type locationsOrderByRelevanceInput = {
 
 export type locationsCountOrderByAggregateInput = {
   location_id?: Prisma.SortOrder
-  location_building?: Prisma.SortOrder
   location_type?: Prisma.SortOrder
 }
 
@@ -321,13 +301,11 @@ export type locationsAvgOrderByAggregateInput = {
 
 export type locationsMaxOrderByAggregateInput = {
   location_id?: Prisma.SortOrder
-  location_building?: Prisma.SortOrder
   location_type?: Prisma.SortOrder
 }
 
 export type locationsMinOrderByAggregateInput = {
   location_id?: Prisma.SortOrder
-  location_building?: Prisma.SortOrder
   location_type?: Prisma.SortOrder
 }
 
@@ -378,7 +356,6 @@ export type locationsUpdateOneRequiredWithoutShelf_levelsNestedInput = {
 }
 
 export type locationsCreateWithoutLabsInput = {
-  location_building: string
   location_type: string
   local_stocks?: Prisma.local_stocksCreateNestedManyWithoutLocationsInput
   shelf_levels?: Prisma.shelf_levelsCreateNestedOneWithoutLocationsInput
@@ -386,7 +363,6 @@ export type locationsCreateWithoutLabsInput = {
 
 export type locationsUncheckedCreateWithoutLabsInput = {
   location_id?: number
-  location_building: string
   location_type: string
   local_stocks?: Prisma.local_stocksUncheckedCreateNestedManyWithoutLocationsInput
   shelf_levels?: Prisma.shelf_levelsUncheckedCreateNestedOneWithoutLocationsInput
@@ -409,7 +385,6 @@ export type locationsUpdateToOneWithWhereWithoutLabsInput = {
 }
 
 export type locationsUpdateWithoutLabsInput = {
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   local_stocks?: Prisma.local_stocksUpdateManyWithoutLocationsNestedInput
   shelf_levels?: Prisma.shelf_levelsUpdateOneWithoutLocationsNestedInput
@@ -417,14 +392,12 @@ export type locationsUpdateWithoutLabsInput = {
 
 export type locationsUncheckedUpdateWithoutLabsInput = {
   location_id?: Prisma.IntFieldUpdateOperationsInput | number
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   local_stocks?: Prisma.local_stocksUncheckedUpdateManyWithoutLocationsNestedInput
   shelf_levels?: Prisma.shelf_levelsUncheckedUpdateOneWithoutLocationsNestedInput
 }
 
 export type locationsCreateWithoutLocal_stocksInput = {
-  location_building: string
   location_type: string
   labs?: Prisma.labsCreateNestedOneWithoutLocationsInput
   shelf_levels?: Prisma.shelf_levelsCreateNestedOneWithoutLocationsInput
@@ -432,7 +405,6 @@ export type locationsCreateWithoutLocal_stocksInput = {
 
 export type locationsUncheckedCreateWithoutLocal_stocksInput = {
   location_id?: number
-  location_building: string
   location_type: string
   labs?: Prisma.labsUncheckedCreateNestedOneWithoutLocationsInput
   shelf_levels?: Prisma.shelf_levelsUncheckedCreateNestedOneWithoutLocationsInput
@@ -455,7 +427,6 @@ export type locationsUpdateToOneWithWhereWithoutLocal_stocksInput = {
 }
 
 export type locationsUpdateWithoutLocal_stocksInput = {
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   labs?: Prisma.labsUpdateOneWithoutLocationsNestedInput
   shelf_levels?: Prisma.shelf_levelsUpdateOneWithoutLocationsNestedInput
@@ -463,14 +434,12 @@ export type locationsUpdateWithoutLocal_stocksInput = {
 
 export type locationsUncheckedUpdateWithoutLocal_stocksInput = {
   location_id?: Prisma.IntFieldUpdateOperationsInput | number
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   labs?: Prisma.labsUncheckedUpdateOneWithoutLocationsNestedInput
   shelf_levels?: Prisma.shelf_levelsUncheckedUpdateOneWithoutLocationsNestedInput
 }
 
 export type locationsCreateWithoutShelf_levelsInput = {
-  location_building: string
   location_type: string
   labs?: Prisma.labsCreateNestedOneWithoutLocationsInput
   local_stocks?: Prisma.local_stocksCreateNestedManyWithoutLocationsInput
@@ -478,7 +447,6 @@ export type locationsCreateWithoutShelf_levelsInput = {
 
 export type locationsUncheckedCreateWithoutShelf_levelsInput = {
   location_id?: number
-  location_building: string
   location_type: string
   labs?: Prisma.labsUncheckedCreateNestedOneWithoutLocationsInput
   local_stocks?: Prisma.local_stocksUncheckedCreateNestedManyWithoutLocationsInput
@@ -501,7 +469,6 @@ export type locationsUpdateToOneWithWhereWithoutShelf_levelsInput = {
 }
 
 export type locationsUpdateWithoutShelf_levelsInput = {
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   labs?: Prisma.labsUpdateOneWithoutLocationsNestedInput
   local_stocks?: Prisma.local_stocksUpdateManyWithoutLocationsNestedInput
@@ -509,7 +476,6 @@ export type locationsUpdateWithoutShelf_levelsInput = {
 
 export type locationsUncheckedUpdateWithoutShelf_levelsInput = {
   location_id?: Prisma.IntFieldUpdateOperationsInput | number
-  location_building?: Prisma.StringFieldUpdateOperationsInput | string
   location_type?: Prisma.StringFieldUpdateOperationsInput | string
   labs?: Prisma.labsUncheckedUpdateOneWithoutLocationsNestedInput
   local_stocks?: Prisma.local_stocksUncheckedUpdateManyWithoutLocationsNestedInput
@@ -548,7 +514,6 @@ export type LocationsCountOutputTypeCountLocal_stocksArgs<ExtArgs extends runtim
 
 export type locationsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   location_id?: boolean
-  location_building?: boolean
   location_type?: boolean
   labs?: boolean | Prisma.locations$labsArgs<ExtArgs>
   local_stocks?: boolean | Prisma.locations$local_stocksArgs<ExtArgs>
@@ -560,11 +525,10 @@ export type locationsSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type locationsSelectScalar = {
   location_id?: boolean
-  location_building?: boolean
   location_type?: boolean
 }
 
-export type locationsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"location_id" | "location_building" | "location_type", ExtArgs["result"]["locations"]>
+export type locationsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"location_id" | "location_type", ExtArgs["result"]["locations"]>
 export type locationsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   labs?: boolean | Prisma.locations$labsArgs<ExtArgs>
   local_stocks?: boolean | Prisma.locations$local_stocksArgs<ExtArgs>
@@ -581,7 +545,6 @@ export type $locationsPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     location_id: number
-    location_building: string
     location_type: string
   }, ExtArgs["result"]["locations"]>
   composites: {}
@@ -956,7 +919,6 @@ export interface Prisma__locationsClient<T, Null = never, ExtArgs extends runtim
  */
 export interface locationsFieldRefs {
   readonly location_id: Prisma.FieldRef<"locations", 'Int'>
-  readonly location_building: Prisma.FieldRef<"locations", 'String'>
   readonly location_type: Prisma.FieldRef<"locations", 'String'>
 }
     

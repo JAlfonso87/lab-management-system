@@ -7,18 +7,69 @@ import * as fs from 'fs';
 @Injectable()
 export class ReagentService {
     constructor(private prisma : PrismaService) {}
-    async fetchAllReagents () {
+    async getReagents () {
         const reagents = await this.prisma.reagents.findMany();
         return reagents;
     }
 
-    async getReagent(reagent_id:number){
+    async getReagent(reagent_id:number, select?:{}) {
         const reagent = await this.prisma.reagents.findUnique({
-            where: {reagent_id: reagent_id}
+            where: { reagent_id: reagent_id },
+            select: select
         })
         if(reagent == null)
             new HttpException("ERR_REAGENT_NOT_FOUND", HttpStatus.NOT_FOUND)
         return reagent;
+    }
+
+    async getReagentBySpecs(
+        reagentSpecs: 
+            { reagent_name: string, reagent_brand: string, reagent_netweight: string, reagent_risk: string } |
+            { reagent_code: string }
+    ) {
+
+        if('reagent_code' in reagentSpecs) {
+            const reagent = await this.prisma.reagents.findUnique({where: { reagent_code: reagentSpecs.reagent_code }})
+            
+            if(!reagent)
+                throw new HttpException("ERR_REAGENT_NOT_FOUND", HttpStatus.NOT_FOUND)
+            else
+                return reagent;
+
+        } else {
+
+            const reagent = await this.prisma.reagents.findFirst({
+                where: {
+                    reagent_name: reagentSpecs.reagent_name,
+                    reagent_brand: reagentSpecs.reagent_brand,
+                    reagent_netweight: reagentSpecs.reagent_netweight,
+                    reagent_risk: reagentSpecs.reagent_risk
+                }
+            })
+
+            if(!reagent)
+                throw new HttpException("ERR_REAGENT_NOT_FOUND", HttpStatus.NOT_FOUND)
+            else
+                return reagent;
+        }
+    }
+
+    async getReagentsBySpecs( specs: { reagent_risk: string } | { reagent_brand: string } ) {
+        if("reagent_risk" in specs){
+            const reagents = await this.prisma.reagents.findMany({
+                where: { reagent_risk: specs.reagent_risk }
+            });
+            return reagents;
+        } 
+        
+        if ("reagent_brand" in specs){
+            const reagents = await this.prisma.reagents.findMany({
+                where: { reagent_risk: specs.reagent_brand }
+            });
+            return reagents;
+        }
+
+
     }
 
     async generateCode(reagentId:number):Promise<string>{
@@ -26,7 +77,7 @@ export class ReagentService {
         let reagent: any;
 
         reagent = await this.prisma.reagents.findUnique({
-            where: {reagent_id: reagentId}
+            where: { reagent_id: reagentId }
         });
 
         const words: string[] = reagent!.reagent_name.replaceAll(/[^a-zA-Z0-9\s]/g,"").trim().split(/\s+/);
@@ -42,18 +93,20 @@ export class ReagentService {
         reagentCode += reagent!.reagent_risk!.charAt(0)
 
         let isDuplicate: boolean = false;
+
         do {
             reagent = await this.prisma.reagents.findUnique({
                 where: { reagent_code: reagentCode },
                 select: { reagent_code: true  }
             })
+            
             if(reagent != null) {
                 isDuplicate = true;
                 reagentCode += Math.round(Math.random()*10)
             }
-            else {
+            else 
                 isDuplicate = false;
-            }
+
         } while (isDuplicate == true)
         await this.generateQR(reagentCode)
         return reagentCode
@@ -82,66 +135,87 @@ export class ReagentService {
         }
     }
 
-    async fetchByRisk (type : string) {
-        const reagents = await this.prisma.reagents.findMany({
-            where: {reagent_risk: type}
-        });
-        return reagents;
-    }
-
-    async newEntry(newEntryParams: any) {
+    async newEntry(newEntryParams: {reagentData: {
+            reagent_name: string,
+            reagent_brand: string,
+            reagent_netweight: string,
+            reagent_risk: string
+        },
+        location_discriminator: {location_type: string},
+        location_data: {lab_name: string} | {shelf_level_number: number, shelf_category: string},
+        stock_parameter: {stock_diff: number}}
+    
+    ) {
         console.log(arguments);
-        const {reagentData, locationDiscriminator, locationData, stockParameter} = newEntryParams;
+        const {reagentData, location_discriminator, location_data, stock_parameter} = newEntryParams;
 
         // DESTRUCTURACIÓN DE DATOS
         const { reagent_name, reagent_brand, reagent_netweight, reagent_risk } = reagentData;
-        const { location_type } = locationDiscriminator;
-        const { stock_diff } = stockParameter;
+        const { location_type } = location_discriminator;
+        const { stock_diff } = stock_parameter;
 
         // EVALUACIÓN DE EXISTENCIA DE REGISTRO DE REACTIVO
-        let reagent_id = await this.prisma.$transaction(async (tx) => {
-            await tx.$executeRaw`CALL reagentExists(${reagent_name}, ${reagent_brand}, ${reagent_netweight}, ${reagent_risk}, @checkResult);`
-            return UnboxUnique(await tx.$queryRaw<number>`SELECT @checkResult AS reagent_id`);
+        const existingReagents = await this.prisma.reagents.findMany({
+            where: {
+                reagent_name: reagent_name,
+                reagent_brand: reagent_brand,
+                reagent_netweight: reagent_netweight,
+                reagent_risk: reagent_risk
+            }
         })
 
+        let created: {
+                    reagent_id: number,
+                    reagent_name: string,
+                    reagent_brand: string,
+                    reagent_netweight: string,
+                    reagent_risk: string | null,
+                    reagent_code: string | null
+                } | null;
         // DEFINICIÓN DE ENTRADA NUEVA DE REACTIVO
-        if(reagent_id == -1){
-            await this.prisma.$transaction(async(tx) => {
-                await tx.reagents.create({
-                    data: {
-                        reagent_name: reagent_name,
-                        reagent_brand: reagent_brand,
-                        reagent_netweight: reagent_netweight,
-                        reagent_risk: reagent_risk
-                    }
-                });
-                reagent_id = UnboxUnique(await tx.$queryRaw<number>`SELECT LAST_INSERT_ID() AS reagent_id`);
+        if(existingReagents.length == 0)
+            created = await this.prisma.reagents.create({
+                data: {
+                    reagent_name: reagent_name,
+                    reagent_brand: reagent_brand,
+                    reagent_netweight: reagent_netweight,
+                    reagent_risk: reagent_risk
+                }
             })
-        }
-        
+        else 
+            created = existingReagents[0]
         
         // DESTRUCTURACIÓN DE DATOS DE UBICACIÓN Y OBTENCIÓN DE ID
-        let location_id = -1;
+        let foundLocation: any;
         if(location_type == "lab"){
-            const { lab_name } = locationData;
-            await this.prisma.$transaction(async (tx) => {
-                await tx.$executeRaw<number>`CALL get_lab_id(${lab_name}, @location_id);`
-                location_id = UnboxUnique(await tx.$queryRaw`SELECT @location_id AS location_id;`);
+            const { lab_name } = location_data as {lab_name: string};
+            foundLocation = await this.prisma.labs.findUnique({
+                where: {lab_name: lab_name},
+                select: {lab_id:true}
             })
         }
         if(location_type == "shelf"){
-            const { shelf_level_number, shelf_category } = locationData;
-            await this.prisma.$transaction(async (tx) => {
-                await tx.$executeRaw`CALL get_shelf_level_id(${shelf_level_number}, ${shelf_category}, @location_id);`
-                location_id = UnboxUnique(await tx.$queryRaw`SELECT @location_id AS location_id;`);
+            const { shelf_level_number, shelf_category } = location_data as {shelf_level_number: number, shelf_category: string};
+            const foundShelves = await this.prisma.shelves.findMany({
+                where: {
+                    shelf_category: shelf_category
+                }
             })
+            foundLocation = await this.prisma.shelf_levels.findMany({
+                where: {
+                    shelf_level_number: shelf_level_number,
+                    shelf_id: foundShelves[0].shelf_id
+                },
+                select: {shelf_level_id: true}
+            })
+            foundLocation = foundLocation.length != 0 ? foundLocation[0].shelf_level_id : null
         }
 
         const result = await this.prisma.local_stocks.upsert({
            where: {
                 reagent_id_location_id: {
-                    reagent_id: reagent_id,
-                    location_id: location_id,
+                    reagent_id: created!.reagent_id,
+                    location_id: foundLocation,
                 }
             },
             update: {
@@ -150,8 +224,8 @@ export class ReagentService {
                 }
             },
             create: {
-                reagent_id: reagent_id,
-                location_id: location_id,
+                reagent_id: created!.reagent_id,
+                location_id: foundLocation,
                 local_stock_units: stock_diff,
             },
         })

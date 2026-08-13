@@ -16,7 +16,7 @@ export class DockerManager {
 
             docker.on('error', (error) =>{
             console.error(chalk.blue("< DOCKER >: SE HA PRODUCIDO UN ERROR EN LA INICIALIZACIÓN DEL CONTENEDOR:" + error.message))
-                spawn('docker', ['compose', 'down', '-v'], {
+                spawn('docker', ['compose', 'down'], {
                     stdio: 'inherit'
                 })
             })
@@ -34,7 +34,7 @@ export class DockerManager {
     async stop(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             console.log(chalk.blue("< DOCKER >: DETENIENDO CONTENEDOR..."))
-            const docker = spawn('docker', ['compose', 'down', '-v'], {
+            const docker = spawn('docker', ['compose', 'down'], {
                 stdio: "inherit"
             })
             docker.on('close', (code) => {

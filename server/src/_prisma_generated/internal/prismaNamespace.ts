@@ -391,7 +391,6 @@ export const ModelName = {
   permissions: 'permissions',
   roles: 'roles',
   assigned_teachers: 'assigned_teachers',
-  operations: 'operations',
   request_details: 'request_details',
   requesters: 'requesters',
   requests: 'requests',
@@ -401,7 +400,10 @@ export const ModelName = {
   subjects: 'subjects',
   teachers: 'teachers',
   thesis_authors: 'thesis_authors',
-  users: 'users'
+  users: 'users',
+  restocks: 'restocks',
+  transfer: 'transfer',
+  seeder_status: 'seeder_status'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "labs" | "local_stocks" | "locations" | "reagents" | "permissions" | "roles" | "assigned_teachers" | "operations" | "request_details" | "requesters" | "requests" | "roles_permissions" | "shelf_levels" | "shelves" | "subjects" | "teachers" | "thesis_authors" | "users"
+    modelProps: "labs" | "local_stocks" | "locations" | "reagents" | "permissions" | "roles" | "assigned_teachers" | "request_details" | "requesters" | "requests" | "roles_permissions" | "shelf_levels" | "shelves" | "subjects" | "teachers" | "thesis_authors" | "users" | "restocks" | "transfer" | "seeder_status"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -880,72 +882,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.assigned_teachersCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.Assigned_teachersCountAggregateOutputType> | number
-        }
-      }
-    }
-    operations: {
-      payload: Prisma.$operationsPayload<ExtArgs>
-      fields: Prisma.operationsFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.operationsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.operationsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload>
-        }
-        findFirst: {
-          args: Prisma.operationsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.operationsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload>
-        }
-        findMany: {
-          args: Prisma.operationsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload>[]
-        }
-        create: {
-          args: Prisma.operationsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload>
-        }
-        createMany: {
-          args: Prisma.operationsCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.operationsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload>
-        }
-        update: {
-          args: Prisma.operationsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload>
-        }
-        deleteMany: {
-          args: Prisma.operationsDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.operationsUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.operationsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$operationsPayload>
-        }
-        aggregate: {
-          args: Prisma.OperationsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateOperations>
-        }
-        groupBy: {
-          args: Prisma.operationsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OperationsGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.operationsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.OperationsCountAggregateOutputType> | number
         }
       }
     }
@@ -1609,6 +1545,204 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    restocks: {
+      payload: Prisma.$restocksPayload<ExtArgs>
+      fields: Prisma.restocksFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.restocksFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.restocksFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload>
+        }
+        findFirst: {
+          args: Prisma.restocksFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.restocksFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload>
+        }
+        findMany: {
+          args: Prisma.restocksFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload>[]
+        }
+        create: {
+          args: Prisma.restocksCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload>
+        }
+        createMany: {
+          args: Prisma.restocksCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.restocksDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload>
+        }
+        update: {
+          args: Prisma.restocksUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload>
+        }
+        deleteMany: {
+          args: Prisma.restocksDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.restocksUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.restocksUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$restocksPayload>
+        }
+        aggregate: {
+          args: Prisma.RestocksAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRestocks>
+        }
+        groupBy: {
+          args: Prisma.restocksGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RestocksGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.restocksCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RestocksCountAggregateOutputType> | number
+        }
+      }
+    }
+    transfer: {
+      payload: Prisma.$transferPayload<ExtArgs>
+      fields: Prisma.transferFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.transferFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.transferFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload>
+        }
+        findFirst: {
+          args: Prisma.transferFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.transferFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload>
+        }
+        findMany: {
+          args: Prisma.transferFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload>[]
+        }
+        create: {
+          args: Prisma.transferCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload>
+        }
+        createMany: {
+          args: Prisma.transferCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.transferDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload>
+        }
+        update: {
+          args: Prisma.transferUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload>
+        }
+        deleteMany: {
+          args: Prisma.transferDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.transferUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.transferUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transferPayload>
+        }
+        aggregate: {
+          args: Prisma.TransferAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransfer>
+        }
+        groupBy: {
+          args: Prisma.transferGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransferGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.transferCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransferCountAggregateOutputType> | number
+        }
+      }
+    }
+    seeder_status: {
+      payload: Prisma.$seeder_statusPayload<ExtArgs>
+      fields: Prisma.seeder_statusFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.seeder_statusFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.seeder_statusFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload>
+        }
+        findFirst: {
+          args: Prisma.seeder_statusFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.seeder_statusFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload>
+        }
+        findMany: {
+          args: Prisma.seeder_statusFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload>[]
+        }
+        create: {
+          args: Prisma.seeder_statusCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload>
+        }
+        createMany: {
+          args: Prisma.seeder_statusCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.seeder_statusDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload>
+        }
+        update: {
+          args: Prisma.seeder_statusUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload>
+        }
+        deleteMany: {
+          args: Prisma.seeder_statusDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.seeder_statusUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.seeder_statusUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$seeder_statusPayload>
+        }
+        aggregate: {
+          args: Prisma.Seeder_statusAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSeeder_status>
+        }
+        groupBy: {
+          args: Prisma.seeder_statusGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Seeder_statusGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.seeder_statusCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Seeder_statusCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1650,7 +1784,8 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const LabsScalarFieldEnum = {
   lab_id: 'lab_id',
-  lab_name: 'lab_name'
+  lab_name: 'lab_name',
+  host_building: 'host_building'
 } as const
 
 export type LabsScalarFieldEnum = (typeof LabsScalarFieldEnum)[keyof typeof LabsScalarFieldEnum]
@@ -1668,7 +1803,6 @@ export type Local_stocksScalarFieldEnum = (typeof Local_stocksScalarFieldEnum)[k
 
 export const LocationsScalarFieldEnum = {
   location_id: 'location_id',
-  location_building: 'location_building',
   location_type: 'location_type'
 } as const
 
@@ -1711,20 +1845,6 @@ export const Assigned_teachersScalarFieldEnum = {
 } as const
 
 export type Assigned_teachersScalarFieldEnum = (typeof Assigned_teachersScalarFieldEnum)[keyof typeof Assigned_teachersScalarFieldEnum]
-
-
-export const OperationsScalarFieldEnum = {
-  operation_id: 'operation_id',
-  reagent_id: 'reagent_id',
-  user_id: 'user_id',
-  local_stock_id: 'local_stock_id',
-  operation_type: 'operation_type',
-  stock_difference: 'stock_difference',
-  operation_date: 'operation_date',
-  operation_description: 'operation_description'
-} as const
-
-export type OperationsScalarFieldEnum = (typeof OperationsScalarFieldEnum)[keyof typeof OperationsScalarFieldEnum]
 
 
 export const Request_detailsScalarFieldEnum = {
@@ -1777,7 +1897,9 @@ export type Shelf_levelsScalarFieldEnum = (typeof Shelf_levelsScalarFieldEnum)[k
 
 export const ShelvesScalarFieldEnum = {
   shelf_id: 'shelf_id',
-  shelf_category: 'shelf_category'
+  shelf_number: 'shelf_number',
+  shelf_category: 'shelf_category',
+  host_building: 'host_building'
 } as const
 
 export type ShelvesScalarFieldEnum = (typeof ShelvesScalarFieldEnum)[keyof typeof ShelvesScalarFieldEnum]
@@ -1824,6 +1946,39 @@ export const UsersScalarFieldEnum = {
 export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
 
 
+export const RestocksScalarFieldEnum = {
+  restock_id: 'restock_id',
+  reagent_id: 'reagent_id',
+  user_id: 'user_id',
+  local_stock_id: 'local_stock_id',
+  restock_units: 'restock_units',
+  restock_date: 'restock_date'
+} as const
+
+export type RestocksScalarFieldEnum = (typeof RestocksScalarFieldEnum)[keyof typeof RestocksScalarFieldEnum]
+
+
+export const TransferScalarFieldEnum = {
+  transfer_id: 'transfer_id',
+  reagent_id: 'reagent_id',
+  user_id: 'user_id',
+  local_stock_id: 'local_stock_id',
+  transfer_type: 'transfer_type',
+  stock_difference: 'stock_difference',
+  transfer_date: 'transfer_date'
+} as const
+
+export type TransferScalarFieldEnum = (typeof TransferScalarFieldEnum)[keyof typeof TransferScalarFieldEnum]
+
+
+export const Seeder_statusScalarFieldEnum = {
+  seeder_id: 'seeder_id',
+  seeder_status: 'seeder_status'
+} as const
+
+export type Seeder_statusScalarFieldEnum = (typeof Seeder_statusScalarFieldEnum)[keyof typeof Seeder_statusScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1833,7 +1988,8 @@ export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
 export const labsOrderByRelevanceFieldEnum = {
-  lab_name: 'lab_name'
+  lab_name: 'lab_name',
+  host_building: 'host_building'
 } as const
 
 export type labsOrderByRelevanceFieldEnum = (typeof labsOrderByRelevanceFieldEnum)[keyof typeof labsOrderByRelevanceFieldEnum]
@@ -1848,7 +2004,6 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const locationsOrderByRelevanceFieldEnum = {
-  location_building: 'location_building',
   location_type: 'location_type'
 } as const
 
@@ -1880,14 +2035,6 @@ export const rolesOrderByRelevanceFieldEnum = {
 export type rolesOrderByRelevanceFieldEnum = (typeof rolesOrderByRelevanceFieldEnum)[keyof typeof rolesOrderByRelevanceFieldEnum]
 
 
-export const operationsOrderByRelevanceFieldEnum = {
-  operation_type: 'operation_type',
-  operation_description: 'operation_description'
-} as const
-
-export type operationsOrderByRelevanceFieldEnum = (typeof operationsOrderByRelevanceFieldEnum)[keyof typeof operationsOrderByRelevanceFieldEnum]
-
-
 export const requestersOrderByRelevanceFieldEnum = {
   requester_first_name: 'requester_first_name',
   requester_middle_name: 'requester_middle_name',
@@ -1899,7 +2046,8 @@ export type requestersOrderByRelevanceFieldEnum = (typeof requestersOrderByRelev
 
 
 export const shelvesOrderByRelevanceFieldEnum = {
-  shelf_category: 'shelf_category'
+  shelf_category: 'shelf_category',
+  host_building: 'host_building'
 } as const
 
 export type shelvesOrderByRelevanceFieldEnum = (typeof shelvesOrderByRelevanceFieldEnum)[keyof typeof shelvesOrderByRelevanceFieldEnum]
@@ -1930,6 +2078,13 @@ export const usersOrderByRelevanceFieldEnum = {
 } as const
 
 export type usersOrderByRelevanceFieldEnum = (typeof usersOrderByRelevanceFieldEnum)[keyof typeof usersOrderByRelevanceFieldEnum]
+
+
+export const transferOrderByRelevanceFieldEnum = {
+  transfer_type: 'transfer_type'
+} as const
+
+export type transferOrderByRelevanceFieldEnum = (typeof transferOrderByRelevanceFieldEnum)[keyof typeof transferOrderByRelevanceFieldEnum]
 
 
 
@@ -2082,7 +2237,6 @@ export type GlobalOmitConfig = {
   permissions?: Prisma.permissionsOmit
   roles?: Prisma.rolesOmit
   assigned_teachers?: Prisma.assigned_teachersOmit
-  operations?: Prisma.operationsOmit
   request_details?: Prisma.request_detailsOmit
   requesters?: Prisma.requestersOmit
   requests?: Prisma.requestsOmit
@@ -2093,6 +2247,9 @@ export type GlobalOmitConfig = {
   teachers?: Prisma.teachersOmit
   thesis_authors?: Prisma.thesis_authorsOmit
   users?: Prisma.usersOmit
+  restocks?: Prisma.restocksOmit
+  transfer?: Prisma.transferOmit
+  seeder_status?: Prisma.seeder_statusOmit
 }
 
 /* Types for Logging */

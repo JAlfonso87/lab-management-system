@@ -23,6 +23,3 @@ main()
     console.log(chalk.red("< SISTEMA >: SE HA PRODUCIDO UN ERROR FATAL: " + error));
     new ServerShutdown().stopServices(1);
 })
-.finally(async () => {
-    await prisma.$disconnect
-})

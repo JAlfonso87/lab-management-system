@@ -28,50 +28,66 @@ export type AggregateShelves = {
 
 export type ShelvesAvgAggregateOutputType = {
   shelf_id: number | null
+  shelf_number: number | null
 }
 
 export type ShelvesSumAggregateOutputType = {
   shelf_id: number | null
+  shelf_number: number | null
 }
 
 export type ShelvesMinAggregateOutputType = {
   shelf_id: number | null
+  shelf_number: number | null
   shelf_category: string | null
+  host_building: string | null
 }
 
 export type ShelvesMaxAggregateOutputType = {
   shelf_id: number | null
+  shelf_number: number | null
   shelf_category: string | null
+  host_building: string | null
 }
 
 export type ShelvesCountAggregateOutputType = {
   shelf_id: number
+  shelf_number: number
   shelf_category: number
+  host_building: number
   _all: number
 }
 
 
 export type ShelvesAvgAggregateInputType = {
   shelf_id?: true
+  shelf_number?: true
 }
 
 export type ShelvesSumAggregateInputType = {
   shelf_id?: true
+  shelf_number?: true
 }
 
 export type ShelvesMinAggregateInputType = {
   shelf_id?: true
+  shelf_number?: true
   shelf_category?: true
+  host_building?: true
 }
 
 export type ShelvesMaxAggregateInputType = {
   shelf_id?: true
+  shelf_number?: true
   shelf_category?: true
+  host_building?: true
 }
 
 export type ShelvesCountAggregateInputType = {
   shelf_id?: true
+  shelf_number?: true
   shelf_category?: true
+  host_building?: true
   _all?: true
 }
 
@@ -163,7 +179,9 @@ export type shelvesGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ShelvesGroupByOutputType = {
   shelf_id: number
+  shelf_number: number
   shelf_category: string
+  host_building: string
   _count: ShelvesCountAggregateOutputType | null
   _avg: ShelvesAvgAggregateOutputType | null
   _sum: ShelvesSumAggregateOutputType | null
@@ -191,29 +209,38 @@ export type shelvesWhereInput = {
   OR?: Prisma.shelvesWhereInput[]
   NOT?: Prisma.shelvesWhereInput | Prisma.shelvesWhereInput[]
   shelf_id?: Prisma.IntFilter<"shelves"> | number
+  shelf_number?: Prisma.IntFilter<"shelves"> | number
   shelf_category?: Prisma.StringFilter<"shelves"> | string
+  host_building?: Prisma.StringFilter<"shelves"> | string
   shelf_levels?: Prisma.Shelf_levelsListRelationFilter
 }
 
 export type shelvesOrderByWithRelationInput = {
   shelf_id?: Prisma.SortOrder
+  shelf_number?: Prisma.SortOrder
   shelf_category?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
   shelf_levels?: Prisma.shelf_levelsOrderByRelationAggregateInput
   _relevance?: Prisma.shelvesOrderByRelevanceInput
 }
 
 export type shelvesWhereUniqueInput = Prisma.AtLeast<{
   shelf_id?: number
+  host_building_shelf_number?: Prisma.shelvesHost_buildingShelf_numberCompoundUniqueInput
   AND?: Prisma.shelvesWhereInput | Prisma.shelvesWhereInput[]
   OR?: Prisma.shelvesWhereInput[]
   NOT?: Prisma.shelvesWhereInput | Prisma.shelvesWhereInput[]
+  shelf_number?: Prisma.IntFilter<"shelves"> | number
   shelf_category?: Prisma.StringFilter<"shelves"> | string
+  host_building?: Prisma.StringFilter<"shelves"> | string
   shelf_levels?: Prisma.Shelf_levelsListRelationFilter
-}, "shelf_id">
+}, "shelf_id" | "host_building_shelf_number">
 
 export type shelvesOrderByWithAggregationInput = {
   shelf_id?: Prisma.SortOrder
+  shelf_number?: Prisma.SortOrder
   shelf_category?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
   _count?: Prisma.shelvesCountOrderByAggregateInput
   _avg?: Prisma.shelvesAvgOrderByAggregateInput
   _max?: Prisma.shelvesMaxOrderByAggregateInput
@@ -226,43 +253,59 @@ export type shelvesScalarWhereWithAggregatesInput = {
   OR?: Prisma.shelvesScalarWhereWithAggregatesInput[]
   NOT?: Prisma.shelvesScalarWhereWithAggregatesInput | Prisma.shelvesScalarWhereWithAggregatesInput[]
   shelf_id?: Prisma.IntWithAggregatesFilter<"shelves"> | number
+  shelf_number?: Prisma.IntWithAggregatesFilter<"shelves"> | number
   shelf_category?: Prisma.StringWithAggregatesFilter<"shelves"> | string
+  host_building?: Prisma.StringWithAggregatesFilter<"shelves"> | string
 }
 
 export type shelvesCreateInput = {
+  shelf_number: number
   shelf_category: string
+  host_building: string
   shelf_levels?: Prisma.shelf_levelsCreateNestedManyWithoutShelvesInput
 }
 
 export type shelvesUncheckedCreateInput = {
   shelf_id?: number
+  shelf_number: number
   shelf_category: string
+  host_building: string
   shelf_levels?: Prisma.shelf_levelsUncheckedCreateNestedManyWithoutShelvesInput
 }
 
 export type shelvesUpdateInput = {
+  shelf_number?: Prisma.IntFieldUpdateOperationsInput | number
   shelf_category?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
   shelf_levels?: Prisma.shelf_levelsUpdateManyWithoutShelvesNestedInput
 }
 
 export type shelvesUncheckedUpdateInput = {
   shelf_id?: Prisma.IntFieldUpdateOperationsInput | number
+  shelf_number?: Prisma.IntFieldUpdateOperationsInput | number
   shelf_category?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
   shelf_levels?: Prisma.shelf_levelsUncheckedUpdateManyWithoutShelvesNestedInput
 }
 
 export type shelvesCreateManyInput = {
   shelf_id?: number
+  shelf_number: number
   shelf_category: string
+  host_building: string
 }
 
 export type shelvesUpdateManyMutationInput = {
+  shelf_number?: Prisma.IntFieldUpdateOperationsInput | number
   shelf_category?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type shelvesUncheckedUpdateManyInput = {
   shelf_id?: Prisma.IntFieldUpdateOperationsInput | number
+  shelf_number?: Prisma.IntFieldUpdateOperationsInput | number
   shelf_category?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ShelvesScalarRelationFilter = {
@@ -276,27 +319,40 @@ export type shelvesOrderByRelevanceInput = {
   search: string
 }
 
+export type shelvesHost_buildingShelf_numberCompoundUniqueInput = {
+  host_building: string
+  shelf_number: number
+}
+
 export type shelvesCountOrderByAggregateInput = {
   shelf_id?: Prisma.SortOrder
+  shelf_number?: Prisma.SortOrder
   shelf_category?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
 }
 
 export type shelvesAvgOrderByAggregateInput = {
   shelf_id?: Prisma.SortOrder
+  shelf_number?: Prisma.SortOrder
 }
 
 export type shelvesMaxOrderByAggregateInput = {
   shelf_id?: Prisma.SortOrder
+  shelf_number?: Prisma.SortOrder
   shelf_category?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
 }
 
 export type shelvesMinOrderByAggregateInput = {
   shelf_id?: Prisma.SortOrder
+  shelf_number?: Prisma.SortOrder
   shelf_category?: Prisma.SortOrder
+  host_building?: Prisma.SortOrder
 }
 
 export type shelvesSumOrderByAggregateInput = {
   shelf_id?: Prisma.SortOrder
+  shelf_number?: Prisma.SortOrder
 }
 
 export type shelvesCreateNestedOneWithoutShelf_levelsInput = {
@@ -314,12 +370,16 @@ export type shelvesUpdateOneRequiredWithoutShelf_levelsNestedInput = {
 }
 
 export type shelvesCreateWithoutShelf_levelsInput = {
+  shelf_number: number
   shelf_category: string
+  host_building: string
 }
 
 export type shelvesUncheckedCreateWithoutShelf_levelsInput = {
   shelf_id?: number
+  shelf_number: number
   shelf_category: string
+  host_building: string
 }
 
 export type shelvesCreateOrConnectWithoutShelf_levelsInput = {
@@ -339,12 +399,16 @@ export type shelvesUpdateToOneWithWhereWithoutShelf_levelsInput = {
 }
 
 export type shelvesUpdateWithoutShelf_levelsInput = {
+  shelf_number?: Prisma.IntFieldUpdateOperationsInput | number
   shelf_category?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type shelvesUncheckedUpdateWithoutShelf_levelsInput = {
   shelf_id?: Prisma.IntFieldUpdateOperationsInput | number
+  shelf_number?: Prisma.IntFieldUpdateOperationsInput | number
   shelf_category?: Prisma.StringFieldUpdateOperationsInput | string
+  host_building?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -380,7 +444,9 @@ export type ShelvesCountOutputTypeCountShelf_levelsArgs<ExtArgs extends runtime.
 
 export type shelvesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   shelf_id?: boolean
+  shelf_number?: boolean
   shelf_category?: boolean
+  host_building?: boolean
   shelf_levels?: boolean | Prisma.shelves$shelf_levelsArgs<ExtArgs>
   _count?: boolean | Prisma.ShelvesCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["shelves"]>
@@ -389,10 +455,12 @@ export type shelvesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type shelvesSelectScalar = {
   shelf_id?: boolean
+  shelf_number?: boolean
   shelf_category?: boolean
+  host_building?: boolean
 }
 
-export type shelvesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"shelf_id" | "shelf_category", ExtArgs["result"]["shelves"]>
+export type shelvesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"shelf_id" | "shelf_number" | "shelf_category" | "host_building", ExtArgs["result"]["shelves"]>
 export type shelvesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   shelf_levels?: boolean | Prisma.shelves$shelf_levelsArgs<ExtArgs>
   _count?: boolean | Prisma.ShelvesCountOutputTypeDefaultArgs<ExtArgs>
@@ -405,7 +473,9 @@ export type $shelvesPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     shelf_id: number
+    shelf_number: number
     shelf_category: string
+    host_building: string
   }, ExtArgs["result"]["shelves"]>
   composites: {}
 }
@@ -777,7 +847,9 @@ export interface Prisma__shelvesClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface shelvesFieldRefs {
   readonly shelf_id: Prisma.FieldRef<"shelves", 'Int'>
+  readonly shelf_number: Prisma.FieldRef<"shelves", 'Int'>
   readonly shelf_category: Prisma.FieldRef<"shelves", 'String'>
+  readonly host_building: Prisma.FieldRef<"shelves", 'String'>
 }
     
 

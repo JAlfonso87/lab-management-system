@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseGuards, Query } from '@nestjs/common';
 import { ReagentService } from './reagent.service.js';
 import { Authorized_Roles } from '../_nestjs_decorators/roles.decorator.js';
 
@@ -8,8 +8,8 @@ export class ReagentController{
     constructor(private readonly reagentService : ReagentService) {}
     
     @Get('all')
-    fetchAllReagents() : Promise<any> {
-        return this.reagentService.fetchAllReagents();
+    getAllReagents() : Promise<any> {
+        return this.reagentService.getReagents();
     }
 
     @Get('/reagent/:id')
@@ -22,13 +22,29 @@ export class ReagentController{
         return this.reagentService.generateCode(parseInt(id));
     }
 
-    @Get('risk/:id')
-    fetchByRisk(@Param('id') id : string) : Promise<any> {
-        return this.reagentService.fetchByRisk(id)
+    @Get('/code')
+    getReagentByCode(@Query('code') reagent_code: string) {
+        return this.reagentService.getReagentBySpecs({"reagent_code": reagent_code})
+    }
+
+    @Get('/risk')
+    getReagentsByRisk(@Query('risk') reagent_risk: string){
+        return this.reagentService.getReagentsBySpecs({"reagent_risk": reagent_risk})
     }
 
     @Post('new_entry')
-    newEntry(@Body() newEntryParams:any ) : Promise<any> {
+    newEntry(@Body() newEntryParams: {
+        reagentData: {
+            reagent_name: string,
+            reagent_brand: string,
+            reagent_netweight: string,
+            reagent_risk: string
+        },
+        location_discriminator: {location_type: string},
+        location_data: {lab_name: string} | {shelf_level_number: number, shelf_category: string},
+        stock_parameter: {stock_diff: number}
+        
+    } ) : Promise<any> {
         return this.reagentService.newEntry(newEntryParams)
     }
 

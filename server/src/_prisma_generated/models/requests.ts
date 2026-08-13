@@ -418,6 +418,10 @@ export type requestsUncheckedUpdateManyWithoutRequestersNestedInput = {
   deleteMany?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
 }
 
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
+}
+
 export type requestsCreateNestedManyWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.requestsCreateWithoutUsersInput, Prisma.requestsUncheckedCreateWithoutUsersInput> | Prisma.requestsCreateWithoutUsersInput[] | Prisma.requestsUncheckedCreateWithoutUsersInput[]
   connectOrCreate?: Prisma.requestsCreateOrConnectWithoutUsersInput | Prisma.requestsCreateOrConnectWithoutUsersInput[]
