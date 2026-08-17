@@ -23,20 +23,20 @@ function Login() {
       event.preventDefault();
 
       if (username == "" || password == "") {
+
         alert("Debes ingresar usuario y contraseña");
         return;
+
       } else {
+
         const userData  = { "username": username, "password": password }
-        console.log(userData)
         
-        await api.post('/auth/login', userData, { timeout: 5000 })
+        await api.post('/auth/login', userData)
         .then((res) => {
             setResponse(res.data)
-            console.log(response)
-            //navigate("/home");
+            navigate("/home");
         })
         .catch((err) => console.error(err))
-
       }
   }
 

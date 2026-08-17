@@ -3,12 +3,18 @@ import "./Materials.css"
 import searchIcon from "../../assets/images/search.png"
 import image from "../../assets/images/image.png"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
 import Header from "../../components/Header/Header.jsx"
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import MaterialCard from "../../components/MaterialCard/MaterialCard.jsx";
 import MaterialModal from "../../components/MaterialModal/MaterialModal.jsx";
+
+const api = axios.create({
+  baseURL: "http://localhost:5000",
+  withCredentials: true
+})
 
 const normalizeText = text =>
   text
@@ -18,7 +24,8 @@ const normalizeText = text =>
 
 function Materials() {
 
-  const [materials, setMaterials] = useState([
+  const [materials, setMaterials] = useState([]);
+  /*const [materials, setMaterials] = useState([
     {
       id: 1,
       name: "Ácido sulfúrico",
@@ -67,7 +74,7 @@ function Materials() {
       status: "Disponible",
       stock: 12
     }
-  ]);
+  ]);*/
 
   const [search, setSearch] = useState("");
   const [colorFilter, setColorFilter] = useState("Todos");
@@ -80,16 +87,24 @@ function Materials() {
   const [selectedMaterial, setSelectedMaterial] = useState(null);
 
   const filteredMaterials = materials.filter(material =>
-    normalizeText(material.name).includes(normalizeText(searchTerm)) &&
-    (material.color === appliedColor || appliedColor === "Todos") &&
-    (material.location === appliedLocation || appliedLocation === "Todos")
+    normalizeText(material.reagent_name).includes(normalizeText(searchTerm)) &&
+    (material.reagent_risk === appliedColor || appliedColor === "Todos") /*&&
+    (material.location === appliedLocation || appliedLocation === "Todos")*/
   );
 
   const deleteMaterial = (id) => {
     setMaterials(
-      materials.filter(material => material.id !== id)
+      materials.filter(material => material.reagent_id !== id)
     );
   }
+
+  useEffect(() => {
+    const getReagents = async () => {
+        let reagents = await api.get('/reagents/all');
+        setMaterials(reagents.data)
+    } 
+    getReagents()
+  }, [])
 
   return (
     <div className="materials-page">
@@ -213,7 +228,7 @@ function Materials() {
 
               {filteredMaterials.map(material => (
                 <MaterialCard
-                  key={material.id}
+                  key={material.reagent_id}
                   image={image}
                   {...material}
                   onClick={() =>

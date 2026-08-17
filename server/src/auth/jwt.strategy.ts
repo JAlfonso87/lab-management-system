@@ -1,7 +1,7 @@
 /* Esta clase se encarga de gestionar la autenticación haciendo uso de
 la clase 'Passport', utilizada por NestJS para este fin.*/
 
-import { Injectable } from "@nestjs/common";
+import { Injectable, Request } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport"
 import { Strategy, ExtractJwt } from "passport-jwt";
 
@@ -9,7 +9,9 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 export class JwtStrategy extends PassportStrategy(Strategy){
     constructor(){
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromExtractors([
+                (req) => req.cookies['access-token']
+            ]),
             ignoreExpiration: false,
             secretOrKey: process.env.TKEY,
         });

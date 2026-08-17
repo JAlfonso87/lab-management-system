@@ -15,7 +15,7 @@ function MaterialModal({ material, image, onClose, onDelete }) {
         }
       >
         <div className="modal-top">
-          <h1 className="modal-material-title">{material.name}</h1>
+          <h1 className="modal-material-title">{material.reagent_name}</h1>
 
           <button
             type="button"
@@ -32,7 +32,7 @@ function MaterialModal({ material, image, onClose, onDelete }) {
 
           <img
             src={image}
-            alt={`Imagen de ${material.name}`}
+            alt={`Imagen de ${material.reagent_name}`}
             className="modal-material-img"
           />
 
@@ -43,10 +43,10 @@ function MaterialModal({ material, image, onClose, onDelete }) {
                 <h2 className="modal-title-text">Datos del reactivo</h2>
                 <hr className="right-line" />
               </div>
-              <span>Marca: {material.brand}</span>
+              <span>Marca: {material.reagent_brand}</span>
               <div>
-                <span className="modal-material-weight">Peso: {material.weight}</span>
-                <span>Color: {material.color}</span>
+                <span className="modal-material-weight">Peso: {material.reagent_netweight}</span>
+                <span>Color: {material.reagent_risk}</span>
               </div>
             </div>
 
@@ -71,7 +71,7 @@ function MaterialModal({ material, image, onClose, onDelete }) {
               </div>
               <span>Stock: {material.stock}</span>
               <span>
-                <strong>{material.status}</strong>
+                <strong>{material.reagent_status}</strong>
               </span>
             </div>
           </div>
