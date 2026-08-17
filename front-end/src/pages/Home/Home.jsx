@@ -14,7 +14,6 @@ function Home() {
   const [search, setSearch] = useState("");
 
   const navigate = useNavigate();
-
   const location = useLocation();
 
   return (
