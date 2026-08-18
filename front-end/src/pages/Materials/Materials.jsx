@@ -25,56 +25,6 @@ const normalizeText = text =>
 function Materials() {
 
   const [materials, setMaterials] = useState([]);
-  /*const [materials, setMaterials] = useState([
-    {
-      id: 1,
-      name: "Ácido sulfúrico",
-      brand: "Merck",
-      weight: "500 g",
-      color: "Amarillo",
-      location: "Laboratorio 1",
-      shelf: "A",
-      level: 2,
-      status: "Disponible",
-      stock: 15
-    },
-    {
-      id: 2,
-      name: "Ácido clorhídrico",
-      brand: "Sigma-Aldrich",
-      weight: "1 kg",
-      color: "Amarillo",
-      location: "Laboratorio 2",
-      shelf: "B",
-      level: 1,
-      status: "Disponible",
-      stock: 8
-    },
-    {
-      id: 3,
-      name: "Hidróxido de sodio",
-      brand: "Fermont",
-      weight: "250 g",
-      color: "Blanco",
-      location: "Laboratorio 1",
-      shelf: "C",
-      level: 3,
-      status: "Agotado",
-      stock: 0
-    },
-    {
-      id: 4,
-      name: "Sulfato de cobre",
-      brand: "J.T. Baker",
-      weight: "500 g",
-      color: "Azul",
-      location: "Laboratorio 3",
-      shelf: "A",
-      level: 2,
-      status: "Disponible",
-      stock: 12
-    }
-  ]);*/
 
   const [search, setSearch] = useState("");
   const [colorFilter, setColorFilter] = useState("Todos");

@@ -12,14 +12,19 @@ export class ReagentController{
         return this.reagentService.getReagents();
     }
 
+    @Get()
+    getReagents(@Query('page') page: Number){
+        return this.reagentService.getReagents(Number(page))
+    }
+
     @Get('/reagent/:id')
-    getReagent(@Param('id') id:string):Promise<any> {
-        return this.reagentService.getReagent(parseInt(id));
+    getReagent(@Param('id') id: string):Promise<any> {
+        return this.reagentService.getReagent(Number(id));
     }
 
     @Get('/code/:id')
     generateCode(@Param('id') id:string):Promise<any> {
-        return this.reagentService.generateCode(parseInt(id));
+        return this.reagentService.generateCode(Number(id));
     }
 
     @Get('/code')

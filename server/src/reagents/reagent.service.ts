@@ -7,19 +7,117 @@ import * as fs from 'fs';
 @Injectable()
 export class ReagentService {
     constructor(private prisma : PrismaService) {}
-    async getReagents () {
-        const reagents = await this.prisma.reagents.findMany();
-        return reagents;
+
+    async getReagentLocations(reagent_id: number) {
+        const locations = await this.prisma.local_stocks.findMany({
+            where: { reagent_id: reagent_id },
+            select: { 
+                location_id: true,
+                local_stock_units: true 
+            }
+        });
+
+        const storageData = async () => {
+            const shelfLevelData = await this.prisma.shelf_levels.findMany({
+                where: { shelf_level_id: { in: locations.map(location => location.location_id)}},
+                select: { 
+                    shelf_level_id: true,
+                    shelf_id: true,
+                    shelf_level_number: true
+                },
+                orderBy: [
+                    { shelf_id: "asc"}, 
+                    { shelf_level_number: "asc" }
+                ]
+            })
+
+            if(shelfLevelData.length == 0)
+                return null;
+
+            const shelfData = await this.prisma.shelves.findMany({
+                where: { shelf_id: { in: shelfLevelData.map(level => Number(level.shelf_id))}},
+                select: {
+                    shelf_id: true,
+                    host_building: true,
+                    shelf_number: true
+                },
+                orderBy: { shelf_id: "asc" }
+            })
+
+            const data: {}[] = shelfLevelData.map(shelfLevel => {
+                    const entry = Object.assign(
+                        {}, 
+                        shelfData.find(shelf => shelfLevel.shelf_id == shelf.shelf_id ), 
+                        shelfLevel, 
+                        { "local_stock_units": locations.find(location => location.location_id == shelfLevel.shelf_level_id)!.local_stock_units }
+                    )
+                    const { shelf_id, shelf_level_id, ...cleanEntry } = entry;
+                    return cleanEntry;
+                }
+            )
+
+            return data;
+        }
+        
+        const locationData = await storageData();
+
+        return locationData == null ? {} : locationData;
     }
 
-    async getReagent(reagent_id:number, select?:{}) {
-        const reagent = await this.prisma.reagents.findUnique({
+    async getReagentTotalStock(reagent_id: number) {
+        let total: number = 0;
+        const local_stocks = await this.prisma.local_stocks.findMany({
             where: { reagent_id: reagent_id },
-            select: select
+            select: { local_stock_units: true }
+        })
+        
+        if(local_stocks){
+            for (const local_stock of local_stocks)
+                total += local_stock.local_stock_units!
+        }
+
+        return total;
+    }
+
+    async getReagent(reagent_id: number): Promise<any> {
+
+        const reagent = await this.prisma.reagents.findUnique({
+            where: { reagent_id: reagent_id }
         })
         if(reagent == null)
             new HttpException("ERR_REAGENT_NOT_FOUND", HttpStatus.NOT_FOUND)
-        return reagent;
+
+        const locations = await this.getReagentLocations(reagent!.reagent_id);
+
+        const totalStock = await this.getReagentTotalStock(reagent!.reagent_id);
+
+        return Object.assign({}, { "reagent": reagent }, { "total_stock": totalStock }, { "locations": locations });
+    }
+
+    async getReagents (pageNumber?: number) {
+        let reagents: { reagent_id: number }[] = []
+            if(pageNumber){
+                reagents = await this.prisma.reagents.findMany({
+                    skip: (pageNumber - 1) * 10,
+                    take: 10
+                })
+            }
+            else {
+                reagents = await this.prisma.reagents.findMany({
+                    select: { reagent_id: true }
+                })
+            }
+
+            let holder: {}[] = [];
+            let reagentEntry = {};
+
+            for (const reagent of reagents) {
+                reagentEntry = await this.getReagent(reagent.reagent_id);
+                console.log(reagentEntry)
+                holder.push(reagentEntry)
+            }
+
+        return holder;
     }
 
     async getReagentBySpecs(
