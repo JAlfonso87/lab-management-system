@@ -14,7 +14,7 @@ function App() {
       <Link to="/home">
         Home
       </Link>
-      <Link to="/materials">
+      <Link to = "/materials">
         Materiales
       </Link>
       <Link to="/create-material">

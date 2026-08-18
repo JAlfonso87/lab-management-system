@@ -5,6 +5,7 @@ import image from "../../assets/images/image.png"
 
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { useSearchParams } from "react-router-dom";
 
 import Header from "../../components/Header/Header.jsx"
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
@@ -24,21 +25,32 @@ const normalizeText = text =>
 
 function Materials() {
 
-  const [materials, setMaterials] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page") ?? 1);
 
   const [search, setSearch] = useState("");
   const [colorFilter, setColorFilter] = useState("Todos");
   const [locationFilter, setLocationFilter] = useState("Todos")
 
   const [searchTerm, setSearchTerm] = useState("");
+
   const [appliedColor, setAppliedColor] = useState("Todos");
   const [appliedLocation, setAppliedLocation] = useState("Todos");
 
+  const [materials, setMaterials] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
 
+  const nextPage = () => {
+    setSearchParams({ page: page++ })
+  }
+
+  const prevPage = () => {
+    setSearchParams({ page: page-- })
+  }
+
   const filteredMaterials = materials.filter(material =>
-    normalizeText(material.reagent_name).includes(normalizeText(searchTerm)) &&
-    (material.reagent_risk === appliedColor || appliedColor === "Todos") /*&&
+    normalizeText(material.reagent.reagent_name).includes(normalizeText(searchTerm)) &&
+    (material.reagent.reagent_risk === appliedColor || appliedColor === "Todos") /*&&
     (material.location === appliedLocation || appliedLocation === "Todos")*/
   );
 
@@ -50,11 +62,12 @@ function Materials() {
 
   useEffect(() => {
     const getReagents = async () => {
-        let reagents = await api.get('/reagents/all');
+        let reagents = await api.get('/reagents?page=' + page);
         setMaterials(reagents.data)
     } 
-    getReagents()
-  }, [])
+    getReagents()    
+
+  }, [page])
 
   return (
     <div className="materials-page">
@@ -178,8 +191,8 @@ function Materials() {
 
               {filteredMaterials.map(material => (
                 <MaterialCard
-                  key={material.reagent_id}
-                  image={image}
+                  key = { material.reagent.reagent_id }
+                  image ={ image }
                   {...material}
                   onClick={() =>
                     setSelectedMaterial(material)
@@ -193,12 +206,12 @@ function Materials() {
 
           {selectedMaterial !== null && (
             <MaterialModal
-              material={selectedMaterial}
-              image={image}
+              material = { selectedMaterial }
+              image = { image }
               onClose={
                 () => setSelectedMaterial(null)
               }
-              onDelete={deleteMaterial}
+              onDelete = { deleteMaterial }
             />
           )}
 

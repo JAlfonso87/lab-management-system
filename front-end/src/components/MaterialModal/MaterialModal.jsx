@@ -1,13 +1,24 @@
 import "./MaterialModal.css"
+import MaterialLocationsModal from "../../components/MaterialLocationsModal/MaterialLocationsModal.jsx";
+import { useState } from "react";
 
-function MaterialModal({ material, image, onClose, onDelete }) {
+function MaterialModal({material, image, onClose, onDelete }) {
+  const [locationList, setLocationList ] = useState(false);
 
   return (
     <div
       className="modal-overlay"
       onClick={onClose}
     >
-
+      {
+        locationList && 
+        <MaterialLocationsModal
+          material = {material}
+          onClose = {
+            () => setLocationList(false)
+          }
+        />
+      }
       <div
         className="modal-content"
         onClick={(event) =>
@@ -15,11 +26,11 @@ function MaterialModal({ material, image, onClose, onDelete }) {
         }
       >
         <div className="modal-top">
-          <h1 className="modal-material-title">{material.reagent_name}</h1>
+          <h1 className="modal-material-title">{material.reagent.reagent_name}</h1>
 
           <button
             type="button"
-            onClick={onClose}
+            onClick = { onClose }
             className="modal-close-button"
             aria-label="Cerrar"
           >
@@ -32,7 +43,7 @@ function MaterialModal({ material, image, onClose, onDelete }) {
 
           <img
             src={image}
-            alt={`Imagen de ${material.reagent_name}`}
+            alt={`Imagen de ${material.reagent.reagent_name}`}
             className="modal-material-img"
           />
 
@@ -43,33 +54,50 @@ function MaterialModal({ material, image, onClose, onDelete }) {
                 <h2 className="modal-title-text">Datos del reactivo</h2>
                 <hr className="right-line" />
               </div>
-              <span>Marca: {material.reagent_brand}</span>
+              <span>Marca: {material.reagent.reagent_brand}</span>
               <div>
-                <span className="modal-material-weight">Peso: {material.reagent_netweight}</span>
-                <span>Color: {material.reagent_risk}</span>
+                <span className="modal-material-weight">Peso: {material.reagent.reagent_netweight}</span>
+                <span>Riesgo: {material.reagent.reagent_risk}</span>
               </div>
             </div>
 
             <div className="modal-location-info">
               <div className="modal-title-info">
                 <hr className="left-line" />
-                <h2 className="modal-title-text">Datos de la ubicación</h2>
+                <h2 className="modal-title-text">Disponibilidad</h2>
                 <hr className="right-line" />
               </div>
-              <span>{material.location}</span>
               <div>
-                <span className="modal-material-shelf">Estante: {material.shelf}</span>
-                <span>Nivel: {material.level}</span>
+              {
+                material.total_stock != 0 ? (
+                  <button
+                    className="modal-edit-button"
+                    type="button"
+                    onClick = { () => {
+                      console.log("ok");
+                      setLocationList(true)
+                    }
+                    }
+                  >
+                    Ver ubicaciones
+                  </button>
+                ) : (
+                  <p className="material-status">
+                    <strong>SIN UBICACIONES PARA MOSTRAR</strong>
+                  </p>
+                )
+              }
+                
               </div>
             </div>
 
             <div className="modal-stock-info">
               <div className="modal-title-info">
                 <hr className="left-line" />
-                <h2 className="modal-title-text">Datos del stock</h2>
+                <h2 className="modal-title-text">Stock total</h2>
                 <hr className="right-line" />
               </div>
-              <span>Stock: {material.stock}</span>
+              <span>Stock: {material.total_stock}</span>
               <span>
                 <strong>{material.reagent_status}</strong>
               </span>

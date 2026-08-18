@@ -61,7 +61,7 @@ export class ReagentService {
         
         const locationData = await storageData();
 
-        return locationData == null ? {} : locationData;
+        return locationData == null ? [] : locationData;
     }
 
     async getReagentTotalStock(reagent_id: number) {
