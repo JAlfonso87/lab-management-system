@@ -15,7 +15,7 @@ services:
       - LMSSTORAGE:/var/lib/mysql
       - ./_db/init:/docker-entrypoint-initdb.d
     healthcheck:
-      test: mysql --user=root --password=TAIR312FEAE --execute="SHOW DATABASES;"
+      test: mysql --user=${MYSQL_ROOT_USER} --password=${MYSQL_ROOT_PASSWORD} --execute="SHOW DATABASES;"
       interval: 10s
       retries: 5
       timeout: 45s

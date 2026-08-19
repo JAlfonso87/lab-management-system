@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../_prisma_nestjs/prisma.service.js';
-import { UnboxUnique } from '../.utils/Unbox.js';
-import QRCode from 'qrcode'
 import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';import QRCode from 'qrcode'
 
 @Injectable()
 export class ReagentService {
@@ -226,9 +226,14 @@ export class ReagentService {
                 throw new Error("Invalid data URL format");
             }
 
+            const desktopPath = path.join(os.homedir(), 'Desktop', 'QRs');
             const buffer = Buffer.from(base64Data, 'base64');
 
-            fs.writeFileSync("C:\\Users\\JALFO\\Pictures\\QRs\\"+reagentCode+".png", buffer);
+            fs.mkdirSync(desktopPath, { recursive: true });
+
+            const filePath = path.join(desktopPath, `${reagentCode}.png`);
+
+            fs.writeFileSync(filePath, buffer);
         } catch (err) {
             console.error('Failed to generate QR code:', err);
             throw new TypeError("ERROR");
