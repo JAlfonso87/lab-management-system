@@ -7,9 +7,9 @@ import chalk from "chalk";
 export class UserService {
     constructor(private prisma:PrismaService) {}
 
-    async findUser(username:string) {
+    async findUser(username: string) {
         return await this.prisma.users.findUnique({
-            where: {user_username: username},
+            where: { user_username: username },
         });
     }
 
@@ -17,60 +17,55 @@ export class UserService {
         return await this.prisma.users.findMany();
     }
 
-    async getRole(userId?:number, username?:string):Promise<any> {
+    async getRole( userId?: number, username?: string ): Promise<any> {
         if(userId == undefined && username == undefined)
-            throw new TypeError("ARGUMENTOS INSUFICIENTES PARA LA BÚSQUEDA DE ROLES.")
+            throw new TypeError('ARGUMENTOS INSUFICIENTES PARA LA BÚSQUEDA DE ROLES.');
 
         const roleId = this.prisma.users.findUnique({
-            where: username != undefined? {user_username: username}:{user_id: userId},
-            select: {
-                role_id: true
-            }
-        })
+            where: username != undefined ? { user_username: username } : { user_id: userId },
+            select: { role_id: true }
+        });
 
         if(!roleId)
-            throw new HttpException('ERR_UNASSIGNED_ROLE', HttpStatus.BAD_REQUEST)
+            throw new HttpException('ERR_UNASSIGNED_ROLE', HttpStatus.BAD_REQUEST);
         
         return roleId;
     }
 
-    async getPermissions(userId?:number, username?:string): Promise<string[]> {
+    async getPermissions(userId?: number, username?: string): Promise<string[]> {
         if(userId == undefined && username == undefined)
-            throw new TypeError("ARGUMENTOS INSUFICIENTES PARA LA BÚSQUEDA DE ROLES.")
+            throw new TypeError("ARGUMENTOS INSUFICIENTES PARA LA BÚSQUEDA DE ROLES.");
 
-        const role:{role_id:number} = await this.getRole(userId);
+        const role: { role_id: number } = await this.getRole(userId);
         const permissions = await this.prisma.roles_permissions.findMany({
-            where: {role_id : role.role_id},
-            select: {
-                permission_id: true
-            }
-        })
-        let result:string[] = []; 
+            where: { role_id : role.role_id },
+            select: { permission_id: true }
+        });
+
+        let result: string[] = []; 
 
         for(const permission of permissions)
         {
             const id = permission.permission_id;
-            const nameQuery: {permission_name:string} | null = await this.prisma.permissions.findUnique({
-                where: {permission_id: id},
-                select: {
-                    permission_name: true
-                }
-            })
-            result.push(nameQuery!.permission_name!)
+            const nameQuery: { permission_name:string } | null = await this.prisma.permissions.findUnique({
+                where: { permission_id: id },
+                select: { permission_name: true }
+            });
+            result.push(nameQuery!.permission_name!);
         }
 
         return result;    
     }
 
-    async newUser (registrationFields: {labName: string, firstName: string, middleName?: string, lastName: string, phoneNumber: string, username: string, password: string}) {
+    async newUser (registrationFields: { labName: string, firstName: string, middleName?: string, lastName: string, phoneNumber: string, username: string, password: string }) {
         const { labName, firstName, middleName, lastName, phoneNumber, username, password } = registrationFields;
         const lab: { lab_id: number } | null = await this.prisma.labs.findUnique({
             where: { lab_name: labName},
             select: { lab_id: true }
-        })
+        });
 
         if(lab == null)
-            throw new TypeError("ERR_LAB_NOT_FOUND")
+            throw new TypeError("ERR_LAB_NOT_FOUND");
 
         const securedPassword = await bcrypt.hash(password, 10);
         const createdUser = this.prisma.users.create({
@@ -84,56 +79,64 @@ export class UserService {
                 user_username: username,
                 user_password: securedPassword
             }
-        })
+        });
         return createdUser;
     }
 
-    async deleteUser(userPayload:{userId:number, username:string}, body:{username:string}){
+    async deleteUser (userPayload: { userId: number, username: string}, body: { username: string }) {
         const { userId, username } = userPayload;
-        const { username:targetUsername  } = body;
-        const permissions:string[] = await this.getPermissions(userPayload.userId);
-        let allow_operation:boolean;
-        allow_operation = userPayload.username == username ? permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others')
+        const { username: targetUsername  } = body;
+
+        const permissions: string[] = await this.getPermissions(userPayload.userId);
+
+        let allow_operation: boolean;
+        allow_operation = userPayload.username == username ? permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others');
 
         if(await this.findUser(targetUsername) == null)
-            throw new HttpException('ERR_USER_NOT_FOUND.', HttpStatus.NOT_FOUND)
+            throw new HttpException('ERR_USER_NOT_FOUND.', HttpStatus.NOT_FOUND);
 
         if(allow_operation) {
             const targetRole:{role_id:number} = await this.getRole(undefined, targetUsername);
             if(targetRole.role_id == 1){
+
                 const adminAvailable = await this.prisma.users.count({
                     where: {role_id:1}
-                })
+                });
+
                 if(adminAvailable == 1)
                 {
-                    console.log(chalk.red("< SISTEMA >: NO PUEDE SE PUEDE PROCEDER CON LA OPERACIÓN."))
-                    console.log(chalk.red("< SISTEMA >: MOTIVO: DEBE EXISTIR AL MENOS UN ADMINISTRADOR PARA EL MANEJO DEL SISTEMA."))
-                    throw new HttpException('ERR_RISKY_OPERATION_DETECTED', HttpStatus.FORBIDDEN)
-                }
+                    console.log(chalk.red("< SISTEMA >: NO PUEDE SE PUEDE PROCEDER CON LA OPERACIÓN."));
+                    console.log(chalk.red("< SISTEMA >: MOTIVO: DEBE EXISTIR AL MENOS UN ADMINISTRADOR PARA EL MANEJO DEL SISTEMA."));
+                    throw new HttpException('ERR_RISKY_OPERATION_DETECTED', HttpStatus.FORBIDDEN);
+                };
             }
-            const deletedUser = await this.prisma.users.delete({
-                where: {user_username: targetUsername}
-            })
 
-            return "EL USUARIO " + deletedUser.user_username + "HA SIDO BORRADO DEFINITIVAMENTE."
+            const deletedUser = await this.prisma.users.delete({
+                where: { user_username: targetUsername }
+            });
+
+            return "EL USUARIO " + deletedUser.user_username + "HA SIDO BORRADO DEFINITIVAMENTE.";
         }
-        else {
-            throw new HttpException('ERR_UNAUTHORIZED', HttpStatus.FORBIDDEN)
-        }
+        else 
+            throw new HttpException('ERR_UNAUTHORIZED', HttpStatus.FORBIDDEN);
+        
     }
 
-    async editUser(userPayload:{userId:number, username:string}, body: {username: string, fields: {user_password?:string}}){
+    async editUser( userPayload: {userId: number, username: string}, body: { username: string, fields: { user_password? :string }}) {
         const {userId, username} = userPayload;
-        const { username:targetUsername, fields } = body;
-        const permissions:string[] = await this.getPermissions(userId)
-        let forbidden_fields:string[] = ['user_id', 'lab_id']
-        let allow_operation:boolean;
+        const { username: targetUsername, fields } = body;
 
-        allow_operation = username == targetUsername ? permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others')
+        const permissions:string[] = await this.getPermissions(userId);
+        let forbidden_fields:string[] = ['user_id', 'lab_id'];
+
+        let allow_operation:boolean;
+        allow_operation = username == targetUsername ? permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others');
         
         if(allow_operation) { 
+
             if(await this.getRole(userId) == 2)
-                forbidden_fields.concat(['user_status','role_id'])
+                forbidden_fields.concat(['user_status','role_id']);
+
             const invalidFields = Object.keys(fields).filter(field => forbidden_fields.includes(field));
 
             if(invalidFields.length > 0){
@@ -141,17 +144,17 @@ export class UserService {
                     console.log("ERR_FORBIDDEN_UPDATE_DETECTED: " + invalidField)
                 });
                 throw new HttpException("ERR_FORBIDDEN_UPDATE_DETECTED", HttpStatus.FORBIDDEN)
-            }
+            };
 
             if(Object.keys(fields).includes('user_password'))
-                fields.user_password = await bcrypt.hash(fields.user_password, 10)
+                fields.user_password = await bcrypt.hash(fields.user_password, 10);
             
             const modifiedUser = this.prisma.users.update({
                 where: { user_username: targetUsername },
                 data: fields  
-            })
+            });
 
-            return modifiedUser
+            return modifiedUser;
         }
         else
             throw new HttpException('ERR_UNAUTHORIZED', HttpStatus.FORBIDDEN)

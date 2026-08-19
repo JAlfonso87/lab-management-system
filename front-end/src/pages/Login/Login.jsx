@@ -1,6 +1,7 @@
 import "./Login.css"
 
 import logo from "../../assets/images/logo.png"
+import axios from 'axios';
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +10,35 @@ function Login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [response, setResponse ] = useState(null);
 
   const navigate = useNavigate();
+
+  const api = axios.create({
+    baseURL: "http://localhost:5000",
+    withCredentials: true
+  })
+
+  const loginAttempt = async (event) => {
+      event.preventDefault();
+
+      if (username == "" || password == "") {
+
+        alert("Debes ingresar usuario y contraseña");
+        return;
+
+      } else {
+
+        const userData  = { "username": username, "password": password }
+        
+        await api.post('/auth/login', userData)
+        .then((res) => {
+            setResponse(res.data)
+            navigate("/home");
+        })
+        .catch((err) => console.error(err))
+      }
+  }
 
   return (
     <div className="login-page">
@@ -37,49 +65,27 @@ function Login() {
             Ingresa las credenciales para iniciar sesión
           </p>
 
-          <form
-            className="login-form"
-            onSubmit={(event) => {
-              event.preventDefault();
+          <form className = "login-form" onSubmit = { loginAttempt }>
 
-              if (!username || !password) {
-                alert("Debes ingresar usuario y contraseña");
-                return;
-              }
-
-              navigate("/home");
-            }}
-          >
-
-            <label htmlFor="username">
-              Usuario
-            </label>
-
+            <label htmlFor = "username"> Usuario </label>
             <input
-              id="username"
-              placeholder="Ingresa tu usuario"
-              type="text"
-              value={username}
-              onChange={event =>
-                setUsername(event.target.value)
-              }
+              id = "username"
+              placeholder = "Ingresa tu usuario"
+              type = "text"
+              value = { username }
+              onChange = { event => setUsername(event.target.value) }
             />
 
-            <label htmlFor="password">
-              Contraseña
-            </label>
-
+            <label htmlFor="password"> Contraseña </label>
             <input
-              id="password"
-              placeholder="Ingresa tu contraseña"
-              type="password"
-              value={password}
-              onChange={event =>
-                setPassword(event.target.value)
-              }
+              id = "password"
+              placeholder = "Ingresa tu contraseña"
+              type = "password"
+              value = { password }
+              onChange = { event => setPassword(event.target.value) }
             />
 
-            <button type="submit">Iniciar sesión</button>
+            <button type = "submit">Iniciar sesión</button>
 
           </form>
 

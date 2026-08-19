@@ -3,12 +3,19 @@ import "./Materials.css"
 import searchIcon from "../../assets/images/search.png"
 import image from "../../assets/images/image.png"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useSearchParams } from "react-router-dom";
 
 import Header from "../../components/Header/Header.jsx"
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import MaterialCard from "../../components/MaterialCard/MaterialCard.jsx";
 import MaterialModal from "../../components/MaterialModal/MaterialModal.jsx";
+
+const api = axios.create({
+  baseURL: "http://localhost:5000",
+  withCredentials: true
+})
 
 const normalizeText = text =>
   text
@@ -18,78 +25,49 @@ const normalizeText = text =>
 
 function Materials() {
 
-  const [materials, setMaterials] = useState([
-    {
-      id: 1,
-      name: "Ácido sulfúrico",
-      brand: "Merck",
-      weight: "500 g",
-      color: "Amarillo",
-      location: "Laboratorio 1",
-      shelf: "A",
-      level: 2,
-      status: "Disponible",
-      stock: 15
-    },
-    {
-      id: 2,
-      name: "Ácido clorhídrico",
-      brand: "Sigma-Aldrich",
-      weight: "1 kg",
-      color: "Amarillo",
-      location: "Laboratorio 2",
-      shelf: "B",
-      level: 1,
-      status: "Disponible",
-      stock: 8
-    },
-    {
-      id: 3,
-      name: "Hidróxido de sodio",
-      brand: "Fermont",
-      weight: "250 g",
-      color: "Blanco",
-      location: "Laboratorio 1",
-      shelf: "C",
-      level: 3,
-      status: "Agotado",
-      stock: 0
-    },
-    {
-      id: 4,
-      name: "Sulfato de cobre",
-      brand: "J.T. Baker",
-      weight: "500 g",
-      color: "Azul",
-      location: "Laboratorio 3",
-      shelf: "A",
-      level: 2,
-      status: "Disponible",
-      stock: 12
-    }
-  ]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page") ?? 1);
 
   const [search, setSearch] = useState("");
   const [colorFilter, setColorFilter] = useState("Todos");
   const [locationFilter, setLocationFilter] = useState("Todos")
 
   const [searchTerm, setSearchTerm] = useState("");
+
   const [appliedColor, setAppliedColor] = useState("Todos");
   const [appliedLocation, setAppliedLocation] = useState("Todos");
 
+  const [materials, setMaterials] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
 
+  const nextPage = () => {
+    setSearchParams({ page: page++ })
+  }
+
+  const prevPage = () => {
+    setSearchParams({ page: page-- })
+  }
+
   const filteredMaterials = materials.filter(material =>
-    normalizeText(material.name).includes(normalizeText(searchTerm)) &&
-    (material.color === appliedColor || appliedColor === "Todos") &&
-    (material.location === appliedLocation || appliedLocation === "Todos")
+    normalizeText(material.reagent.reagent_name).includes(normalizeText(searchTerm)) &&
+    (material.reagent.reagent_risk === appliedColor || appliedColor === "Todos") /*&&
+    (material.location === appliedLocation || appliedLocation === "Todos")*/
   );
 
   const deleteMaterial = (id) => {
     setMaterials(
-      materials.filter(material => material.id !== id)
+      materials.filter(material => material.reagent_id !== id)
     );
   }
+
+  useEffect(() => {
+    const getReagents = async () => {
+        let reagents = await api.get('/reagents?page=' + page);
+        setMaterials(reagents.data)
+    } 
+    getReagents()    
+
+  }, [page])
 
   return (
     <div className="materials-page">
@@ -213,8 +191,8 @@ function Materials() {
 
               {filteredMaterials.map(material => (
                 <MaterialCard
-                  key={material.id}
-                  image={image}
+                  key = { material.reagent.reagent_id }
+                  image ={ image }
                   {...material}
                   onClick={() =>
                     setSelectedMaterial(material)
@@ -228,12 +206,12 @@ function Materials() {
 
           {selectedMaterial !== null && (
             <MaterialModal
-              material={selectedMaterial}
-              image={image}
+              material = { selectedMaterial }
+              image = { image }
               onClose={
                 () => setSelectedMaterial(null)
               }
-              onDelete={deleteMaterial}
+              onDelete = { deleteMaterial }
             />
           )}
 

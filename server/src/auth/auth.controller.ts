@@ -1,4 +1,4 @@
-import { Controller, Post, Request, UseGuards } from "@nestjs/common";
+import { Controller, Post, Request, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service.js";
 import { PublicRoute } from "../_nestjs_decorators/public.decorator.js";
 import { LocalAuthGuard } from "./local-auth.guard.js";
@@ -10,8 +10,13 @@ export class AuthController {
     @PublicRoute()
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@Request() req){
-        return this.authService.generateToken(req.user);
+    async login(@Request() req, @Res({passthrough: true}) res){
+        const token = await this.authService.generateToken(req.user);
+        res.cookie('access-token', token, {
+            httpOnly: true,
+            secure: false
+        });
+        return { message: "OK" };
     }
 
 }

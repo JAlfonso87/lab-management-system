@@ -2,15 +2,9 @@ import "./MaterialCard.css"
 
 function MaterialCard({
   image,
-  name,
-  brand,
-  weight,
-  color,
-  location,
-  shelf,
-  level,
-  status,
-  stock,
+  reagent,
+  total_stock,
+  locations,
   onClick
 }) {
 
@@ -26,28 +20,28 @@ function MaterialCard({
       />
 
       <div className="material-info">
-        <p className="material-name">{name}</p>
-        <span className="material-brand">Marca: {brand}</span>
+        <p className="material-name">{reagent.reagent_name}</p>
+        <span className="material-brand">Marca: {reagent.reagent_brand}</span>
         <div>
-          <span>Peso: {weight}</span>
-          <span>Color: {color}</span>
+          <span>Peso: {reagent.reagent_netweight}</span>
+          <span>Color: {reagent.reagent_risk}</span>
         </div>
       </div>
 
       <div className="location-info">
-        <p className="material-location">{location}</p>
+        <p className="material-location"></p>
         <div>
-          <span className="material-shelf">Estante: {shelf}</span>
-          <span className="material-level">Nivel: {level}</span>
+          <span className="material-shelf">Estante: </span>
+          <span className="material-level">Nivel: </span>
         </div>
       </div>
 
       <div className="stock-info">
         <div>
           <p className="material-status">
-            <strong>{status}</strong>
+            <strong>{total_stock != 0? "DISPONIBLE" : "AGOTADO"}</strong>
           </p>
-          <span className="material-stock">Stock: {stock}</span>
+          <span className="material-stock">Stock: {total_stock}</span>
         </div>
       </div>
     </div>

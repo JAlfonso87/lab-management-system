@@ -74,8 +74,8 @@ export class LocationsService {
     }
 
     async getLabInventory(lab_name: string){
-        const lab_id: Promise<number> = this.getLocationID("LAB", { lab_name: lab_name });
-        const inventory = this.prisma.local_stocks.findMany({
+        const lab_id: number = await this.getLocationID("LAB", { lab_name: lab_name });
+        const inventory = await this.prisma.local_stocks.findMany({
             where: { location_id: Number(lab_id)}
         })
         return inventory;
