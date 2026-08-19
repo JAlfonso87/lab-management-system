@@ -94,17 +94,19 @@ export class ReagentService {
         return Object.assign({}, { "reagent": reagent }, { "total_stock": totalStock }, { "locations": locations });
     }
 
-    async getReagents (pageNumber?: number) {
+    async getReagents (pageNumber?: number, risk?: string) {
         let reagents: { reagent_id: number }[] = []
             if(pageNumber){
                 reagents = await this.prisma.reagents.findMany({
+                    where: risk != null? { reagent_risk: risk } : {},
                     skip: (pageNumber - 1) * 10,
                     take: 10
                 })
             }
             else {
                 reagents = await this.prisma.reagents.findMany({
-                    select: { reagent_id: true }
+                    where: risk != undefined? { reagent_risk: risk } : {},
+                    select: { reagent_id: true },
                 })
             }
 

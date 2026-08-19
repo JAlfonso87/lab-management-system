@@ -24,7 +24,7 @@ function MaterialCard({
         <span className="material-brand">Marca: {reagent.reagent_brand}</span>
         <div>
           <span>Peso: {reagent.reagent_netweight}</span>
-          <span>Color: {reagent.reagent_risk}</span>
+          <span>Riesgo: {reagent.reagent_risk}</span>
         </div>
       </div>
 

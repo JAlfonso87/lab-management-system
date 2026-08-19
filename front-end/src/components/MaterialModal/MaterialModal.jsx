@@ -1,24 +1,12 @@
 import "./MaterialModal.css"
-import MaterialLocationsModal from "../../components/MaterialLocationsModal/MaterialLocationsModal.jsx";
 import { useState } from "react";
 
 function MaterialModal({material, image, onClose, onDelete }) {
-  const [locationList, setLocationList ] = useState(false);
-
   return (
     <div
       className="modal-overlay"
       onClick={onClose}
     >
-      {
-        locationList && 
-        <MaterialLocationsModal
-          material = {material}
-          onClose = {
-            () => setLocationList(false)
-          }
-        />
-      }
       <div
         className="modal-content"
         onClick={(event) =>

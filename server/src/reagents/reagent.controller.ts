@@ -13,8 +13,11 @@ export class ReagentController{
     }
 
     @Get()
-    getReagents(@Query('page') page: Number){
-        return this.reagentService.getReagents(Number(page))
+    getReagents(
+        @Query('risk') risk: string | undefined,
+        @Query('page') page: Number
+    ) {
+        return this.reagentService.getReagents(Number(page), risk)
     }
 
     @Get('/reagent/:id')

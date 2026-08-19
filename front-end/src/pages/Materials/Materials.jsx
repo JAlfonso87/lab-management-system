@@ -26,7 +26,7 @@ const normalizeText = text =>
 function Materials() {
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get("page") ?? 1);
+  const [loading, setLoading] = useState(false);
 
   const [search, setSearch] = useState("");
   const [colorFilter, setColorFilter] = useState("Todos");
@@ -50,7 +50,7 @@ function Materials() {
 
   const filteredMaterials = materials.filter(material =>
     normalizeText(material.reagent.reagent_name).includes(normalizeText(searchTerm)) &&
-    (material.reagent.reagent_risk === appliedColor || appliedColor === "Todos") /*&&
+    (material.reagent.reagent_risk === appliedColor.toUpperCase() || appliedColor.toUpperCase() === "TODOS") /*&&
     (material.location === appliedLocation || appliedLocation === "Todos")*/
   );
 
@@ -60,14 +60,44 @@ function Materials() {
     );
   }
 
-  useEffect(() => {
-    const getReagents = async () => {
-        let reagents = await api.get('/reagents?page=' + page);
-        setMaterials(reagents.data)
-    } 
-    getReagents()    
+  const getReagents = async (risk, page) => {
+    setLoading(true);
+    try {
+      let route = risk != "TODOS" ? ('/reagents?risk='+ risk +'&page=' + page) : ('/reagents?page=' + page);
+      console.log(route)
+      let reagents = await api.get(route);
+      console.log(reagents)
+      setMaterials(reagents.data)
+    }
+    finally {
+      setLoading(false);
+      console.log(loading)
+    }
+  } 
 
-  }, [page])
+  useEffect(() => {
+    if(!searchParams.has('page') || !searchParams.has('risk')){
+      setSearchParams({
+        risk: 'TODOS',
+        page: 1
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    setSearchParams({
+      risk: appliedColor.toUpperCase(),
+      page: 1
+    })
+  }, [appliedColor])
+
+  useEffect(() => {
+    const page = searchParams.get('page') ?? 1;
+    const risk = searchParams.get('risk') ?? "TODOS";
+    
+    getReagents(risk, page);
+
+  }, [searchParams])
 
   return (
     <div className="materials-page">
@@ -142,6 +172,7 @@ function Materials() {
                   <option>Blanco</option>
                   <option>Amarillo</option>
                   <option>Rojo</option>
+                  <option>Verde</option>
                 </select>
 
                 <label
@@ -175,8 +206,16 @@ function Materials() {
 
             <h2 className="materials-subtitle">Resultados</h2>
 
-            {filteredMaterials.length === 0
-              ? (
+            {
+              loading ? 
+              (
+                <p className="no-results">
+                  Cargando...<br />
+                </p>
+              )
+              : 
+              filteredMaterials.length === 0 ? 
+              (
                 <p className="no-results">
                   No se encontraron resultados relacionados a:<br />
                   Busqueda: <strong>{searchTerm}</strong> <br />
@@ -192,9 +231,9 @@ function Materials() {
               {filteredMaterials.map(material => (
                 <MaterialCard
                   key = { material.reagent.reagent_id }
-                  image ={ image }
+                  image = { image }
                   {...material}
-                  onClick={() =>
+                  onClick = {() =>
                     setSelectedMaterial(material)
                   }
                 />
