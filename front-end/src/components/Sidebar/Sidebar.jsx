@@ -51,9 +51,9 @@ function Sidebar() {
       </Link>
 
       <Link
-        to={"/create-material"}
+        to={"/add-material"}
         className={
-          `sidebar-link ${location.pathname === "/create-material"
+          `sidebar-link ${location.pathname === "/add-material"
             ? "selected-link" : ""
           }`
         }

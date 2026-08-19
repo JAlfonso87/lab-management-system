@@ -39,9 +39,9 @@ function MaterialModal({ material, image, onClose, onDelete }) {
           <div className="modal-material-properties">
             <div className="modal-material-info">
               <div className="modal-title-info">
-                <hr className="left-line" />
+                <hr className="modal-left-line" />
                 <h2 className="modal-title-text">Datos del reactivo</h2>
-                <hr className="right-line" />
+                <hr className="modal-right-line" />
               </div>
               <span>Marca: {material.brand}</span>
               <div>
@@ -52,9 +52,9 @@ function MaterialModal({ material, image, onClose, onDelete }) {
 
             <div className="modal-location-info">
               <div className="modal-title-info">
-                <hr className="left-line" />
+                <hr className="modal-left-line" />
                 <h2 className="modal-title-text">Datos de la ubicación</h2>
-                <hr className="right-line" />
+                <hr className="modal-right-line" />
               </div>
               <span>{material.location}</span>
               <div>
@@ -65,9 +65,9 @@ function MaterialModal({ material, image, onClose, onDelete }) {
 
             <div className="modal-stock-info">
               <div className="modal-title-info">
-                <hr className="left-line" />
+                <hr className="modal-left-line" />
                 <h2 className="modal-title-text">Datos del stock</h2>
-                <hr className="right-line" />
+                <hr className="modal-right-line" />
               </div>
               <span>Stock: {material.stock}</span>
               <span>
