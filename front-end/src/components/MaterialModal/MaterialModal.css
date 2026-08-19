@@ -79,14 +79,14 @@
   margin: 0;
 }
 
-.left-line {
+.modal-left-line {
   border: none;
   border-top: 1px solid #949494;
   width: 20px;
   margin: 12px 1px 12px 0;
 }
 
-.right-line {
+.modal-right-line {
   border: none;
   border-top: 1px solid #949494;
   flex: 1;
@@ -142,4 +142,5 @@
 .bottom-line {
   border: 1px solid #949494;
   width: 100%;
+  margin-bottom: 15px;
 }
