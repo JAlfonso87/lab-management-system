@@ -74,7 +74,7 @@ function Home() {
               type="button"
               className="add-button"
               onClick={() =>
-                navigate("/create-material")
+                navigate("/add-material")
               }
             >
               <img

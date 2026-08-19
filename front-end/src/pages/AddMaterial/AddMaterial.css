@@ -1,0 +1,207 @@
+.add-material-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.add-material-content {
+  display: flex;
+  flex: 1;
+}
+
+.add-material-main {
+  display: flex;
+  flex-direction: column;
+  padding: 70px 50px;
+  flex: 1;
+}
+
+.add-material-title {
+  text-align: left;
+  font-size: 38px;
+  font-weight: 400;
+  width: 100%;
+  margin: 0 0 35px 0;
+}
+
+.add-material-text {
+  text-align: left;
+}
+
+.material-properties {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.subtitle-container {
+  display: flex;
+  justify-content: left;
+}
+
+.subtitle-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0
+}
+
+.add-material-left-line {
+  border: none;
+  border-top: 1px solid #949494;
+  width: 20px;
+  margin: 12px 1px 12px 0;
+}
+
+.add-material-right-line {
+  border: none;
+  border-top: 1px solid #949494;
+  flex: 1;
+  margin: 12px 0 12px 5px;
+}
+
+.properties-container1 {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.name-input-container {
+  flex: 2;
+  margin-right: 25px;
+}
+
+.name-input {
+  width: 100%;
+}
+
+.brand-input-container {
+  flex: 1.5;
+}
+
+.brand-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.properties-container2 {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.weight-unit-container {
+  display: flex;
+  align-items: end;
+  margin-right: 25px;
+}
+
+.weight-unit-sign {
+  display: flex;
+  align-items: center;
+  height: 39px;
+  font-size: 18px;
+  margin: 0 5px;
+}
+
+.weight-input {
+  width: 80px;
+}
+
+
+.unit-input {
+  width: 100px;
+  box-sizing: border-box;
+}
+
+.color-input {
+  width: 150px;
+  box-sizing: border-box;
+}
+
+.properties-container3 {
+  display: flex;
+}
+
+.material-location {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.location-container {
+  display: flex;
+}
+
+.location-input-container {
+  margin-right: 25px;
+}
+
+.location-input {
+  width: 150px;
+}
+
+.shelf-input-container {
+  margin-right: 25px;
+}
+
+.shelf-input {
+  width: 100px;
+}
+
+.level-input {
+  width: 80px;
+}
+
+.material-stock {
+  margin-bottom: 25px;
+}
+
+.stock-input {
+  width: 80px;
+}
+
+.input-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.add-material-page label {
+  font-size: 16px;
+}
+
+.add-material-page input,
+.add-material-page select {
+  height: 39px;
+  padding-left: 25px;
+  box-sizing: border-box;
+  border: 1px solid #D0D0D0;
+  border-radius: 15px;
+  outline: none;
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  transition: 0.2s;
+}
+
+.add-material-page input:focus,
+.add-material-page select:focus {
+  border-color: #4A90E2;
+}
+
+.add-bottom-line {
+  border-top: 1px solid #949494;
+  width: 300px;
+  margin-bottom: 15px;
+}
+
+.add-material-button {
+  padding: 10px 30px;
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+}
+
+.add-material-button:hover {
+  background-color: #dddddd;
+}

@@ -2,7 +2,7 @@ import { Routes, Route, Link } from "react-router-dom"
 import Login from "./pages/Login/Login"
 import Home from "./pages/Home/Home"
 import Materials from "./pages/Materials/Materials"
-import CreateMaterial from "./pages/CreateMaterial/CreateMaterial"
+import AddMaterial from "./pages/AddMaterial/AddMaterial"
 import EditMaterial from "./pages/EditMaterial/EditMaterial"
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
       <Link to = "/materials">
         Materiales
       </Link>
-      <Link to="/create-material">
+      <Link to="/add-material">
         Crear
       </Link>
       <Link to="/edit-material">
@@ -38,8 +38,8 @@ function App() {
           element={<Materials />}
         />
         <Route
-          path="/create-material"
-          element={<CreateMaterial />}
+          path="/add-material"
+          element={<AddMaterial />}
         />
         <Route
           path="/edit-material"

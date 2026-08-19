@@ -50,9 +50,9 @@ function MaterialModal({material, image, onClose, onDelete }) {
           <div className="modal-material-properties">
             <div className="modal-material-info">
               <div className="modal-title-info">
-                <hr className="left-line" />
+                <hr className="modal-left-line" />
                 <h2 className="modal-title-text">Datos del reactivo</h2>
-                <hr className="right-line" />
+                <hr className="modal-right-line" />
               </div>
               <span>Marca: {material.reagent.reagent_brand}</span>
               <div>
@@ -63,9 +63,9 @@ function MaterialModal({material, image, onClose, onDelete }) {
 
             <div className="modal-location-info">
               <div className="modal-title-info">
-                <hr className="left-line" />
-                <h2 className="modal-title-text">Disponibilidad</h2>
-                <hr className="right-line" />
+                <hr className="modal-left-line" />
+                <h2 className="modal-title-text">Datos de la ubicación</h2>
+                <hr className="modal-right-line" />
               </div>
               <div>
               {
@@ -93,9 +93,9 @@ function MaterialModal({material, image, onClose, onDelete }) {
 
             <div className="modal-stock-info">
               <div className="modal-title-info">
-                <hr className="left-line" />
-                <h2 className="modal-title-text">Stock total</h2>
-                <hr className="right-line" />
+                <hr className="modal-left-line" />
+                <h2 className="modal-title-text">Datos del stock</h2>
+                <hr className="modal-right-line" />
               </div>
               <span>Stock: {material.total_stock}</span>
               <span>
