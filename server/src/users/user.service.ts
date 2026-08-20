@@ -7,6 +7,22 @@ import chalk from "chalk";
 export class UserService {
     constructor(private prisma:PrismaService) {}
 
+    async userExists(username: string) {
+        const user = await this.prisma.users.findFirst({
+            where: {user_username: username}
+        })
+        return user ? 1 : 0;
+    }
+
+    async userStatus(username: string){
+        const status = await this.prisma.users.findUnique({
+            where: {user_username: username},
+            select: {user_status: true}
+        })
+
+        return status!.user_status;
+    }
+
     async findUser(username: string) {
         return await this.prisma.users.findUnique({
             where: { user_username: username },
@@ -60,7 +76,7 @@ export class UserService {
     async newUser (registrationFields: { labName: string, firstName: string, middleName?: string, lastName: string, phoneNumber: string, username: string, password: string }) {
         const { labName, firstName, middleName, lastName, phoneNumber, username, password } = registrationFields;
         const lab: { lab_id: number } | null = await this.prisma.labs.findUnique({
-            where: { lab_name: labName},
+            where: { lab_name: labName },
             select: { lab_id: true }
         });
 
@@ -68,6 +84,7 @@ export class UserService {
             throw new TypeError("ERR_LAB_NOT_FOUND");
 
         const securedPassword = await bcrypt.hash(password, 10);
+        
         const createdUser = this.prisma.users.create({
             data: {
                 lab_id: lab.lab_id,

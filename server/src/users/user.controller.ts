@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query, Req } from '@nestjs/common';
 import { UserService } from './user.service.js';
 import { PublicRoute } from '../_nestjs_decorators/public.decorator.js';
 import { Authorized_Roles } from '../_nestjs_decorators/roles.decorator.js';
@@ -9,9 +9,16 @@ export class UserController {
     constructor(private readonly userService : UserService){}
 
     @PublicRoute()
-    @Post('register')
+    @Post('signup')
     newUser(@Body() userData:any) : Promise<any> {
         return this.userService.newUser(userData);
+    }
+
+    @PublicRoute()
+    @Get('check')
+    userExists(@Query('username') username: string) {
+        console.log(username)
+        return this.userService.userExists(username)
     }
 
     @Get('all')

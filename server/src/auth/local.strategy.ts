@@ -9,11 +9,8 @@ export class LocalStrategy extends PassportStrategy(Strategy){
         super();
     }
 
-    async validate(username:string, password:string){
+    async validate(username:string, password:string) {
         const user = await this.authService.validateUser(username, password);
-        if(!user || user.user_status == 0){
-            throw new HttpException('SU CUENTA ESTÁ PENDIENTE DE VALIDACIÓN. POR FAVOR, CONTACTE A UN ADMINISTRADOR PARA SU ACTIVACIÓN.', HttpStatus.FORBIDDEN);
-        }
         return user;
     }
 }

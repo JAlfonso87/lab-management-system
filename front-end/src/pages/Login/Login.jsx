@@ -31,12 +31,21 @@ function Login() {
 
         const userData  = { "username": username, "password": password }
         
-        await api.post('/auth/login', userData)
-        .then((res) => {
+        try {
+          const response = await api.post('/auth/login', userData)
+          if(response.data != "INACTIVE") {
             setResponse(res.data)
             navigate("/home");
-        })
-        .catch((err) => console.error(err))
+          }
+          else
+            alert("Tu cuenta está pendiente de validación. Ponte en contacto con un administrador.")
+        }
+        catch (err) {
+          if (err.response?.status === 401) 
+            alert("ERROR: Usuario y/o contraseña incorrectos.");
+          else 
+            alert(err);
+        }
       }
   }
 
@@ -90,10 +99,23 @@ function Login() {
           </form>
 
         </div>
-
+        
       </div>
-
+      <div style={{marginTop:"20px", display: "flex"}}>
+        <p className="login-subtitle" style={{fontSize: "15px"}}>
+              ¿Aún no tienes una cuenta? Haz click 
+        </p>
+        <p 
+          className = "login-subtitle" 
+          style = {{fontSize: "15px", marginLeft: "5px", cursor: "pointer", color: "green"}}
+          onClick = { () => navigate('/signup')}
+        >
+              aquí 
+        </p>
+      </div>
     </div>
+    
+    
   );
 }
 
