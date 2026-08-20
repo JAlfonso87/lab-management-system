@@ -4,12 +4,16 @@ import Home from "./pages/Home/Home"
 import Materials from "./pages/Materials/Materials"
 import AddMaterial from "./pages/AddMaterial/AddMaterial"
 import EditMaterial from "./pages/EditMaterial/EditMaterial"
+import SignUp from "./pages/SignUp/SignUp"
 
 function App() {
   return (
     <>
       <Link to="/login">
         Login
+      </Link>
+      <Link to="/signup">
+        Signup
       </Link>
       <Link to="/home">
         Home
@@ -44,6 +48,10 @@ function App() {
         <Route
           path="/edit-material"
           element={<EditMaterial />}
+        />
+        <Route
+          path="/signup"
+          element={<SignUp />}
         />
       </Routes>
     </>

@@ -5,6 +5,14 @@ import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
 export class LocationsService {
     constructor(private prisma: PrismaService){}
 
+    async getLabs(host_building: string){
+        const labs = await this.prisma.labs.findMany({
+            where: { host_building: host_building },
+            select: { lab_name: true} 
+        })
+        return labs;
+    }
+
     async getLocationID(locationType:string, locationData:object){
         let locationID:number = 0;
 
