@@ -11,7 +11,6 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Request() req, @Res({passthrough: true}) res){
-        console.log(req)
         if(req.user != 0) {
             const isUserActive = await this.authService.isUserActive(req.user.user_username);
             if(isUserActive == 1){

@@ -34,7 +34,7 @@ function Login() {
         try {
           const response = await api.post('/auth/login', userData)
           if(response.data != "INACTIVE") {
-            setResponse(res.data)
+            setResponse(response.data)
             navigate("/home");
           }
           else
