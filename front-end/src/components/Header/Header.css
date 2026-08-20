@@ -1,9 +1,17 @@
 .header-content {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+
   display: flex;
   align-items: center;
   height: 50px;
   padding: 5px 20px;
   box-shadow: 0 0 20px rgb(221, 221, 221);
+
+  z-index: -1;
 }
 
 .header-img {

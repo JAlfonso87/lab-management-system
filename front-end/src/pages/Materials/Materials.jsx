@@ -63,7 +63,7 @@ function Materials() {
   const getReagents = async (risk, page) => {
     setLoading(true);
     try {
-      let route = risk != "TODOS" ? ('/reagents?risk='+ risk +'&page=' + page) : ('/reagents?page=' + page);
+      let route = risk != "TODOS" ? ('/reagents?risk=' + risk + '&page=' + page) : ('/reagents?page=' + page);
       console.log(route)
       let reagents = await api.get(route);
       console.log(reagents)
@@ -73,10 +73,10 @@ function Materials() {
       setLoading(false);
       console.log(loading)
     }
-  } 
+  }
 
   useEffect(() => {
-    if(!searchParams.has('page') || !searchParams.has('risk')){
+    if (!searchParams.has('page') || !searchParams.has('risk')) {
       setSearchParams({
         risk: 'TODOS',
         page: 1
@@ -94,7 +94,7 @@ function Materials() {
   useEffect(() => {
     const page = searchParams.get('page') ?? 1;
     const risk = searchParams.get('risk') ?? "TODOS";
-    
+
     getReagents(risk, page);
 
   }, [searchParams])
@@ -207,33 +207,33 @@ function Materials() {
             <h2 className="materials-subtitle">Resultados</h2>
 
             {
-              loading ? 
-              (
-                <p className="no-results">
-                  Cargando...<br />
-                </p>
-              )
-              : 
-              filteredMaterials.length === 0 ? 
-              (
-                <p className="no-results">
-                  No se encontraron resultados relacionados a:<br />
-                  Busqueda: <strong>{searchTerm}</strong> <br />
-                  Color: <strong>{appliedColor}</strong> <br />
-                  Ubicación: <strong>{appliedLocation}</strong>
-                </p>
-              )
-              : null
+              loading ?
+                (
+                  <p className="no-results">
+                    Cargando...<br />
+                  </p>
+                )
+                :
+                filteredMaterials.length === 0 ?
+                  (
+                    <p className="no-results">
+                      No se encontraron resultados relacionados a:<br />
+                      Busqueda: <strong>{searchTerm}</strong> <br />
+                      Color: <strong>{appliedColor}</strong> <br />
+                      Ubicación: <strong>{appliedLocation}</strong>
+                    </p>
+                  )
+                  : null
             }
 
             <div className="cards-container">
 
               {filteredMaterials.map(material => (
                 <MaterialCard
-                  key = { material.reagent.reagent_id }
-                  image = { image }
+                  key={material.reagent.reagent_id}
+                  image={image}
                   {...material}
-                  onClick = {() =>
+                  onClick={() =>
                     setSelectedMaterial(material)
                   }
                 />
@@ -241,16 +241,21 @@ function Materials() {
 
             </div>
 
+            <div>
+              <button>&lt;</button>
+              <button>&gt;</button>
+            </div>
+
           </section>
 
           {selectedMaterial !== null && (
             <MaterialModal
-              material = { selectedMaterial }
-              image = { image }
+              material={selectedMaterial}
+              image={image}
               onClose={
                 () => setSelectedMaterial(null)
               }
-              onDelete = { deleteMaterial }
+              onDelete={deleteMaterial}
             />
           )}
 
