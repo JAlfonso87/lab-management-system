@@ -1,7 +1,20 @@
 .sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: calc(100vh - 60px);
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   width: 200px;
   box-shadow: 0 10px 20px rgb(221, 221, 221);
+
+  z-index: 99;
 }
+
 
 .sidebar-link {
   display: flex;
@@ -11,6 +24,7 @@
   margin: 25px 5px;
   border-radius: 10px;
   transition: 0.2s;
+  box-sizing: content-box;
 }
 
 .sidebar-link:hover {

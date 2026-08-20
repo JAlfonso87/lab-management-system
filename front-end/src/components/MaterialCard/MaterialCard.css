@@ -16,13 +16,19 @@
 .material-info {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
-  margin-bottom: 5px;
+  margin: 0 10px 5px 10px;
 }
 
 .material-name {
   text-align: left;
   font-size: 16px;
+  height: 47px;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .material-brand {
@@ -40,8 +46,7 @@
 .location-info {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
-  margin-bottom: 5px;
+  margin: 0 10px 5px 10px;
 }
 
 .material-location {
@@ -78,5 +83,5 @@
 
 .material-stock {
   text-align: left;
-  margin-top: -5px
+  margin-top: -5px;
 }

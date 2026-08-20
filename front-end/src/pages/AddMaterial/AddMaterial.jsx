@@ -13,6 +13,7 @@ function AddMaterial() {
   const [unit, setUnit] = useState("");
   const [color, setColor] = useState("");
   const [image, setImage] = useState("");
+  const [building, setBuilding] = useState("");
   const [location, setLocation] = useState("");
   const [shelf, setShelf] = useState("");
   const [level, setLevel] = useState("");
@@ -21,7 +22,7 @@ function AddMaterial() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!name || !brand || !weight || !unit || !color || !location || !stock) {
+    if (!name || !brand || !weight || !unit || !color || !building || !location || !stock) {
       alert("Completa todos los campos obligatorios");
       return;
     }
@@ -185,6 +186,21 @@ function AddMaterial() {
               </div>
 
               <div className="location-container">
+                <div className="building-input-container input-label">
+                  <label htmlFor="building">Edificio</label>
+                  <select
+                    id="building"
+                    className="building-input"
+                    value={building}
+                    onChange={event =>
+                      setBuilding(event.target.value)
+                    }
+                  >
+                    <option value="" disabled>Edificio</option>
+                    <option value="A">A</option>
+                  </select>
+                </div>
+
                 <div className="location-input-container input-label">
                   <label htmlFor="location">Ubicación</label>
                   <select
