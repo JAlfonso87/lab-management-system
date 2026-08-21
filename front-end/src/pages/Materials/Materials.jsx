@@ -64,16 +64,51 @@ function Materials() {
     setLoading(true);
     try {
       let route = risk != "TODOS" ? ('/reagents?risk=' + risk + '&page=' + page) : ('/reagents?page=' + page);
-      console.log(route)
       let reagents = await api.get(route);
-      console.log(reagents)
       setMaterials(reagents.data)
     }
     finally {
       setLoading(false);
-      console.log(loading)
     }
   }
+
+  useEffect(() => {
+    let reagent_code = "";
+    let gotByCode = {};
+    let lastKeyTime = 0;
+
+    const handleKeyDown = async (event) => {
+        const now = Date.now();
+
+        if (now - lastKeyTime > 100) {
+            reagent_code = "";
+        }
+
+        if (event.key === "Enter") {
+            if (reagent_code.length > 0) {
+                console.log(reagent_code)
+                gotByCode = await api.get('/reagents/code', {
+                  params: {
+                    code: reagent_code
+                  }
+                })
+                console.log(gotByCode.data)
+                setSelectedMaterial(gotByCode.data)
+                reagent_code = "";
+            }
+        } else if (event.key.length === 1) {
+            reagent_code += event.key.toUpperCase();
+        }
+
+        lastKeyTime = now;
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     if (!searchParams.has('page') || !searchParams.has('risk')) {

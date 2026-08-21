@@ -1,5 +1,4 @@
 import "./MaterialModal.css"
-import { useState } from "react";
 
 function MaterialModal({material, image, onClose, onDelete }) {
   return (
@@ -42,6 +41,8 @@ function MaterialModal({material, image, onClose, onDelete }) {
                 <h2 className="modal-title-text">Datos del reactivo</h2>
                 <hr className="modal-right-line" />
               </div>
+              <span>Código interno: {material.reagent.reagent_code}</span>
+              <hr className="modal-right-line" />
               <span>Marca: {material.reagent.reagent_brand}</span>
               <div>
                 <span className="modal-material-weight">Peso: {material.reagent.reagent_netweight}</span>

@@ -79,14 +79,30 @@ export class ReagentService {
         return total;
     }
 
-    async getReagent(reagent_id: number): Promise<any> {
-        const reagent = await this.prisma.reagents.findUnique({
-            where: { reagent_id: reagent_id }
-        })
-        if(reagent == null)
-            throw new HttpException("ERR_REAGENT_NOT_FOUND", HttpStatus.NOT_FOUND)
+    async getReagent(params: { reagent_id: number } | { reagent_code: string }): Promise<any> {
+        let reagent: {
+            reagent_id: number,
+            reagent_name: string,
+            reagent_brand: string,
+            reagent_netweight: string,
+            reagent_risk: string | null,
+            reagent_code: string | null
+        } | null;
 
-        console.log(reagent)
+        if(Object.hasOwn(params, "reagent_id")){
+            let { reagent_id } = params as { reagent_id: number}
+            reagent = await this.prisma.reagents.findUnique({
+                where: { reagent_id: reagent_id }
+            })
+        } else if (Object.hasOwn(params, "reagent_code")) {
+            let { reagent_code } = params as { reagent_code: string}
+            reagent = await this.prisma.reagents.findUnique({
+                where: { reagent_code: reagent_code }
+            })
+        }
+            
+        if(reagent! == null)
+            throw new HttpException("ERR_REAGENT_NOT_FOUND", HttpStatus.NOT_FOUND)
 
         const locations = await this.getReagentLocations(reagent!.reagent_id);
 
@@ -115,8 +131,7 @@ export class ReagentService {
             let reagentEntry = {};
 
             for (const reagent of reagents) {
-                reagentEntry = await this.getReagent(reagent.reagent_id);
-                console.log(reagentEntry)
+                reagentEntry = await this.getReagent({"reagent_id": reagent.reagent_id});
                 holder.push(reagentEntry)
             }
 
@@ -128,7 +143,7 @@ export class ReagentService {
             { reagent_name: string, reagent_brand: string, reagent_netweight: string, reagent_risk: string } |
             { reagent_code: string }
     ) {
-
+        console.log(reagentSpecs)
         if('reagent_code' in reagentSpecs) {
             const reagent = await this.prisma.reagents.findUnique({where: { reagent_code: reagentSpecs.reagent_code }})
             

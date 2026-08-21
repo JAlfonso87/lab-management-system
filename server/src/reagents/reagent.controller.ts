@@ -22,12 +22,13 @@ export class ReagentController{
 
     @Get('/reagent/:id')
     getReagent(@Param('id') id: string):Promise<any> {
-        return this.reagentService.getReagent(Number(id));
+        return this.reagentService.getReagent({"reagent_id": Number(id)});
     }
 
     @Get('/code')
-    getReagentByCode(@Query('code') reagent_code: string) {
-        return this.reagentService.getReagentBySpecs({"reagent_code": reagent_code})
+    getReagentByCode(@Query('code') code: string) {
+        console.log(code)
+        return this.reagentService.getReagent({"reagent_code": code})
     }
 
     @Get('/risk')
