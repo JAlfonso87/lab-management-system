@@ -262,7 +262,7 @@ export class Seeder {
             let counter = 1;
                     
             for (const reagent of reagents) {
-                const reagent_code: string = await reagentService.generateCode(reagent.reagent_id);
+                const reagent_code: string = await reagentService.generateCode({"reagentId": reagent.reagent_id});
                 console.log(counter + ".- " + reagent_code)
                 counter += 1
                 await prisma.reagents.update({

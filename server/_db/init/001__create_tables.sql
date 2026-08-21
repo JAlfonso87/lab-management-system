@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS local_stocks(
     reagent_id INTEGER NOT NULL,
     location_id INTEGER NOT NULL,
     local_stock_units INTEGER DEFAULT 0,
-    CHECK(local_stock_units > 0),
+    CHECK(local_stock_units >= 0),
     FOREIGN KEY(reagent_id) REFERENCES reagents(reagent_id),
     FOREIGN KEY(location_id) REFERENCES locations(location_id),
 	UNIQUE (reagent_id, location_id)

@@ -25,11 +25,6 @@ export class ReagentController{
         return this.reagentService.getReagent(Number(id));
     }
 
-    @Get('/code/:id')
-    generateCode(@Param('id') id:string):Promise<any> {
-        return this.reagentService.generateCode(Number(id));
-    }
-
     @Get('/code')
     getReagentByCode(@Query('code') reagent_code: string) {
         return this.reagentService.getReagentBySpecs({"reagent_code": reagent_code})
@@ -39,21 +34,4 @@ export class ReagentController{
     getReagentsByRisk(@Query('risk') reagent_risk: string){
         return this.reagentService.getReagentsBySpecs({"reagent_risk": reagent_risk})
     }
-
-    @Post('new_entry')
-    newEntry(@Body() newEntryParams: {
-        reagentData: {
-            reagent_name: string,
-            reagent_brand: string,
-            reagent_netweight: string,
-            reagent_risk: string
-        },
-        location_discriminator: {location_type: string},
-        location_data: {lab_name: string} | {shelf_level_number: number, shelf_category: string},
-        stock_parameter: {stock_diff: number}
-        
-    } ) : Promise<any> {
-        return this.reagentService.newEntry(newEntryParams)
-    }
-
 }

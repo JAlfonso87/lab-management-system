@@ -3,9 +3,10 @@ import { PrismaModule } from "../_prisma_nestjs/prisma.module.js";
 import { OperationsController } from "./operations.controller.js";
 import { OperationsService } from "./operations.service.js";
 import { LocationsModule } from "../locations/locations.module.js";
+import { ReagentModule } from "../reagents/reagent.module.js";
 
 @Module({
-    imports: [ PrismaModule, LocationsModule ],
+    imports: [ PrismaModule, LocationsModule, ReagentModule ],
     controllers: [ OperationsController ],
     providers: [ OperationsService ],
     exports: [ OperationsService ]

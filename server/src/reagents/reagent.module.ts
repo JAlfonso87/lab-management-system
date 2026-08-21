@@ -6,7 +6,8 @@ import { ReagentService } from './reagent.service.js';
 @Module({
     imports: [ PrismaModule ],
     controllers: [ ReagentController ],
-    providers: [ ReagentService ]
+    providers: [ ReagentService ],
+    exports: [ ReagentService ]
 })
 
 export class ReagentModule {}

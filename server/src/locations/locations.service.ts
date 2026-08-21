@@ -13,6 +13,20 @@ export class LocationsService {
         return labs;
     }
 
+    async getShelves(host_building: string){
+        const shelves = await this.prisma.shelves.findMany({
+            where: { host_building: host_building }
+        })
+        return shelves;
+    }
+
+    async getShelfLevels(shelf_id: number) {
+        const levels = await this.prisma.shelf_levels.findMany({
+            where: { shelf_id: shelf_id },
+        })
+        return levels;
+    }
+
     async getLocationID(locationType:string, locationData:object){
         let locationID:number = 0;
 

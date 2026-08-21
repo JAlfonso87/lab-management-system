@@ -3,7 +3,8 @@ import "./AddMaterial.css"
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function AddMaterial() {
 
@@ -15,11 +16,49 @@ function AddMaterial() {
   const [image, setImage] = useState("");
   const [building, setBuilding] = useState("");
   const [location, setLocation] = useState("");
-  const [shelf, setShelf] = useState("");
-  const [level, setLevel] = useState("");
   const [stock, setStock] = useState("");
 
-  const handleSubmit = (event) => {
+  const [shelves, setShelves] = useState([])
+  const [selectedShelf, setSelectedShelf] = useState("");
+  const [levels, setLevels] = useState([])
+  const [selectedLevel, setSelectedLevel] = useState("");
+
+  const api = axios.create({
+    baseURL: 'http://localhost:5000',
+    withCredentials: true
+  })
+
+  const getShelves = async () => {
+     let shelves;
+     if(location == "Almacen") {
+        shelves = await api.get('/locations/shelves', {
+          params: {
+            host_building: building
+          }
+        })
+        setShelves(shelves.data);
+     }
+  }
+
+  const getShelfLevels = async() => {
+      console.log(selectedShelf)
+      let levels = await api.get('/locations/shelf/levels', {
+        params: {
+          shelf_id: selectedShelf
+        }
+      })
+      setLevels(levels.data)
+  }
+
+  useEffect(() => {
+    getShelves()
+  }, [location])
+
+  useEffect(() => {
+    getShelfLevels()
+  }, [selectedShelf])
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!name || !brand || !weight || !unit || !color || !building || !location || !stock) {
@@ -27,25 +66,38 @@ function AddMaterial() {
       return;
     }
 
-    if (location === "Almacen" && (!shelf || !level)) {
+    if (location === "Almacen" && (!selectedShelf || !selectedLevel)) {
       alert("Completa el estante y nivel")
       return;
     }
 
-    const material = {
-      name,
-      brand,
-      weight: `${weight} ${unit}`,
-      color,
-      image,
-      location,
-      shelf,
-      level: Number(level),
-      status: Number(stock) > 0 ? "Disponible" : "Agotado",
-      stock: Number(stock)
-    };
+    const reagent_registration_payload = {
+      reagent_data: {
+        reagent_name: name.toUpperCase(),
+        reagent_brand: brand.toUpperCase(),
+        reagent_netweight: `${weight} ${unit}`,
+        reagent_risk: color.toLocaleUpperCase(),
+      },
+      location_data: {
+        host_building: building.toUpperCase(),
+        shelf_id: Number(selectedShelf),
+        shelf_level_id: Number(selectedLevel)
+      },
+      operation_data: {
+        stock_units: Number(stock)
+      }
+      
+    }
 
-    console.log(material)
+    try {
+        const new_reagent = await api.post('/operations/new_reagent', reagent_registration_payload);
+        alert('El reactivo se ha añadido con éxito.')
+        document.getElementById("reagentForm").reset()
+    } catch(error) {
+      console.error(error);
+      alert(error);
+    }
+
   }
 
 
@@ -69,7 +121,7 @@ function AddMaterial() {
             registrar un nuevo reactivo:
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form id = "reagentForm" onSubmit = {handleSubmit}>
 
             <div className="material-properties">
               <div className="subtitle-container">
@@ -200,56 +252,66 @@ function AddMaterial() {
                     <option value="A">A</option>
                   </select>
                 </div>
+                
+                { 
+                  building ? (
+                    <div className="location-input-container input-label">
+                      <label htmlFor="location">Ubicación</label>
+                      <select
+                        id="location"
+                        className="location-input"
+                        value={location}
+                        onChange={event =>
+                          setLocation(event.target.value)
+                        }
+                      >
+                        <option value="" disabled>Ubicación</option>
+                        <option value="Almacen">Almacen</option>
+                      </select>
+                    </div>
+                  ) : null
+                }
+                
 
-                <div className="location-input-container input-label">
-                  <label htmlFor="location">Ubicación</label>
-                  <select
-                    id="location"
-                    className="location-input"
-                    value={location}
-                    onChange={event =>
-                      setLocation(event.target.value)
-                    }
-                  >
-                    <option value="" disabled>Ubicación</option>
-                    <option value="Almacen">Almacen</option>
-                    <option value="Laboratorio 1">Laboratorio 1</option>
-                    <option value="Laboratorio 2">Laboratorio 2</option>
-                    <option value="Laboratorio 3">Laboratorio 3</option>
-                  </select>
-                </div>
-
-                {location === "Almacen" ? (
+                {
+                  location === "Almacen" ? (
                   <>
                     <div className="shelf-input-container input-label">
                       <label htmlFor="shelf">Estante</label>
-                      <input
-                        id="shelf"
-                        placeholder="Estante"
-                        type="text"
-                        className="shelf-input"
-                        value={shelf}
-                        onChange={event =>
-                          setShelf(event.target.value)
-                        }
-                      />
-                    </div>
-
+                      <select value = {selectedShelf} className = "shelf-input" onChange = {event => setSelectedShelf(event.target.value)}>
+                          <option value = "" disabled>Estante</option>
+                          {
+                            shelves.map((shelf) => (
+                              <option key = {shelf.shelf_number} value = {shelf.shelf_id}>
+                                {shelf.shelf_number}
+                              </option>
+                            ))
+                          }
+                      </select>
+                    </div> 
+                  </>
+                  ) : null
+                }
+                
+                {
+                  selectedShelf != "" && location === "Almacen" ? 
+                  (
                     <div className="level-input-container input-label">
                       <label htmlFor="level">Nivel</label>
-                      <input
-                        id="level"
-                        placeholder="Nivel"
-                        type="number"
-                        className="level-input"
-                        value={level}
-                        onChange={event =>
-                          setLevel(event.target.value)
-                        }
-                      />
+                      <select value = {selectedLevel} className = "level-input" onChange = {event => setSelectedLevel(event.target.value)}>
+                          <option value = "" disabled>Nivel</option>
+                          {
+                            levels.map((level) => (
+                              <option key = {level.shelf_level_number} value = {level.shelf_level_id}>
+                                {level.shelf_level_number}
+                              </option>
+                            ))
+                          }
+                      </select>
                     </div>
-                  </>
-                ) : null}
+                  ) : null
+                }
+
               </div>
             </div>
 

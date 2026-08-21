@@ -22,4 +22,18 @@ export class LocationsController {
     ) {
         return await this.locationsService.getShelfInventory(host_building, Number(shelf_number), shelf_lvl_number == undefined? undefined : Number(shelf_lvl_number));
     }
+
+    @Get('shelves')
+    async getShelves(
+        @Query('host_building') host_building: string
+    ) {
+        return await this.locationsService.getShelves(host_building);
+    }
+
+    @Get('shelf/levels')
+    async getShelfLevels(
+        @Query('shelf_id') shelf_id: number 
+    ) {
+        return await this.locationsService.getShelfLevels(Number(shelf_id));
+    }
 }
