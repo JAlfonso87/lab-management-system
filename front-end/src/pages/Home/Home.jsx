@@ -3,7 +3,7 @@ import "./Home.css"
 import searchIcon from "../../assets/images/search.png"
 import addIcon from "../../assets/images/add.png"
 
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 
 import Header from "../../components/Header/Header.jsx"

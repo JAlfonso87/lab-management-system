@@ -1,6 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import "./MaterialModal.css"
 
-function MaterialModal({material, image, onClose, onDelete }) {
+function MaterialModal({ material, image, onClose, onDelete }) {
+
+  const navigate = useNavigate();
+
   return (
     <div
       className="modal-overlay"
@@ -17,7 +21,7 @@ function MaterialModal({material, image, onClose, onDelete }) {
 
           <button
             type="button"
-            onClick = { onClose }
+            onClick={onClose}
             className="modal-close-button"
             aria-label="Cerrar"
           >
@@ -57,26 +61,26 @@ function MaterialModal({material, image, onClose, onDelete }) {
                 <hr className="modal-right-line" />
               </div>
               <div>
-              {
-                material.total_stock != 0 ? (
-                  <button
-                    className="modal-edit-button"
-                    type="button"
-                    onClick = { () => {
-                      console.log("ok");
-                      setLocationList(true)
-                    }
-                    }
-                  >
-                    Ver ubicaciones
-                  </button>
-                ) : (
-                  <p className="material-status">
-                    <strong>SIN UBICACIONES PARA MOSTRAR</strong>
-                  </p>
-                )
-              }
-                
+                {
+                  material.total_stock != 0 ? (
+                    <button
+                      className="modal-edit-button"
+                      type="button"
+                      onClick={() => {
+                        console.log("ok");
+                        setLocationList(true)
+                      }
+                      }
+                    >
+                      Ver ubicaciones
+                    </button>
+                  ) : (
+                    <p className="material-status">
+                      <strong>SIN UBICACIONES PARA MOSTRAR</strong>
+                    </p>
+                  )
+                }
+
               </div>
             </div>
 
@@ -102,6 +106,9 @@ function MaterialModal({material, image, onClose, onDelete }) {
             <button
               className="modal-edit-button"
               type="button"
+              onClick={() =>
+                navigate("/edit-stock-material")
+              }
             >
               Editar stock
             </button>
