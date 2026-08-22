@@ -3,7 +3,7 @@ import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
 
 @Injectable()
 export class LocationsService {
-    constructor(private prisma: PrismaService){}
+    constructor(private readonly prisma: PrismaService){}
 
     async getLabs(host_building: string){
         const labs = await this.prisma.labs.findMany({

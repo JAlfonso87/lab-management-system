@@ -7,12 +7,15 @@ import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
-    constructor(private readonly reflector: Reflector){
+    constructor(
+        private readonly reflector: Reflector,
+        private readonly userService: UserService,
+        private readonly prisma: PrismaService
+    ){
         super();
     }
 
     async canActivate(context: ExecutionContext): Promise<any>{
-        const userService: UserService = new UserService(new PrismaService);
         const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_KEY, [
             context.getHandler(),
             context.getClass(),
@@ -29,12 +32,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
         await super.canActivate(context);
 
         const userPayload = context.switchToHttp().getRequest().user
-        const user = await userService.findUser(userPayload.username)
+        const user = await this.userService.findUser(userPayload.username)
 
         if(user)
         {
-            const prisma: PrismaService = new PrismaService()
-            const user_role= await prisma.roles.findUnique({
+            const user_role= await this.prisma.roles.findUnique({
                 where: { 
                     role_id: user.role_id 
                 }

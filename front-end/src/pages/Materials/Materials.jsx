@@ -4,18 +4,13 @@ import searchIcon from "../../assets/images/search.png"
 import image from "../../assets/images/image.png"
 
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import { api } from "../../axios/api";
 import { useSearchParams } from "react-router-dom";
 
 import Header from "../../components/Header/Header.jsx"
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import MaterialCard from "../../components/MaterialCard/MaterialCard.jsx";
 import MaterialModal from "../../components/MaterialModal/MaterialModal.jsx";
-
-const api = axios.create({
-  baseURL: "http://localhost:5000",
-  withCredentials: true
-})
 
 const normalizeText = text =>
   text
@@ -41,11 +36,19 @@ function Materials() {
   const [selectedMaterial, setSelectedMaterial] = useState(null);
 
   const nextPage = () => {
-    setSearchParams({ page: page++ })
+    const newPage = Number(searchParams.get('page')) + 1;
+    setSearchParams({ 
+      risk: searchParams.get('risk'),
+      page: newPage
+    })
   }
 
   const prevPage = () => {
-    setSearchParams({ page: page-- })
+    const newPage = Number(searchParams.get('page')) - 1;
+    setSearchParams({ 
+      risk: searchParams.get('risk'),
+      page: newPage
+    })
   }
 
   const filteredMaterials = materials.filter(material =>
@@ -61,10 +64,17 @@ function Materials() {
   }
 
   const getReagents = async (risk, page) => {
+    console.log(risk)
+    console.log(page)
     setLoading(true);
     try {
-      let route = risk != "TODOS" ? ('/reagents?risk=' + risk + '&page=' + page) : ('/reagents?page=' + page);
-      let reagents = await api.get(route);
+      /*let route = risk != "TODOS" ? ('/reagents?risk=' + risk + '&page=' + page) : ('/reagents?page=' + page);*/
+      let reagents = await api.get('reagents', {
+        params: {
+          risk: risk == "TODOS" ? undefined : risk,
+          page: page
+        }
+      });
       setMaterials(reagents.data)
     }
     finally {
@@ -111,7 +121,7 @@ function Materials() {
   }, []);
 
   useEffect(() => {
-    if (!searchParams.has('page') || !searchParams.has('risk')) {
+    if (searchParams.has('page') == false && searchParams.has('risk') == false) {
       setSearchParams({
         risk: 'TODOS',
         page: 1
@@ -120,17 +130,25 @@ function Materials() {
   }, [])
 
   useEffect(() => {
-    setSearchParams({
+    /*setSearchParams({
       risk: appliedColor.toUpperCase(),
       page: 1
-    })
+    })*/
   }, [appliedColor])
 
   useEffect(() => {
-    const page = searchParams.get('page') ?? 1;
-    const risk = searchParams.get('risk') ?? "TODOS";
+    if(searchParams.get('risk') == null)
+        setSearchParams({
+          risk: "TODOS",
+          page: 1
+        })
+    else if(searchParams.get('page') == null)
+        setSearchParams({
+          risk: searchParams.get('risk'),
+          page: 1
+        })
 
-    getReagents(risk, page);
+    getReagents(searchParams.get('risk'), searchParams.get('page'));
 
   }, [searchParams])
 
@@ -238,7 +256,10 @@ function Materials() {
           </section>
 
           <section className="materials-section">
-
+            <div>
+              <button onClick = { prevPage }>&lt;</button>
+              <button onClick = { nextPage }>&gt;</button>
+            </div>
             <h2 className="materials-subtitle">Resultados</h2>
 
             {
@@ -277,8 +298,8 @@ function Materials() {
             </div>
 
             <div>
-              <button>&lt;</button>
-              <button>&gt;</button>
+              <button onClick = { prevPage }>&lt;</button>
+              <button onClick = { nextPage }>&gt;</button>
             </div>
 
           </section>

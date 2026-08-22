@@ -1,7 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app/app.module.js';
 import 'dotenv/config';
-import { JwtAuthGuard } from './auth/jwt-auth-guard.js';
 import { ConfigService } from '@nestjs/config';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
@@ -11,7 +10,6 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.use(cookieParser());
-  app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
   app.enableCors({
     origin: "http://localhost:5173",
     credentials: true

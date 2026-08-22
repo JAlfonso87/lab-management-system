@@ -1,7 +1,7 @@
 import "./Login.css"
 
 import logo from "../../assets/images/logo.png"
-import axios from 'axios';
+import { api } from "../../axios/api";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,11 +13,6 @@ function Login() {
   const [response, setResponse ] = useState(null);
 
   const navigate = useNavigate();
-
-  const api = axios.create({
-    baseURL: "http://localhost:5000",
-    withCredentials: true
-  })
 
   const loginAttempt = async (event) => {
       event.preventDefault();

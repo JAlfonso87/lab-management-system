@@ -6,7 +6,7 @@ import * as os from 'os';import QRCode from 'qrcode'
 
 @Injectable()
 export class ReagentService {
-    constructor(private prisma : PrismaService) {}
+    constructor(private readonly prisma : PrismaService) {}
 
     async getReagentLocations(reagent_id: number) {
         const locations = await this.prisma.local_stocks.findMany({
@@ -238,9 +238,9 @@ export class ReagentService {
     async generateQR(reagentCode: string){
         try {
             const dataUrl = await QRCode.toDataURL(reagentCode, {
-            errorCorrectionLevel: 'H', // Low (L), Medium (M), Quartile (Q), High (H)
-            margin: 2,
-            width: 300
+                errorCorrectionLevel: 'H', // Low (L), Medium (M), Quartile (Q), High (H)
+                margin: 2,
+                width: 300
             });
             
             const base64Data = dataUrl.split(",")[1];

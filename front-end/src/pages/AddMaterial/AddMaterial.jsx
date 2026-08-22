@@ -4,7 +4,7 @@ import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "../../axios/api";
 
 function AddMaterial() {
 
@@ -22,11 +22,6 @@ function AddMaterial() {
   const [selectedShelf, setSelectedShelf] = useState("");
   const [levels, setLevels] = useState([])
   const [selectedLevel, setSelectedLevel] = useState("");
-
-  const api = axios.create({
-    baseURL: 'http://localhost:5000',
-    withCredentials: true
-  })
 
   const getShelves = async () => {
      let shelves;

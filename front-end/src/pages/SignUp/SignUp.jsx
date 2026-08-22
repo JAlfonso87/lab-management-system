@@ -1,7 +1,6 @@
 import styles from"./SignUp.module.css"
 
-import axios from 'axios';
-
+import { api } from "../../axios/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,11 +23,6 @@ function SignUp() {
   const [selectedLab, setSelectedLab] = useState("ALIMENTOS")
 
   const [visiblePassword, isPasswordVisible] = useState(false);
-  
-  const api = axios.create({
-    baseURL: "http://localhost:5000",
-    withCredentials: true
-  })
 
   const signUpAttempt = async () => {
     event.preventDefault()

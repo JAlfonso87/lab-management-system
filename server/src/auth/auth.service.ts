@@ -2,7 +2,6 @@ import { Injectable, HttpStatus, HttpException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../users/user.service.js";
 import bcrypt from "bcrypt";
-import { Console } from "console";
 
 @Injectable()
 export class AuthService {

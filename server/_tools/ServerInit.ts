@@ -1,12 +1,10 @@
 import 'dotenv/config'
-import { PrismaService } from "../src/_prisma_nestjs/prisma.service.js";
 import { DockerManager } from '../_tools/DockerManager.js';
 import { NestManager } from '../_tools/NestManager.js';
 import { Seeder } from '../prisma/DataSeeder.js';
 import { ServerShutdown } from './ServerShutdown.js';
 import chalk from 'chalk';
 
-const prisma = new PrismaService();
 const dockerManager = new DockerManager();
 const nestManager = new NestManager();
 const seederManager = new Seeder();
