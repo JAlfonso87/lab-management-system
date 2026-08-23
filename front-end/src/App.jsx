@@ -3,7 +3,7 @@ import Login from "./pages/Login/Login"
 import Home from "./pages/Home/Home"
 import Materials from "./pages/Materials/Materials"
 import AddMaterial from "./pages/AddMaterial/AddMaterial"
-import EditMaterial from "./pages/EditMaterial/EditMaterial"
+import EditStockMaterial from "./pages/EditStockMaterial/EditStockMaterial"
 import SignUp from "./pages/SignUp/SignUp"
 
 function App() {
@@ -18,13 +18,13 @@ function App() {
       <Link to="/home">
         Home
       </Link>
-      <Link to = "/materials">
+      <Link to="/materials">
         Materiales
       </Link>
       <Link to="/add-material">
         Crear
       </Link>
-      <Link to="/edit-material">
+      <Link to="/edit-stock-material">
         Editar
       </Link>
 
@@ -46,8 +46,8 @@ function App() {
           element={<AddMaterial />}
         />
         <Route
-          path="/edit-material"
-          element={<EditMaterial />}
+          path="/edit-stock-material"
+          element={<EditStockMaterial />}
         />
         <Route
           path="/signup"

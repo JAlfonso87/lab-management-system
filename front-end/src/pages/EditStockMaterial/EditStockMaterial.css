@@ -1,0 +1,190 @@
+.edit-stock-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.edit-stock-content {
+  display: flex;
+  flex: 1;
+}
+
+.edit-stock-main {
+  display: flex;
+  flex-direction: column;
+  padding: 70px 50px;
+  flex: 1;
+
+  margin-left: 200px;
+}
+
+.edit-stock-title {
+  text-align: left;
+  font-size: 38px;
+  font-weight: 400;
+  width: 100%;
+  margin: 0 0 35px 0;
+}
+
+.edit-stock-name {
+  text-align: left;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.edit-stock-text {
+  text-align: left;
+}
+
+.subtitle-container {
+  display: flex;
+  justify-content: left;
+}
+
+.subtitle-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0
+}
+
+.edit-stock-left-line {
+  border: none;
+  border-top: 1px solid #949494;
+  width: 20px;
+  margin: 12px 1px 12px 0;
+}
+
+.edit-stock-right-line {
+  border: none;
+  border-top: 1px solid #949494;
+  flex: 1;
+  margin: 12px 0 12px 5px;
+}
+
+.stock-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.edit-stock-container {
+  display: flex;
+  align-items: end;
+}
+
+.edit-stock-page .location-container {
+  display: flex;
+}
+
+.edit-stock-page .building-input-container {
+  margin-right: 25px;
+}
+
+.edit-stock-page .building-input {
+  width: 100px;
+}
+
+.edit-stock-page .location-input-container {
+  margin-right: 25px;
+}
+
+.edit-stock-page .location-input {
+  width: 150px;
+}
+
+.edit-stock-page .shelf-input-container {
+  margin-right: 25px;
+}
+
+.edit-stock-page .shelf-input {
+  width: 100px;
+}
+
+.edit-stock-page .level-input-container {
+  margin-right: 25px;
+}
+
+.edit-stock-page .level-input {
+  width: 80px;
+}
+
+.edit-stock-page .material-stock {
+  margin-bottom: 25px;
+}
+
+.edit-stock-page .stock-input-container {
+  margin-right: 25px;
+}
+
+.edit-stock-page .stock-input {
+  width: 80px;
+}
+
+.edit-stock-page .input-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.edit-stock-page label {
+  font-size: 16px;
+}
+
+.edit-stock-page input,
+.edit-stock-page select {
+  height: 39px;
+  padding-left: 25px;
+  box-sizing: border-box;
+  border: 1px solid #D0D0D0;
+  border-radius: 15px;
+  outline: none;
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  transition: 0.2s;
+}
+
+.edit-stock-page input:focus,
+.edit-stock-page select:focus {
+  border-color: #4A90E2;
+}
+
+.add-stock-button,
+.save-stock-button {
+  background-color: #E4E4E4;
+  padding: 11px 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.add-stock-button:hover,
+.save-stock-button:hover {
+  background-color: #dddddd;
+}
+
+.cancel-stock-button {
+  background-color: #525252;
+  color: white;
+  padding: 11px 20px;
+  margin-left: 10px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-stock-button:hover {
+  background-color: #686868;
+}
+
+.stock-table {
+  width: 100%;
+}
