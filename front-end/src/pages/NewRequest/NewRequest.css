@@ -1,0 +1,160 @@
+.new-request-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.edit-stock-data td {
+  height: 42px;
+}
+
+.new-request-content {
+  display: flex;
+  flex: 1;
+}
+
+.new-request-main {
+  display: flex;
+  flex-direction: column;
+  padding: 70px 50px;
+  flex: 1;
+
+  margin-left: 200px;
+}
+
+.new-request-title {
+  text-align: left;
+  font-size: 38px;
+  font-weight: 400;
+  width: 100%;
+  margin: 0 0 35px 0;
+}
+
+.new-request-location {
+  text-align: left;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.new-request-text {
+  text-align: left;
+}
+
+.subtitle-container {
+  display: flex;
+  justify-content: left;
+}
+
+.subtitle-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0
+}
+
+.new-request-left-line {
+  border: none;
+  border-top: 1px solid #949494;
+  width: 20px;
+  margin: 12px 1px 12px 0;
+}
+
+.new-request-right-line {
+  border: none;
+  border-top: 1px solid #949494;
+  flex: 1;
+  margin: 12px 0 12px 5px;
+}
+
+.availables-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.availables-button {
+  background-color: #E4E4E4;
+  padding: 8px 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.availables-button:hover,
+.page-button:hover,
+.confirm-request-button:hover {
+  background-color: #dddddd;
+}
+
+.selected-button {
+  background-color: #525252;
+  color: white;
+  padding: 8px 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.selected-button:hover,
+.cancel-request-button:hover {
+  background-color: #686868;
+}
+
+.page-buttons-container {
+  margin-top: 20px
+}
+
+.page-button {
+  background-color: #E4E4E4;
+  width: 30px;
+  height: 30px;
+  margin: 0 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.non-selected-text {
+  font-size: 16px;
+  text-align: left;
+  margin-top: 5px;
+}
+
+.confirm-request-button {
+  background-color: #E4E4E4;
+  padding: 11px 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-request-button {
+  background-color: #525252;
+  color: white;
+  padding: 11px 20px;
+  margin-left: 10px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
