@@ -3,8 +3,9 @@ import "./AddMaterial.css"
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "../../axios/api";
+import LocationSelector from "../../components/LocationSelector/LocationSelector";
 
 function AddMaterial() {
 
@@ -14,55 +15,31 @@ function AddMaterial() {
   const [unit, setUnit] = useState("");
   const [color, setColor] = useState("");
   const [image, setImage] = useState("");
-  const [building, setBuilding] = useState("");
-  const [location, setLocation] = useState("");
   const [stock, setStock] = useState("");
 
-  const [shelves, setShelves] = useState([])
-  const [selectedShelf, setSelectedShelf] = useState("");
-  const [levels, setLevels] = useState([])
-  const [selectedLevel, setSelectedLevel] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState({});
 
-  const getShelves = async () => {
-     let shelves;
-     if(location == "Almacen") {
-        shelves = await api.get('/locations/shelves', {
-          params: {
-            host_building: building
-          }
-        })
-        setShelves(shelves.data);
-     }
+  const clearData = () => {
+    setName("");
+    setBrand("");
+    setWeight("");
+    setUnit("");
+    setColor("");
+    setImage("");
+    setStock("");
+    setSelectedLocation({});
   }
-
-  const getShelfLevels = async() => {
-      console.log(selectedShelf)
-      let levels = await api.get('/locations/shelf/levels', {
-        params: {
-          shelf_id: selectedShelf
-        }
-      })
-      setLevels(levels.data)
-  }
-
-  useEffect(() => {
-    getShelves()
-  }, [location])
-
-  useEffect(() => {
-    getShelfLevels()
-  }, [selectedShelf])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!name || !brand || !weight || !unit || !color || !building || !location || !stock) {
+    if (!name || !brand || !weight || !unit || !color || !stock) {
       alert("Completa todos los campos obligatorios");
       return;
     }
 
-    if (location === "Almacen" && (!selectedShelf || !selectedLevel)) {
-      alert("Completa el estante y nivel")
+    if(Number(weight) <= 0 || Number(stock) <= 0) {
+      alert("Valor/es inválido/s detectado/s. NOTA: Las unidades de stock y la masa deben de superar las 0 unidades.");
       return;
     }
 
@@ -70,13 +47,13 @@ function AddMaterial() {
       reagent_data: {
         reagent_name: name.toUpperCase(),
         reagent_brand: brand.toUpperCase(),
-        reagent_netweight: `${weight} ${unit}`,
-        reagent_risk: color.toLocaleUpperCase(),
+        reagent_netweight: `${weight}${unit}`,
+        reagent_risk: color.toUpperCase(),
       },
       location_data: {
-        host_building: building.toUpperCase(),
-        shelf_id: Number(selectedShelf),
-        shelf_level_id: Number(selectedLevel)
+        host_building: selectedLocation.host_building.toUpperCase(),
+        shelf_id: Number(selectedLocation.shelf_id),
+        shelf_level_id: Number(selectedLocation.shelf_level_id)
       },
       operation_data: {
         stock_units: Number(stock)
@@ -87,7 +64,7 @@ function AddMaterial() {
     try {
         const new_reagent = await api.post('/operations/new_reagent', reagent_registration_payload);
         alert('El reactivo se ha añadido con éxito.')
-        document.getElementById("reagentForm").reset()
+        clearData()
     } catch(error) {
       console.error(error);
       alert(error);
@@ -226,88 +203,11 @@ function AddMaterial() {
             </div>
 
             <div className="material-location">
-              <div className="subtitle-container">
-                <hr className="add-material-left-line" />
-                <h2 className="subtitle-text">Ubicación del reactivo</h2>
-                <hr className="add-material-right-line" />
-              </div>
-
-              <div className="location-container">
-                <div className="building-input-container input-label">
-                  <label htmlFor="building">Edificio</label>
-                  <select
-                    id="building"
-                    className="building-input"
-                    value={building}
-                    onChange={event =>
-                      setBuilding(event.target.value)
-                    }
-                  >
-                    <option value="" disabled>Edificio</option>
-                    <option value="A">A</option>
-                  </select>
-                </div>
-                
-                { 
-                  building ? (
-                    <div className="location-input-container input-label">
-                      <label htmlFor="location">Ubicación</label>
-                      <select
-                        id="location"
-                        className="location-input"
-                        value={location}
-                        onChange={event =>
-                          setLocation(event.target.value)
-                        }
-                      >
-                        <option value="" disabled>Ubicación</option>
-                        <option value="Almacen">Almacen</option>
-                      </select>
-                    </div>
-                  ) : null
-                }
-                
-
-                {
-                  location === "Almacen" ? (
-                  <>
-                    <div className="shelf-input-container input-label">
-                      <label htmlFor="shelf">Estante</label>
-                      <select value = {selectedShelf} className = "shelf-input" onChange = {event => setSelectedShelf(event.target.value)}>
-                          <option value = "" disabled>Estante</option>
-                          {
-                            shelves.map((shelf) => (
-                              <option key = {shelf.shelf_number} value = {shelf.shelf_id}>
-                                {shelf.shelf_number}
-                              </option>
-                            ))
-                          }
-                      </select>
-                    </div> 
-                  </>
-                  ) : null
-                }
-                
-                {
-                  selectedShelf != "" && location === "Almacen" ? 
-                  (
-                    <div className="level-input-container input-label">
-                      <label htmlFor="level">Nivel</label>
-                      <select value = {selectedLevel} className = "level-input" onChange = {event => setSelectedLevel(event.target.value)}>
-                          <option value = "" disabled>Nivel</option>
-                          {
-                            levels.map((level) => (
-                              <option key = {level.shelf_level_number} value = {level.shelf_level_id}>
-                                {level.shelf_level_number}
-                              </option>
-                            ))
-                          }
-                      </select>
-                    </div>
-                  ) : null
-                }
-
-              </div>
+              <LocationSelector 
+                  label = {"Ubicación del reactivo"}
+                  selectedLocation = { selectedLocation }
+                  setSelectedLocation = { setSelectedLocation }
+              />
             </div>
 
             <div className="material-stock">

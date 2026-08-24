@@ -1,64 +1,52 @@
 import "./Stock.css"
 
 function Stock({
-  loc,
-  isEdit,
-  setIsEdit,
-  setBuilding,
-  setLocation,
-  setShelf,
-  setLevel,
-  setStock,
-  setCurrentId,
-  onDelete
+  location,
+  source,
+  setSource,
+  destination,
+  setDestination
 }) {
+  const loadSource = (location) => {
+      console.log("SOURCE")
+      console.log(location)
+      setSource(location)
+  }
 
-  const handleEdit = () => {
-    setIsEdit(true);
+  const loadDestination = (location) => {
+      console.log("DESTINATION")
+      console.log(location)
+      setDestination(location)
+  }
 
-    setBuilding(loc.building);
-    setLocation(loc.location);
-    setShelf(!loc.shelf ? "" : loc.shelf);
-    setLevel(!loc.level ? "" : loc.level);
-    setStock(loc.stock);
-
-    setCurrentId(loc.id);
+  const validSelection = () => {
+    if(Object.hasOwn(source, "host_building") && Object.hasOwn(destination, "host_building"))
+      return true;
+    else
+      return location.shelf_level_id == source.shelf_level_id ? true : false;
   }
 
   return (
     <tr className="stock-data">
-      <td>{loc.building}</td>
-      <td>{loc.location}</td>
-      <td>{loc.shelf ? loc.shelf : "-"}</td>
-      <td>{loc.level ? loc.level : "-"}</td>
-      <td>{loc.stock}</td>
+      <td>{location.host_building}</td>
+      <td>{Object.hasOwn(location, "shelf_level_number") ? "Almacén" : "Laboratorio"}</td>
+      <td>{location.shelf_number ? location.shelf_number : "-"}</td>
+      <td>{location.shelf_level_number ? location.shelf_level_number : "-"}</td>
+      <td>{location.local_stock_units}</td>
       <td className="operation-buttons">
         {
-          !isEdit
-            ? (
-              <>
-                <button
-                  className="stock-edit-button"
-                  type="button"
-                  onClick={handleEdit}
-                >
-                  Editar
-                </button>
+            <>
+              <button
+                className="stock-edit-button"
+                type="button"
+                onClick = { () => { Object.hasOwn(source, "host_building") ? loadDestination(location) : loadSource(location) }}
+                disabled = { validSelection() }
+              >
+                Seleccionar { Object.hasOwn(source, "host_building") ? "Destino" : "Origen" }
+              </button>
 
-                <button
-                  className="stock-delete-button"
-                  type="button"
-                  onClick={() =>
-                    onDelete(loc.id)
-                  }
-                >
-                  Eliminar
-                </button>
-              </>
-            ) : null
+            </>
         }
-
-
       </td>
     </tr>
   );

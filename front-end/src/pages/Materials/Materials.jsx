@@ -64,11 +64,8 @@ function Materials() {
   }
 
   const getReagents = async (risk, page) => {
-    console.log(risk)
-    console.log(page)
     setLoading(true);
     try {
-      /*let route = risk != "TODOS" ? ('/reagents?risk=' + risk + '&page=' + page) : ('/reagents?page=' + page);*/
       let reagents = await api.get('reagents', {
         params: {
           risk: risk == "TODOS" ? undefined : risk,
@@ -130,10 +127,10 @@ function Materials() {
   }, [])
 
   useEffect(() => {
-    /*setSearchParams({
+    setSearchParams({
       risk: appliedColor.toUpperCase(),
       page: 1
-    })*/
+    })
   }, [appliedColor])
 
   useEffect(() => {

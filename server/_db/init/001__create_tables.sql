@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS transfer(
     local_stock_id INTEGER NOT NULL,
     transfer_type VARCHAR (10) NOT NULL,
     stock_difference INT NOT NULL DEFAULT 0,
-    transfer_date DATE NOT NULL,
+    transfer_date DATETIME NOT NULL,
 
     CHECK (stock_difference >= 0),
     CHECK (

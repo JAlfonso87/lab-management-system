@@ -4,6 +4,10 @@
   height: 100vh;
 }
 
+.edit-stock-data td {
+  height: 42px;
+}
+
 .edit-stock-content {
   display: flex;
   flex: 1;

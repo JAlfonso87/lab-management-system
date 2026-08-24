@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Prisma } from "../_prisma_generated/client.js";
 import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
 import { LocationsService } from "../locations/locations.service.js";
@@ -18,6 +18,100 @@ export class OperationsService {
         })
 
         return local_stock;
+    }
+
+    async newTransferOperation(
+        transferInformation: {
+            source_id: number,
+            destination_id: number,
+            reagent_id: number,
+            stock_units: number
+            userId: number,
+            username: string
+        }
+    )
+    {
+        const transfer = await this.prisma.$transaction(async (tx) => {
+            const {source_id, destination_id, reagent_id, stock_units, userId, username} = transferInformation;
+            const now = new Date();
+
+            let source_stock = await tx.local_stocks.findUnique({
+                where: { 
+                    reagent_id_location_id: {
+                        reagent_id: reagent_id,
+                        location_id: source_id
+                    }
+                }
+            })
+
+            let destination_stock = await tx.local_stocks.findUnique({
+                where: { 
+                    reagent_id_location_id: {
+                        reagent_id: reagent_id,
+                        location_id: destination_id
+                    }
+                }
+            })
+
+            if(!source_stock)
+                throw new HttpException("ERR_SOURCE_NOT_FOUND", HttpStatus.NOT_FOUND)
+
+            if(!destination_stock)
+                await this.newLocalStock(reagent_id, destination_id, tx);
+
+            source_stock = await tx.local_stocks.update({
+                data: {
+                    local_stock_units: {
+                        decrement: Number(stock_units)
+                    }
+                },
+                where: {
+                    reagent_id_location_id: {
+                        reagent_id: reagent_id,
+                        location_id: source_id
+                    }
+                }
+            })
+
+            await tx.transfer.create({
+                data: {
+                    reagent_id: reagent_id, 
+                    local_stock_id: source_stock.local_stock_id,
+                    user_id: userId,
+                    transfer_type: "OUT",
+                    stock_difference: stock_units,
+                    transfer_date: new Date()
+                }
+            })
+
+            destination_stock = await tx.local_stocks.update({
+                data: {
+                    local_stock_units: {
+                        increment: Number(stock_units)
+                    }
+                },
+                where: {
+                    reagent_id_location_id: {
+                        reagent_id: reagent_id,
+                        location_id: destination_id
+                    }
+                }
+            })
+
+            await tx.transfer.create({
+                data: {
+                    reagent_id: reagent_id, 
+                    local_stock_id: destination_stock.local_stock_id,
+                    user_id: userId,
+                    transfer_type: "IN",
+                    stock_difference: stock_units,
+                    transfer_date: new Date()
+                }
+            })
+
+        })
+
+        return transfer;
     }
 
     async newReagentOperation(
