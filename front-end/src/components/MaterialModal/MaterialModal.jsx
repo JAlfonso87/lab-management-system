@@ -107,7 +107,15 @@ function MaterialModal({ material, image, onClose, onDelete }) {
               className="modal-edit-button"
               type="button"
               onClick={() =>
-                navigate("/edit-stock-material")
+                { 
+                  navigate("/edit-stock-material", {
+                    state: {
+                      "reagent_id": material.reagent.reagent_id,
+                      "reagent_name": material.reagent.reagent_name,
+                      "locations": material.locations
+                    }
+                  })
+                }
               }
             >
               Editar stock

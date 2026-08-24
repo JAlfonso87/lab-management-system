@@ -51,7 +51,7 @@ export class ReagentService {
                         shelfLevel, 
                         { "local_stock_units": locations.find(location => location.location_id == shelfLevel.shelf_level_id)!.local_stock_units }
                     )
-                    const { shelf_id, shelf_level_id, ...cleanEntry } = entry;
+                    const { shelf_id, ...cleanEntry } = entry;
                     return cleanEntry;
                 }
             )

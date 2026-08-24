@@ -35,4 +35,9 @@ export class OperationsController {
         body.push(user);
         return this.operationsService.NewRestock(body);
     }
+
+    @Post('/transfer')
+    newTransferOperation(@Req() req, @Body() body: { transferInformation: { source_id: number, destination_id: number, reagent_id: number, stock_units: number }}) {
+        return this.operationsService.newTransferOperation(Object.assign({}, body, req.user))
+    }
 }
