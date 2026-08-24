@@ -5,6 +5,7 @@ import Materials from "./pages/Materials/Materials"
 import AddMaterial from "./pages/AddMaterial/AddMaterial"
 import EditStockMaterial from "./pages/EditStockMaterial/EditStockMaterial"
 import SignUp from "./pages/SignUp/SignUp"
+import NewRequest from "./pages/NewRequest/NewRequest"
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
       </Link>
       <Link to="/edit-stock-material">
         Editar
+      </Link>
+      <Link to="/new-request">
+        Nueva solicitud
       </Link>
 
       <Routes>
@@ -52,6 +56,10 @@ function App() {
         <Route
           path="/signup"
           element={<SignUp />}
+        />
+        <Route
+          path="/new-request"
+          element={<NewRequest />}
         />
       </Routes>
     </>
