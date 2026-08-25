@@ -3,8 +3,9 @@ import Login from "./pages/Login/Login"
 import Home from "./pages/Home/Home"
 import Materials from "./pages/Materials/Materials"
 import AddMaterial from "./pages/AddMaterial/AddMaterial"
-import EditStockMaterial from "./pages/EditStockMaterial/EditStockMaterial"
+import TransferStock from "./pages/TransferStock/TransferStock"
 import SignUp from "./pages/SignUp/SignUp"
+import Restock from "./pages/Restock/Restock"
 import NewRequest from "./pages/NewRequest/NewRequest"
 
 function App() {
@@ -25,8 +26,11 @@ function App() {
       <Link to="/add-material">
         Crear
       </Link>
-      <Link to="/edit-stock-material">
-        Editar
+      <Link to="/transfer-stock">
+        Transferir
+      </Link>
+      <Link to="/restock">
+        Restock
       </Link>
       <Link to="/new-request">
         Nueva solicitud
@@ -50,12 +54,16 @@ function App() {
           element={<AddMaterial />}
         />
         <Route
-          path="/edit-stock-material"
-          element={<EditStockMaterial />}
+          path="/transfer-stock"
+          element={<TransferStock />}
         />
         <Route
           path="/signup"
           element={<SignUp />}
+        />
+        <Route
+          path="/restock"
+          element={<Restock />}
         />
         <Route
           path="/new-request"

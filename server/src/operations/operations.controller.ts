@@ -30,14 +30,15 @@ export class OperationsController {
     }
 
     @Post('/restock')
-    newRestock(@Req() req, @Body() body: [{ host_building: string, shelf_lvl_number: number, shelf_number: number }, { reagent_id: number, reagent_units: number }, user: { userId: number, username: string }]){
-        const user: { userId: number, username: string } = req.user;
-        body.push(user);
-        return this.operationsService.NewRestock(body);
+    newRestock(@Req() req, @Body() body: {stock_data: [{ host_building: string, shelf_number: number, shelf_lvl_id: number, shelf_lvl_number: number, stock_diff: number}], reagent_data: { reagent_id: number, reagent_name: number }}){
+        return this.operationsService.newRestockOperation(Object.assign({}, body, req.user));
     }
 
     @Post('/transfer')
     newTransferOperation(@Req() req, @Body() body: { transferInformation: { source_id: number, destination_id: number, reagent_id: number, stock_units: number }}) {
+        console.log(req.user)
         return this.operationsService.newTransferOperation(Object.assign({}, body, req.user))
     }
+
+
 }

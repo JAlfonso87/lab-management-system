@@ -1,29 +1,26 @@
+import { useState } from "react"
 import "./Stock.css"
 
 function Stock({
   location,
-  source,
-  setSource,
-  destination,
-  setDestination
+  target,
+  setTarget,
+  targets,
+  setTargets
 }) {
-  const loadSource = (location) => {
-      console.log("SOURCE")
-      console.log(location)
-      setSource(location)
-  }
 
-  const loadDestination = (location) => {
-      console.log("DESTINATION")
-      console.log(location)
-      setDestination(location)
-  }
+  const [selected, setSelected] = useState({})
 
-  const validSelection = () => {
-    if(Object.hasOwn(source, "host_building") && Object.hasOwn(destination, "host_building"))
-      return true;
-    else
-      return location.shelf_level_id == source.shelf_level_id ? true : false;
+  const alreadyStored = () => {
+    let locationType = Object.hasOwn(selected, "shelf_level_id") ? "Almacen" : Object.hasOwn(selected, "lab_name") ? "Laboratorio" : null;
+    
+    return targets.some((target_record) => {
+        if(locationType == "Almacen")
+          return target_record.shelf_level_id == selected.shelf_level_id;
+        
+        if (locationType == "Laboratorio")
+          return target_record.lab_name == selected.lab_name;
+    });
   }
 
   return (
@@ -39,10 +36,13 @@ function Stock({
               <button
                 className="stock-edit-button"
                 type="button"
-                onClick = { () => { Object.hasOwn(source, "host_building") ? loadDestination(location) : loadSource(location) }}
-                disabled = { validSelection() }
+                onClick = { () => { 
+                  setSelected(location); 
+                  setTarget(location);
+                }}
+                disabled = { alreadyStored() }
               >
-                Seleccionar { Object.hasOwn(source, "host_building") ? "Destino" : "Origen" }
+                Seleccionar Ubicación
               </button>
 
             </>
