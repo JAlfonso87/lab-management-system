@@ -1,12 +1,13 @@
-import { Body, Controller, Get, Param, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Query, Request } from "@nestjs/common";
 import { Authorized_Roles } from "../_nestjs_decorators/roles.decorator.js";
 import { LocationsService } from "./locations.service.js";
 import { PublicRoute } from "../_nestjs_decorators/public.decorator.js";
+import { UserService } from "../users/user.service.js";
 
 @Controller('locations')
 @Authorized_Roles(['ADMIN'])
 export class LocationsController {
-    constructor(private readonly locationsService: LocationsService){}
+    constructor(private readonly locationsService: LocationsService, private readonly userService: UserService){}
     
     @Get(':host_building/shelf')
     async getShelfInventory(
@@ -21,9 +22,18 @@ export class LocationsController {
     @Get('labs')
     async getLabs(
         @Query('host_building') host_building: string
-    ) 
-    {
+    ) {
         return await this.locationsService.getLabs(host_building);
+    }
+
+    @Get('lab')
+    async getAssignedLab(@Request() req) {
+        return await this.userService.getAssignedLab(Number(req.user.userId))
+    }
+
+    @Get('lab/inventory')
+    async getLabInventory(@Query('lab_name') lab_name: string) {
+        return await this.locationsService.getLabInventory(lab_name)
     }
 
     @Get('shelves')

@@ -24,6 +24,7 @@ function LocationSelector({
     const [shelfLevelObject, setShelfLevelObject] = useState({})
 
     const [selectedLab, setSelectedLab] = useState("")
+    const [labObject, setLabObject] = useState({})
 
     const [ready, setReady] = useState(false);
 
@@ -51,6 +52,32 @@ function LocationSelector({
     const findShelfLevel = (shelf_level_id) => {
         if(shelfLevels.length != 0) 
             setShelfLevelObject(shelfLevels.find(shelfLevel => shelfLevel.shelf_level_id == shelf_level_id))
+    }
+
+    const findLab = (lab_id) => {
+        if(labs.length != 0) 
+            setLabObject(labs.find(lab => lab.lab_id == lab_id))
+    }
+
+    const getLabs = () => {
+        if(selectedLocationType == "Laboratorio")
+            api.get('/locations/labs', { params: { host_building: selectedBuilding } } )
+            .then((labs) => setLabs(labs.data))
+            .catch((error) => console.error(error))
+    }
+
+    const getShelves = () => {
+        if(selectedLocationType == "Almacen")
+            api.get('/locations/shelves', { params: { host_building: selectedBuilding } } )
+            .then((shelves) => setShelves(shelves.data))
+            .catch((error) => console.error(error))
+    }
+    
+    const getShelfLevels = () => {
+        if(selectedShelf) 
+            api.get('/locations/shelf/levels', { params: { shelf_id: selectedShelf } } )
+            .then((levels) => setShelfLevels(levels.data))
+            .catch((error) => console.error(error))
     }
 
     const isPayloadReady = () => {
@@ -95,7 +122,8 @@ function LocationSelector({
             payload = {
                 "location_type": selectedLocationType,
                 "host_building": selectedBuilding,
-                "lab_name": selectedLab
+                "lab_name": labObject.lab_name,
+                "lab_id": labObject.lab_id
             }
         } 
         else
@@ -105,27 +133,6 @@ function LocationSelector({
         }
 
         setSelectedLocation(payload);
-    }
-
-    const getLabs = () => {
-        if(selectedLocationType == "Laboratorio")
-            api.get('/locations/labs', { params: { host_building: selectedBuilding } } )
-            .then((labs) => setLabs(labs.data))
-            .catch((error) => console.error(error))
-    }
-
-    const getShelves = () => {
-        if(selectedLocationType == "Almacen")
-            api.get('/locations/shelves', { params: { host_building: selectedBuilding } } )
-            .then((shelves) => setShelves(shelves.data))
-            .catch((error) => console.error(error))
-    }
-    
-    const getShelfLevels = () => {
-        if(selectedShelf) 
-            api.get('/locations/shelf/levels', { params: { shelf_id: selectedShelf } } )
-            .then((levels) => setShelfLevels(levels.data))
-            .catch((error) => console.error(error))
     }
     
     useEffect(() => {
@@ -138,8 +145,19 @@ function LocationSelector({
         getShelfLevels()
     }, [selectedShelf])
 
-    useEffect(() => { getShelves() }, [selectedLocationType, selectedBuilding])
-    useEffect(() => findShelfLevel(selectedShelfLevel), [selectedShelfLevel])
+    useEffect(() => {
+        findShelfLevel(selectedShelfLevel)
+    }, [selectedShelfLevel])
+
+    useEffect(() => {
+        findLab(selectedLab)
+    }, [selectedLab])
+
+    useEffect(() => { 
+        if(selectedBuilding && selectedLocationType)
+            selectedLocationType == "Almacen" ? getShelves() : getLabs()
+    }, [selectedLocationType, selectedBuilding])
+
     useEffect(() => setReady(isPayloadReady()), [selectedBuilding, selectedLocationType, selectedShelf, selectedShelfLevel, selectedLab])
 
     return (
@@ -231,7 +249,7 @@ function LocationSelector({
                           <option value = "" disabled>Nivel</option>
                           {
                             shelfLevels.map((level) => (
-                              <option key = {level.shelf_level_number} value = {level.shelf_level_id}>
+                              <option key = {level.shelf_level_id} value = {level.shelf_level_id}>
                                 {level.shelf_level_number}
                               </option>
                             ))
@@ -239,6 +257,30 @@ function LocationSelector({
                       </select>
                     </div>
                   ) : null
+                }
+
+                {
+                    selectedLocationType == "Laboratorio" ? (
+                        <div className="level-input-container input-label">
+                            <label htmlFor="Designación">Designación</label>
+                            <select 
+                                value = {selectedLab}
+                                style={{width: "200px"}} 
+                                className = "level-input" 
+                                onChange = {event => setSelectedLab(event.target.value)}
+                                //disabled = { alreadyStored(selectedLocation) }
+                                >
+                                <option value = "" disabled>Designación</option>
+                                {
+                                    labs.map((lab) => (
+                                    <option key = {lab.lab_id} value = {lab.lab_id}>
+                                        {lab.lab_name.replace("_", " ")}
+                                    </option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    ) : null
                 }
 
                 {

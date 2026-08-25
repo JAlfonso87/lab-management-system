@@ -43,4 +43,5 @@ export class UserController {
     editUser(@Req() req, @Body() body: { username: string, fields: object }) : Promise<any>{
         return this.userService.editUser(req.user, body);
     }
+
 }

@@ -17,7 +17,7 @@ export class ReagentService {
             }
         });
 
-        const storageData = async () => {
+        const getStorageData = async () => {
             const shelfLevelData = await this.prisma.shelf_levels.findMany({
                 where: { shelf_level_id: { in: locations.map(location => location.location_id)}},
                 select: { 
@@ -32,7 +32,7 @@ export class ReagentService {
             })
 
             if(shelfLevelData.length == 0)
-                return null;
+                return [];
 
             const shelfData = await this.prisma.shelves.findMany({
                 where: { shelf_id: { in: shelfLevelData.map(level => Number(level.shelf_id))}},
@@ -44,7 +44,7 @@ export class ReagentService {
                 orderBy: { shelf_id: "asc" }
             })
 
-            const data: {}[] = shelfLevelData.map(shelfLevel => {
+            const data = shelfLevelData.map(shelfLevel => {
                     const entry = Object.assign(
                         {}, 
                         shelfData.find(shelf => shelfLevel.shelf_id == shelf.shelf_id ), 
@@ -56,12 +56,37 @@ export class ReagentService {
                 }
             )
 
-            return data;
+            return data ?? [];
         }
         
-        const locationData = await storageData();
+        const getLabData = async () => {
+            const labData = await this.prisma.labs.findMany({
+                where: { lab_id: { in: locations.map(location => location.location_id)}},
+                orderBy: [
+                    { lab_id: "asc"}, 
+                    { lab_name: "asc" }
+                ] 
+            })
 
-        return locationData == null ? [] : locationData;
+            const data = labData.map(lab => {
+                    const entry = Object.assign(
+                        {}, 
+                        lab, 
+                        { "local_stock_units": locations.find(location => location.location_id == lab.lab_id)!.local_stock_units }
+                    )
+                    return entry;
+                }
+            )
+
+            return data ?? [];
+        }
+
+        const storage_data: {}[] = await getStorageData();
+        const lab_data: {}[] = await getLabData();
+        
+        let availableLocations: {}[] = [];
+
+        return availableLocations.concat(storage_data, lab_data);
     }
 
     async getReagentTotalStock(reagent_id: number) {

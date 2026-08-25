@@ -19,6 +19,8 @@ function TransferStock() {
   const [destination, setDestination] = useState({});
   const [targets, setTargets] = useState([]);
 
+  const [disable, setDisable] = useState(false);
+
   const [stockUnits, setStockUnits] = useState("");
 
   const documentLocation = useLocation();
@@ -30,7 +32,7 @@ function TransferStock() {
     setStockUnits("");
   }
 
-  const refresh = async () => {
+  const handleRefresh = async () => {
     await api.get('reagents/reagent/' + material.reagent_id)
     .then (response => setMaterial(response.data))
     .catch (error => console.log(error))
@@ -57,17 +59,33 @@ function TransferStock() {
       alert("Las unidades a transferir no pueden superar las unidades del stock de origen.")
       return;
     }
+        
+    let sourceId;
+    let destinationId;
 
-    await api.post('operations/transfer', {
-      source_id: Number(source.shelf_level_id),
-      destination_id: Number(destination.shelf_level_id),
+    if(Object.hasOwn(source, "shelf_level_id"))
+      sourceId = Number(source.shelf_level_id);
+    else if (Object.hasOwn(source, "lab_id"))
+      sourceId = Number(source.lab_id);
+
+    if(Object.hasOwn(destination, "shelf_level_id"))
+      destinationId = Number(destination.shelf_level_id);
+    else if (Object.hasOwn(destination, "lab_id"))
+      destinationId = Number(destination.lab_id);
+    
+    const payload = {
+      source_id: sourceId,
+      destination_id: destinationId,
       reagent_id: Number(material.reagent_id),
       stock_units: Number(stockUnits)
-    })
+    }
+
+
+    await api.post('operations/transfer', payload)
     .then ((response) => {
       alert("Stock transferido con éxito.")
       clearHooks();
-      refresh();
+      handleRefresh();
     })
     .catch((error) => console.log(error))
   }
@@ -93,6 +111,11 @@ function TransferStock() {
     if(Object.keys(destination).length)
       setTargets((targets) => [...targets, destination])
   }, [destination]);
+
+  
+  useEffect(() => {
+    setDisable(Object.keys(source).length != 0 && Object.keys(destination).length != 0);
+  }, [source, destination])
 
   return (
     <div className="edit-stock-page">
@@ -149,6 +172,7 @@ function TransferStock() {
                               setTarget = { Object.hasOwn(source, 'host_building') ? setDestination : setSource }
                               targets = { targets }
                               setTargets = { setTargets }
+                              disablingCondition = { disable }
                             />
                           ) : null
                         )
@@ -198,7 +222,7 @@ function TransferStock() {
                     isLocationSelected(source) ? (
                       <tr className="edit-stock-data">
                         <td>{source.host_building}</td>
-                        <td>{Object.hasOwn(source, "shelf_level_number") ? "Almacén" : "Laboratorio"}</td>
+                        <td>{Object.hasOwn(source, "shelf_level_number") ? "ALMACÉN" : "LAB. " + source.lab_name.replace("_", " ")}</td>
                         <td>{source.shelf_number ? source.shelf_number : "-"}</td>
                         <td>{source.shelf_level_number ? source.shelf_level_number : "-"}</td>
                         <td>{source.local_stock_units}</td>
@@ -220,7 +244,7 @@ function TransferStock() {
                     isLocationSelected(destination) ? (
                       <tr className="edit-stock-data">
                         <td>{destination.host_building}</td>
-                        <td>{Object.hasOwn(destination, "shelf_level_number") ? "Almacén" : "Laboratorio"}</td>
+                        <td>{Object.hasOwn(destination, "shelf_level_number") ? "ALMACÉN" : "LAB. " + destination.lab_name.replace("_", " ")}</td>
                         <td>{destination.shelf_number ? destination.shelf_number : "-"}</td>
                         <td>{destination.shelf_level_number ? destination.shelf_level_number : "-"}</td>
                         <td>{destination.local_stock_units}</td>

@@ -2,10 +2,29 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
 import bcrypt from "bcrypt";
 import chalk from "chalk";
+import { Prisma } from "../_prisma_generated/client.js";
 
 @Injectable()
 export class UserService {
     constructor(private prisma:PrismaService) {}
+
+    async getAssignedLab(user_id: number, tx?: Prisma.TransactionClient) {
+        const client = tx ? tx : this.prisma;
+        const lab_id = await client.users.findUnique({
+            where: { user_id: user_id },
+            select: { lab_id: true }
+        })
+
+        if(!lab_id)
+            throw new HttpException("ERR_UNASSIG_LAB", HttpStatus.NOT_FOUND)
+        
+        const lab = await client.labs.findUnique({ where: { lab_id: lab_id!.lab_id! }})
+
+        if(!lab)
+            throw new HttpException("ERR_LAB_NOT_FOUND", HttpStatus.NOT_FOUND)
+
+        return lab;
+    }
 
     async userExists(username: string) {
         const user = await this.prisma.users.findFirst({

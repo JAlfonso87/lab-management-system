@@ -118,15 +118,6 @@ function Materials() {
   }, []);
 
   useEffect(() => {
-    if (searchParams.has('page') == false && searchParams.has('risk') == false) {
-      setSearchParams({
-        risk: 'TODOS',
-        page: 1
-      })
-    }
-  }, [])
-
-  useEffect(() => {
     setSearchParams({
       risk: appliedColor.toUpperCase(),
       page: 1
@@ -134,20 +125,20 @@ function Materials() {
   }, [appliedColor])
 
   useEffect(() => {
-    if(searchParams.get('risk') == null)
-        setSearchParams({
-          risk: "TODOS",
-          page: 1
-        })
-    else if(searchParams.get('page') == null)
-        setSearchParams({
-          risk: searchParams.get('risk'),
-          page: 1
-        })
+    const risk = searchParams.get('risk');
+    const page = searchParams.get('page');
 
-    getReagents(searchParams.get('risk'), searchParams.get('page'));
+    if (risk == null || page == null) {
+        setSearchParams({
+            risk: risk ?? "TODOS",
+            page: page ?? 1
+        });
 
-  }, [searchParams])
+        return;
+    }
+
+    getReagents(risk, page);
+}, [searchParams]);
 
   return (
     <div className="materials-page">
@@ -286,9 +277,7 @@ function Materials() {
                   key={material.reagent.reagent_id}
                   image={image}
                   {...material}
-                  onClick={() =>
-                    setSelectedMaterial(material)
-                  }
+                  onClick={() => setSelectedMaterial(material)}
                 />
               ))}
 
@@ -305,9 +294,7 @@ function Materials() {
             <MaterialModal
               material={selectedMaterial}
               image={image}
-              onClose={
-                () => setSelectedMaterial(null)
-              }
+              onClose={() => setSelectedMaterial(null)}
               onDelete={deleteMaterial}
             />
           )}

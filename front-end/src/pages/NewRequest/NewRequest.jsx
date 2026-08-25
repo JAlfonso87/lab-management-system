@@ -2,7 +2,8 @@ import "./NewRequest.css"
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "../../axios/api"
 
 function NewRequest() {
 
@@ -34,12 +35,24 @@ function NewRequest() {
   ]
 
   const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [assignedLab, setAssignedLab] = useState({});
+  const [labInventory, setLabInventory] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
 
   }
+
+  useEffect(() => {
+    api.get('/locations/lab').then((response) => { console.log(response); setAssignedLab(response.data) })
+  }, [])
+
+  useEffect(() => {
+    if(Object.keys(assignedLab).length)
+      api.get('/locations/lab', { params: { lab_name: assignedLab.lab_name }}).then((response) => {setLabInventory(response.data)});
+    console.log(labInventory)
+  }, [assignedLab]);
 
   return (
     <div className="new-request-page">
@@ -57,7 +70,7 @@ function NewRequest() {
           </h1>
 
           <h2 className="new-request-location">
-            Edificio A: Laboratorio de Alimentos
+            EDIFICIO {assignedLab.host_building} : LABORATORIO DE {assignedLab.lab_name}
           </h2>
 
           <p className="new-request-text">
@@ -87,24 +100,24 @@ function NewRequest() {
 
                 <tbody>
                   {
-                    materials.map(material => (
-                      <tr key={material.id}>
-                        <td>{material.name}</td>
-                        <td>{material.brand}</td>
-                        <td>{material.stock}</td>
+                    /*labInventory.map(entry => (
+                      <tr key={entry.id}>
+                        <td>{entry.name}</td>
+                        <td>{entry.brand}</td>
+                        <td>{entry.stock}</td>
                         <td>
                           <button
                             type="button"
                             className="availables-button"
                             onClick={() =>
-                              setSelectedMaterials([...selectedMaterials, material])
+                              setSelectedMaterials([...selectedMaterials, entry])
                             }
                           >
                             Seleccionar
                           </button>
                         </td>
                       </tr>
-                    ))
+                    ))*/
                   }
                 </tbody>
               </table>
