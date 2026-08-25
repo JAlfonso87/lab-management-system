@@ -8,12 +8,6 @@ import { PublicRoute } from "../_nestjs_decorators/public.decorator.js";
 export class LocationsController {
     constructor(private readonly locationsService: LocationsService){}
     
-    @PublicRoute()
-    @Get(':host_building/labs')
-    async getLabs(@Param('host_building') host_building: string) {
-        return await this.locationsService.getLabs(host_building);
-    }
-
     @Get(':host_building/shelf')
     async getShelfInventory(
         @Param('host_building') host_building: string,
@@ -21,6 +15,15 @@ export class LocationsController {
         @Query('level') shelf_lvl_number?: number
     ) {
         return await this.locationsService.getShelfInventory(host_building, Number(shelf_number), shelf_lvl_number == undefined? undefined : Number(shelf_lvl_number));
+    }
+
+    @PublicRoute()
+    @Get('labs')
+    async getLabs(
+        @Query('host_building') host_building: string
+    ) 
+    {
+        return await this.locationsService.getLabs(host_building);
     }
 
     @Get('shelves')

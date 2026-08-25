@@ -3,13 +3,13 @@ import { api } from "../../axios/api";
 
 import "./LocationSelector.css"
 
-function LocationSelector(
-    {
-        label,
-        selectedLocation,
-        setSelectedLocation
-    }
-) {
+function LocationSelector({
+    label,
+    selectedLocation,
+    setSelectedLocation,
+    restricted
+}) 
+{
     const [shelves, setShelves] = useState([]);
     const [shelfLevels, setShelfLevels] = useState([]);
     const [labs, setLabs] = useState([]);
@@ -27,7 +27,7 @@ function LocationSelector(
 
     const [ready, setReady] = useState(false);
 
-    const isLocationSelected = (location) => {
+    const alreadyStored = (location) => {
         return Object.hasOwn(location, "host_building");
     }
 
@@ -44,17 +44,13 @@ function LocationSelector(
     }
 
     const findShelf = (shelf_id) => {
-        if(shelves.length != 0) {
+        if(shelves.length != 0)
             setShelfObject(shelves.find(shelf => shelf.shelf_id == shelf_id))
-            console.log(shelfObject)
-        }
     }
 
     const findShelfLevel = (shelf_level_id) => {
-        if(shelfLevels.length != 0) {
+        if(shelfLevels.length != 0) 
             setShelfLevelObject(shelfLevels.find(shelfLevel => shelfLevel.shelf_level_id == shelf_level_id))
-            console.log(shelfLevelObject)
-        }
     }
 
     const isPayloadReady = () => {
@@ -75,8 +71,6 @@ function LocationSelector(
             return
         }
 
-        console.log(selectedLocationType)
-
         if(selectedLocationType === "Almacen"){
             if(!selectedShelf || !selectedShelfLevel) {
                 alert("Por favor, completa los datos del estante objetivo.")
@@ -86,9 +80,9 @@ function LocationSelector(
             payload = {
                 "location_type": selectedLocationType,
                 "host_building": selectedBuilding,
+                "shelf_number": shelfObject.shelf_number,
                 "shelf_level_id": shelfLevelObject.shelf_level_id,
                 "shelf_level_number": shelfLevelObject.shelf_level_number,
-                "shelf_number": shelfObject.shelf_number
             }
 
         } 
@@ -110,56 +104,43 @@ function LocationSelector(
             return
         }
 
-        console.log(payload)
         setSelectedLocation(payload);
     }
 
-    const getShelves = async () => {
-        let shelves;
-        if(selectedLocationType == "Almacen") {
-            shelves = await api.get('/locations/shelves', {
-              params: {
-                host_building: selectedBuilding
-              }
-            })
-        setShelves(shelves.data);
-        }
+    const getLabs = () => {
+        if(selectedLocationType == "Laboratorio")
+            api.get('/locations/labs', { params: { host_building: selectedBuilding } } )
+            .then((labs) => setLabs(labs.data))
+            .catch((error) => console.error(error))
+    }
+
+    const getShelves = () => {
+        if(selectedLocationType == "Almacen")
+            api.get('/locations/shelves', { params: { host_building: selectedBuilding } } )
+            .then((shelves) => setShelves(shelves.data))
+            .catch((error) => console.error(error))
     }
     
-    const getShelfLevels = async() => {
-        if(selectedShelf) {
-            console.log(selectedShelf)
-            let levels = await api.get('/locations/shelf/levels', {
-            params: {
-              shelf_id: selectedShelf
-            }
-            })
-            setShelfLevels(levels.data)
-        }
-        
+    const getShelfLevels = () => {
+        if(selectedShelf) 
+            api.get('/locations/shelf/levels', { params: { shelf_id: selectedShelf } } )
+            .then((levels) => setShelfLevels(levels.data))
+            .catch((error) => console.error(error))
     }
     
     useEffect(() => {
-        if(isLocationSelected(selectedLocation) == false)
+        if(alreadyStored(selectedLocation) == false)
             clearFields();
     }, [selectedLocation])
 
-    useEffect(() => {
-        getShelves()
-    }, [selectedLocationType])
-    
     useEffect(() => {
         findShelf(selectedShelf)
         getShelfLevels()
     }, [selectedShelf])
 
-    useEffect(() => {
-        findShelfLevel(selectedShelfLevel)
-    }, [selectedShelfLevel])
-
-    useEffect(() => {
-        setReady(isPayloadReady());
-    }, [selectedBuilding, selectedLocationType, selectedShelf, selectedShelfLevel, selectedLab])
+    useEffect(() => { getShelves() }, [selectedLocationType, selectedBuilding])
+    useEffect(() => findShelfLevel(selectedShelfLevel), [selectedShelfLevel])
+    useEffect(() => setReady(isPayloadReady()), [selectedBuilding, selectedLocationType, selectedShelf, selectedShelfLevel, selectedLab])
 
     return (
         <div className="material-location">
@@ -176,8 +157,8 @@ function LocationSelector(
                         id="building"
                         className="building-input"
                         value = { selectedBuilding }
-                        onChange={event => setSelectedBuilding(event.target.value)}
-                        disabled = { isLocationSelected(selectedLocation) }
+                        onChange = {event => setSelectedBuilding(event.target.value)}
+                        //disabled = { alreadyStored(selectedLocation) }
                     >
                         <option value = "" disabled>Edificio</option>
                         <option value = "A">A</option>
@@ -193,10 +174,18 @@ function LocationSelector(
                         className="location-input"
                         value={selectedLocationType}
                         onChange={event => setSelectedLocationType(event.target.value) }
-                        disabled = { isLocationSelected(selectedLocation) }
-                      >
+                        //disabled = { alreadyStored(selectedLocation) }
+                      > 
                         <option value="" disabled>Ubicación</option>
-                        <option value="Almacen">Almacen</option>
+                        {
+                            ["Almacen", "Laboratorio"].map((type) => 
+                                restricted == true? 
+                                ( (type == "Almacen") ? (<option value={type}>{type}</option>) : null ) 
+                                :
+                                ( <option value={type}>{type}</option> )
+                            )
+                        }
+
                       </select>
                     </div>
                   ) : null
@@ -212,7 +201,7 @@ function LocationSelector(
                         value = {selectedShelf} 
                         className = "shelf-input" 
                         onChange = {event => setSelectedShelf(event.target.value)}
-                        disabled = { isLocationSelected(selectedLocation) }
+                        //disabled = { alreadyStored(selectedLocation) }
                         >
                           <option value = "" disabled>Estante</option>
                           {
@@ -237,7 +226,7 @@ function LocationSelector(
                         value = {selectedShelfLevel} 
                         className = "level-input" 
                         onChange = {event => setSelectedShelfLevel(event.target.value)}
-                        disabled = { isLocationSelected(selectedLocation) }
+                        //disabled = { alreadyStored(selectedLocation) }
                         >
                           <option value = "" disabled>Nivel</option>
                           {
@@ -258,7 +247,7 @@ function LocationSelector(
                             type = "button"
                             className = "location-selector-button"
                             onClick = {() => prepareLocationPayload()}
-                            disabled = { isLocationSelected(selectedLocation) }
+                            //disabled = { alreadyStored(selectedLocation) }
                         >
                         Agregar ubicación
                         </button>

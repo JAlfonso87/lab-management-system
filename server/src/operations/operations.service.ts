@@ -201,41 +201,53 @@ export class OperationsService {
         return result;
     }
 
-    async NewRestock(
-        data: [
-            locationData: { host_building: string, shelf_number: number, shelf_lvl_number: number },
-            reagentData: { reagent_id: number, reagent_units: number } ,
-            user: { userId: number, username: string}
-        ]
+    async newRestockOperation(
+        data: {
+            stock_data: [{ host_building: string, shelf_number: number, shelf_level_id: number, shelf_lvl_number: number, stock_diff: number}],
+            reagent_data: { reagent_id: number, reagent_name: number },
+            userId: number, 
+            username: string
+        }
     ) {
-        const { host_building, shelf_number, shelf_lvl_number } = data[0];
-        const { reagent_id, reagent_units } = data[1]
-        const { userId, username } = data[2];
-        const location_id: number = Number(await this.locationsService.getLocationID("SHELF_LVL", { host_building, shelf_lvl_number, shelf_number }));
-        const local_stock_id = await this.locationsService.getLocalStock(location_id, reagent_id);
+        const restock = await this.prisma.$transaction(async (tx) => {
 
-        const affected_stock = await this.prisma.local_stocks.upsert({
-            where: { local_stock_id: local_stock_id},
-            create: {
-                location_id: location_id,
-                reagent_id: reagent_id, 
-                local_stock_units: reagent_units
-            },
-            update: {
-                local_stock_units: { increment: reagent_units }
+            for(const stock of data.stock_data){
+                console.log(stock)
+                const local_stock = await tx.local_stocks.findUnique({
+                    where: {
+                        reagent_id_location_id: {
+                            reagent_id: data.reagent_data.reagent_id,
+                            location_id: stock.shelf_level_id
+                        }
+                    }
+                })
+
+                if(!local_stock)
+                    await this.newLocalStock(data.reagent_data.reagent_id, stock.shelf_level_id, tx);
+            }
+
+            for(const stock of data.stock_data){
+                await tx.local_stocks.update({
+                    data: {
+                        local_stock_units: { increment: Number(stock.stock_diff)}
+                    },
+                    where: { 
+                        local_stock_id: Number(await this.locationsService.getLocalStock(stock.shelf_level_id, data.reagent_data.reagent_id, tx))
+                    }
+                })
+
+                await tx.restocks.create({
+                    data: {
+                        reagent_id: data.reagent_data.reagent_id,
+                        user_id: data.userId,
+                        local_stock_id: Number(await this.locationsService.getLocalStock(stock.shelf_level_id, data.reagent_data.reagent_id, tx)),
+                        restock_units: stock.stock_diff,
+                        restock_date: new Date()
+                    }
+                })
             }
         })
-        
-        const restock_log = await this.prisma.restocks.create({
-            data: {
-                reagent_id: reagent_id,
-                user_id: userId,
-                local_stock_id: affected_stock.local_stock_id,
-                restock_units: reagent_units,
-                restock_date: new Date()
-            }
-        })
 
-        return restock_log;
+        return restock;
     }
 }

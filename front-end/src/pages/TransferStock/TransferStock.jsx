@@ -1,4 +1,4 @@
-import "./EditStockMaterial.css"
+import "./TransferStock.css"
 
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Stock from "../../components/Stock/Stock";
 import LocationSelector from "../../components/LocationSelector/LocationSelector";
 
-function EditStockMaterial() {
+function TransferStock() {
 
   const navigate = useNavigate();
 
@@ -17,24 +17,31 @@ function EditStockMaterial() {
 
   const [source, setSource] = useState({});
   const [destination, setDestination] = useState({});
+  const [targets, setTargets] = useState([]);
 
   const [stockUnits, setStockUnits] = useState("");
 
   const documentLocation = useLocation();
 
-  const refresh = async () => {
-    let response = await api.get('reagents/reagent/'+material.reagent_id);
-    setMaterial(response.data);
+  const clearHooks = () => {
+    setSource({});
+    setDestination({});
+    setTargets([])
+    setStockUnits("");
   }
 
-  const isLocationSelected = (location) => {
-    return Object.hasOwn(location, "host_building");
+  const refresh = async () => {
+    await api.get('reagents/reagent/' + material.reagent_id)
+    .then (response => setMaterial(response.data))
+    .catch (error => console.log(error))
   }
+
+  const isLocationSelected = (location) => Object.hasOwn(location, "host_building");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if(!Object.hasOwn(source, "host_building") || !Object.hasOwn(destination, "host_building"))
+    if(!isLocationSelected(source) || !isLocationSelected(destination))
     {
       alert("Por favor, especifica las ubicaciones de transferencia.");
       return;
@@ -51,37 +58,41 @@ function EditStockMaterial() {
       return;
     }
 
-    const response = await api.post('operations/transfer', {
+    await api.post('operations/transfer', {
       source_id: Number(source.shelf_level_id),
       destination_id: Number(destination.shelf_level_id),
       reagent_id: Number(material.reagent_id),
       stock_units: Number(stockUnits)
     })
-
-    console.log(response.data)
-    alert("Stock transferido con éxito.")
-    setStockUnits("");
-    setSource({});
-    setDestination({});
-    refresh();
+    .then ((response) => {
+      alert("Stock transferido con éxito.")
+      clearHooks();
+      refresh();
+    })
+    .catch((error) => console.log(error))
   }
 
   const handleCancel = () => {
-    setStockUnits("");
-    setSource({});
-    setDestination({});
-
+    clearHooks();
     navigate('/materials');
   }
 
-  const loadReagentData = () => {
-    console.log(documentLocation.state)
-    setMaterial(documentLocation.state)
-  }
+  useEffect(() => {
+    if(documentLocation.state)
+      setMaterial(documentLocation.state)
+    else
+      handleCancel();
+  }, []);
 
   useEffect(() => {
-    loadReagentData()
-  }, [])
+    if(Object.keys(source).length)
+      setTargets((targets) => [...targets, source])
+  }, [source]);
+
+  useEffect(() => {
+    if(Object.keys(destination).length)
+      setTargets((targets) => [...targets, destination])
+  }, [destination]);
 
   return (
     <div className="edit-stock-page">
@@ -105,7 +116,7 @@ function EditStockMaterial() {
             A continuación se encuentran los datos de la transferencia:
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit = { handleSubmit }>
             <div className="stocks-container">
 
               <div className="subtitle-container">
@@ -134,10 +145,10 @@ function EditStockMaterial() {
                             <Stock
                               key = { location.shelf_level_id }
                               location = { location }
-                              source = { source }
-                              setSource = { setSource }
-                              destination = { destination }
-                              setDestination = { setDestination }
+                              target = { Object.hasOwn(source, 'host_building') ? destination : source }
+                              setTarget = { Object.hasOwn(source, 'host_building') ? setDestination : setSource }
+                              targets = { targets }
+                              setTargets = { setTargets }
                             />
                           ) : null
                         )
@@ -155,6 +166,7 @@ function EditStockMaterial() {
                         label = {"También puedes seleccionar un destino manualmente:"}
                         selectedLocation = { destination }
                         setSelectedLocation = { setDestination }
+                        restricted = { false }
                       />
                   ) : null
                 }
@@ -183,7 +195,7 @@ function EditStockMaterial() {
                 </thead>
                 <tbody>
                   {
-                    Object.hasOwn(source, "host_building") ? (
+                    isLocationSelected(source) ? (
                       <tr className="edit-stock-data">
                         <td>{source.host_building}</td>
                         <td>{Object.hasOwn(source, "shelf_level_number") ? "Almacén" : "Laboratorio"}</td>
@@ -205,7 +217,7 @@ function EditStockMaterial() {
                     )
                   }
                   {
-                    Object.hasOwn(destination, "host_building") ? (
+                    isLocationSelected(destination) ? (
                       <tr className="edit-stock-data">
                         <td>{destination.host_building}</td>
                         <td>{Object.hasOwn(destination, "shelf_level_number") ? "Almacén" : "Laboratorio"}</td>
@@ -236,28 +248,25 @@ function EditStockMaterial() {
                 </h2>
                 <hr className="edit-stock-right-line" />
               </div>
+
               <div className="edit-stock-container" style={{marginBottom: "50px", marginTop: "15px"}}>
-                {
-                  (
-                    <div className="stock-input-container input-label">
-                    <label htmlFor="stock">Unidades a transferir</label>
-                    <input
-                      id="stock"
-                      style={{width: "280px", marginBottom: "20px"}}
-                      placeholder="Unidades a transferir"
-                      type="number"
-                      className="stock-input"
-                      value ={stockUnits}
-                      onChange={event =>
-                        setStockUnits(event.target.value)
-                      }
-                    />
-                    {
-                      (
+                {(
+                  <div className="stock-input-container input-label">
+                      <label htmlFor="stock">Unidades a transferir</label>
+                      <input
+                        id = "stock"
+                        style = {{width: "280px", marginBottom: "20px"}}
+                        placeholder = "Unidades a transferir"
+                        type = "number"
+                        className = "stock-input"
+                        value = { stockUnits }
+                        onChange={ event => setStockUnits(event.target.value) }
+                      />
+                      {(
                         <div style = {{marginTop: "15px"}}>
                           <button
-                            className="add-stock-button"
-                            type="submit"
+                            className = "add-stock-button"
+                            type = "submit"
                           >
                             Transferir
                           </button>
@@ -266,11 +275,9 @@ function EditStockMaterial() {
                             Cancelar
                           </button>
                         </div>
-                      )
-                    }
+                      )}
                   </div>
-                  )
-                }
+                )}
               </div>
 
             </div>
@@ -280,8 +287,9 @@ function EditStockMaterial() {
         </main>
 
       </div>
+
     </div>
   );
 }
 
-export default EditStockMaterial;
+export default TransferStock;

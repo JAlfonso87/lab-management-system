@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "../_prisma_nestjs/prisma.service.js";
+import { Prisma } from "../_prisma_generated/client.js";
 
 @Injectable()
 export class LocationsService {
@@ -8,7 +9,10 @@ export class LocationsService {
     async getLabs(host_building: string){
         const labs = await this.prisma.labs.findMany({
             where: { host_building: host_building },
-            select: { lab_name: true} 
+            select: { 
+                lab_id: true,
+                lab_name: true 
+            } 
         })
         return labs;
     }
@@ -79,8 +83,9 @@ export class LocationsService {
         return locationID;
     }
 
-    async getLocalStock(location_id: number, reagent_id: number) {
-        const local_stock = await this.prisma.local_stocks.findUnique({
+    async getLocalStock(location_id: number, reagent_id: number, tx?: Prisma.TransactionClient) {
+        const client = tx ? tx : this.prisma;
+        const local_stock = await client.local_stocks.findUnique({
             where: {
                 reagent_id_location_id: {
                     reagent_id: reagent_id,

@@ -108,7 +108,7 @@ function MaterialModal({ material, image, onClose, onDelete }) {
               type="button"
               onClick={() =>
                 { 
-                  navigate("/edit-stock-material", {
+                  navigate("/transfer-stock", {
                     state: {
                       "reagent_id": material.reagent.reagent_id,
                       "reagent_name": material.reagent.reagent_name,
@@ -118,7 +118,25 @@ function MaterialModal({ material, image, onClose, onDelete }) {
                 }
               }
             >
-              Editar stock
+              Transferir Stock
+            </button>
+
+            <button
+              className="modal-edit-button"
+              type="button"
+              onClick={() =>
+                { 
+                  navigate("/restock", {
+                    state: {
+                      "reagent_id": material.reagent.reagent_id,
+                      "reagent_name": material.reagent.reagent_name,
+                      "locations": material.locations
+                    }
+                  })
+                }
+              }
+            >
+              Realizar Re-Stock
             </button>
 
             <button
