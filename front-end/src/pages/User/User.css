@@ -1,0 +1,133 @@
+.user-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.user-content {
+  display: flex;
+  flex: 1;
+}
+
+.user-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 70px 50px;
+
+  margin-left: 200px;
+}
+
+.user-title {
+  text-align: left;
+  font-size: 38px;
+  font-weight: 400;
+  width: 100%;
+  margin: 0 0 40px 0;
+}
+
+.user-data-section {
+  display: flex;
+}
+
+.user-photo {
+  width: 250px;
+  object-fit: cover;
+
+  border-radius: 10px;
+}
+
+.user-information {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  margin-left: 20px;
+}
+
+.subtitle-container {
+  display: flex;
+  justify-content: left;
+}
+
+.subtitle-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0
+}
+
+.user-left-line {
+  border: none;
+  border-top: 1px solid #949494;
+  width: 20px;
+  margin: 12px 1px 12px 0;
+}
+
+.user-right-line {
+  border: none;
+  border-top: 1px solid #949494;
+  flex: 1;
+  margin: 12px 0 12px 5px;
+}
+
+.username-text {
+  font-size: 24px;
+  text-align: left;
+}
+
+.user-phone-text {
+  font-size: 16px;
+  text-align: left;
+}
+
+.user-building-text {
+  font-size: 16px;
+  text-align: left;
+}
+
+.user-lab-text {
+  font-size: 24px;
+  text-align: left;
+}
+
+.operation-buttons-container {
+  display: flex;
+  margin-top: 5px;
+}
+
+.change-username-button {
+  background-color: #E4E4E4;
+  padding: 8px 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.change-username-button:hover {
+  background-color: #dddddd;
+}
+
+.change-password-button {
+  background-color: #525252;
+  color: white;
+  padding: 8px 20px;
+  margin-left: 10px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.change-password-button:hover {
+  background-color: #686868;
+}
