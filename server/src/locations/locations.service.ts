@@ -102,9 +102,18 @@ export class LocationsService {
 
     async getLabInventory(lab_name: string){
         const lab_id: number = await this.getLocationID("LAB", { lab_name: lab_name });
-        const inventory = await this.prisma.local_stocks.findMany({
+        const local_stocks = await this.prisma.local_stocks.findMany({
             where: { location_id: Number(lab_id)}
         })
+
+        const available_reagents = await this.prisma.reagents.findMany({
+            where: { reagent_id: { in: local_stocks.map((local_stock) => local_stock.reagent_id) } }
+        });
+
+        const inventory = local_stocks.map((local_stock) => {
+            return Object.assign({}, available_reagents.find((available_reagent) => available_reagent.reagent_id == local_stock.reagent_id), local_stock)
+        })
+        
         return inventory;
     }
 

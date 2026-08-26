@@ -30,14 +30,15 @@ function Restock() {
   }
 
   const prepareIncomingStock = (targetStock, incomingUnits) => {
-    let entry = incomingChanges.find((element) => targetStock.shelf_level_id == element.shelf_level_id);
-    if(entry) {
-      setIncomingChanges(prev => prev.filter((incomingChange) => incomingChange !== entry))
-      entry = {};
-    }
+    if (!incomingUnits) 
+      return;
 
-    setIncomingChanges((incomingChanges) => [...incomingChanges, 
-      Object.defineProperty(targetStock, "stock_diff", { value: Number(incomingUnits), enumerable: true } )
+    setIncomingChanges((prev) => [
+      ...prev.filter((element) => element.shelf_level_id !== targetStock.shelf_level_id),
+      {
+        ...targetStock,
+        stock_diff: Number(incomingUnits)
+      }
     ])
   }
 
@@ -203,6 +204,7 @@ function Restock() {
                                     type = "number"
                                     min = "1"
                                     onChange = {(event) => { prepareIncomingStock(target, event.target.value) }}
+                                    required
                                   >
                                   </input>
                                 </td>

@@ -177,7 +177,6 @@ export type RequestersScalarFieldEnum = (typeof RequestersScalarFieldEnum)[keyof
 
 export const RequestsScalarFieldEnum = {
   request_id: 'request_id',
-  requester_id: 'requester_id',
   user_id: 'user_id',
   request_date: 'request_date'
 } as const

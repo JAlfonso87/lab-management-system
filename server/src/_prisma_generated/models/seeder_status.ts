@@ -230,7 +230,6 @@ export type seeder_statusScalarWhereWithAggregatesInput = {
 }
 
 export type seeder_statusCreateInput = {
-  seeder_id?: number
   seeder_status?: number | null
 }
 
@@ -240,7 +239,6 @@ export type seeder_statusUncheckedCreateInput = {
 }
 
 export type seeder_statusUpdateInput = {
-  seeder_id?: Prisma.IntFieldUpdateOperationsInput | number
   seeder_status?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -255,7 +253,6 @@ export type seeder_statusCreateManyInput = {
 }
 
 export type seeder_statusUpdateManyMutationInput = {
-  seeder_id?: Prisma.IntFieldUpdateOperationsInput | number
   seeder_status?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 

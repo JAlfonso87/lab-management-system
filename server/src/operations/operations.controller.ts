@@ -39,5 +39,24 @@ export class OperationsController {
         return this.operationsService.newTransferOperation(Object.assign({}, body, req.user))
     }
 
+    @Post('/request')
+    newRequestOperation(
+        @Req() req, 
+        @Body() body: 
+        {
+            checkouts: [{
+                local_stock_id: number,
+                checkout_units: number
+            }]
+        }
+    ){
+        const request_information = {
+            "checkouts": body.checkouts,
+            "user": req.user
+        }
+
+        return this.operationsService.newRequestOperation(request_information);
+    }
+
 
 }

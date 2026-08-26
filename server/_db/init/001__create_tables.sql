@@ -117,10 +117,8 @@ CREATE TABLE IF NOT EXISTS thesis_authors(
 
 CREATE TABLE IF NOT EXISTS requests(
 	request_id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    requester_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     request_date DATE NOT NULL,
-    FOREIGN KEY (requester_id) REFERENCES requesters(requester_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 

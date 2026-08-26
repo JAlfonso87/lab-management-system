@@ -7,54 +7,109 @@ import { api } from "../../axios/api"
 
 function NewRequest() {
 
-  const materials = [
-    {
-      id: 1,
-      name: "Ácido sulfúrico",
-      brand: "Merck",
-      stock: 35
-    },
-    {
-      id: 2,
-      name: "Ácido clorhídrico",
-      brand: "Sigma-Aldrich",
-      stock: 24
-    },
-    {
-      id: 3,
-      name: "Hidróxido de sodio",
-      brand: "Fermont",
-      stock: 18
-    },
-    {
-      id: 4,
-      name: "Sulfato de cobre",
-      brand: "J.T. Baker",
-      stock: 42
-    }
-  ]
-
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [assignedLab, setAssignedLab] = useState({});
+
   const [labInventory, setLabInventory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const [checkouts, setCheckouts] = useState([])
+
+  const updateCheckout = (checkout) => {
+    const {local_stock_id, checkout_units} = checkout;
+    console.log(local_stock_id)
+    console.log(checkout_units)
+    console.log(checkouts)
+    if(checkouts.some((element) => element.local_stock_id == local_stock_id))
+      setCheckouts(prev =>
+          prev.map(element =>
+              element.local_stock_id === local_stock_id
+                  ? { ...element, checkout_units }
+                  : element
+          )
+      );
+    else
+      setCheckouts([...checkouts, checkout]);
+  }
+
+  const pageButtonEnabled = (type) => {
+    if(type == "forward"){
+      let max_page = (Math.ceil(labInventory.length / 5))
+      return currentPage < max_page ? false : true;
+    }
+    else if (type == "back")
+      return currentPage == 1 ? true : false;
+  }
+
+  const addMaterialEnabled = (material) => {
+    return selectedMaterials.some((entry) => entry === material)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-
+    if(checkouts.length != 0)
+    {
+      api.post('/operations/request', {
+        "checkouts": checkouts
+      })
+      .then((response) => console.log(response))
+    }
   }
 
   useEffect(() => {
-    api.get('/locations/lab').then((response) => { console.log(response); setAssignedLab(response.data) })
+    let reagent_code = "";
+    let lastKeyTime = 0;
+    let matching_entry = {};
+
+    const handleKeyDown = async (event) => {
+        const now = Date.now();
+
+        if (now - lastKeyTime > 100) {
+            reagent_code = "";
+        }
+
+        if (event.key === "Enter") {
+            if (reagent_code.length > 0) {
+                matching_entry = labInventory.find((lab_entry) => (lab_entry.reagent_code == reagent_code));
+
+                if(matching_entry != undefined){
+                  if(!addMaterialEnabled(matching_entry)) {
+                    setSelectedMaterials([...selectedMaterials, matching_entry])
+                  }
+                } 
+                else {
+                  //alert("ATENCIÓN: PRODUCTO NO REGISTRADO")
+                  console.log(matching_entry)
+                }
+
+                reagent_code = "";
+                matching_entry = {};
+            }
+        } else if (event.key.length === 1) {
+            reagent_code += event.key.toUpperCase();
+        }
+
+        lastKeyTime = now;
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [labInventory, selectedMaterials]);
+
+  useEffect(() => {
+    api.get('/locations/lab').then((response) => { setAssignedLab(response.data) })
   }, [])
 
   useEffect(() => {
-    if(Object.keys(assignedLab).length)
-      api.get('/locations/lab', { params: { lab_name: assignedLab.lab_name }}).then((response) => {setLabInventory(response.data)});
-    console.log(labInventory)
+    if(Object.keys(assignedLab).length != 0)
+      api.get('/locations/lab/inventory', { params: { lab_name: assignedLab.lab_name }}).then((response) => { setLabInventory(response.data)});
   }, [assignedLab]);
 
   return (
+    
     <div className="new-request-page">
 
       <Header />
@@ -93,31 +148,32 @@ function NewRequest() {
                   <tr>
                     <td>Nombre</td>
                     <td>Marca</td>
+                    <td>Código Interno</td>
                     <td>Stock</td>
                     <td>Operaciones</td>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {
-                    /*labInventory.map(entry => (
-                      <tr key={entry.id}>
-                        <td>{entry.name}</td>
-                        <td>{entry.brand}</td>
-                        <td>{entry.stock}</td>
+                  {  
+                    labInventory.slice((currentPage * 5) - 5, ((currentPage * 5))).map(entry => (
+                      <tr key={entry.local_stock_id}>
+                        <td>{entry.reagent_name}</td>
+                        <td>{entry.reagent_brand}</td>
+                        <td>{entry.reagent_code}</td>
+                        <td>{entry.local_stock_units}</td>
                         <td>
                           <button
                             type="button"
                             className="availables-button"
-                            onClick={() =>
-                              setSelectedMaterials([...selectedMaterials, entry])
-                            }
+                            onClick={() => setSelectedMaterials([...selectedMaterials, entry])}
+                            disabled = {addMaterialEnabled(entry)}
                           >
                             Seleccionar
                           </button>
                         </td>
                       </tr>
-                    ))*/
+                    ))
                   }
                 </tbody>
               </table>
@@ -126,17 +182,21 @@ function NewRequest() {
                 <button
                   type="button"
                   className="page-button"
+                  onClick = { () => setCurrentPage(currentPage - 1) }
+                  disabled = { pageButtonEnabled("back") }
                 >
                   &lt;
                 </button>
                 <span
                   className="page-text"
                 >
-                  Página 2
+                  Página {currentPage}
                 </span>
                 <button
                   type="button"
                   className="page-button"
+                  onClick = { () => setCurrentPage(currentPage + 1) }
+                  disabled = {pageButtonEnabled("forward")}
                 >
                   &gt;
                 </button>
@@ -161,17 +221,35 @@ function NewRequest() {
                         <tr>
                           <th>Nombre</th>
                           <th>Marca</th>
-                          <th>Stock</th>
+                          <th>Código Interno</th>
+                          <th>Stock Actual</th>
+                          <th>Stock Saliente</th>
                           <th>Operaciones</th>
                         </tr>
                       </thead>
                       <tbody>
                         {
-                          selectedMaterials.map(selectedMaterial => (
-                            <tr key={selectedMaterial.id}>
-                              <td>{selectedMaterial.name}</td>
-                              <td>{selectedMaterial.brand}</td>
-                              <td>{selectedMaterial.stock}</td>
+                          selectedMaterials.map(element => (
+                            <tr key={element.local_stock_id}>
+                              <td>{element.reagent_name}</td>
+                              <td>{element.reagent_brand}</td>
+                              <td>{element.reagent_code}</td>
+                              <td>{element.local_stock_units}</td>
+                              <td>
+                                  <input
+                                    id = "stock"
+                                    style = {{width: "100px", marginBottom: "20px"}}
+                                    min = { 1 }
+                                    max = { element.local_stock_units }
+                                    placeholder = "Stock saliente"
+                                    type = "number"
+                                    className = "stock-input"
+                                    onChange={(event) => updateCheckout({
+                                      "local_stock_id": element.local_stock_id, 
+                                      "checkout_units": Number(event.target.value) 
+                                    })}
+                                  />
+                              </td>
                               <td>
                                 <button
                                   type="button"
@@ -179,7 +257,7 @@ function NewRequest() {
                                   onClick={() =>
                                     setSelectedMaterials(
                                       selectedMaterials.filter(
-                                        (material) => material.id !== selectedMaterial.id
+                                        (material) => material.id !== element.id
                                       )
                                     )
                                   }
@@ -209,6 +287,7 @@ function NewRequest() {
               <button
                 type="button"
                 className="cancel-request-button"
+                onClick={()=> console.log(labInventory)}
               >
                 Cancelar
               </button>

@@ -20,6 +20,48 @@ export class OperationsService {
         return local_stock;
     }
 
+    async newRequestOperation (
+        requestInformation: {
+            checkouts: [{
+                local_stock_id: number,
+                checkout_units: number
+            }],
+            user: {
+                userId: number,
+                username: string
+            }
+        }
+    )
+    {
+        const { checkouts, user } = requestInformation;
+        const request = await this.prisma.$transaction(async (tx) => {
+            const request_log = await tx.requests.create({
+                data: {
+                    user_id: user.userId,
+                    request_date: new Date(),
+                }
+            });
+
+            for(const checkout of checkouts){
+                const updated_stock = await tx.local_stocks.update({ 
+                    data: {
+                        local_stock_units: { decrement: checkout.checkout_units }
+                    },
+                    where: { local_stock_id: checkout.local_stock_id }
+                })
+                await tx.request_details.create({
+                    data: {
+                        request_id: request_log.request_id,
+                        local_stock_id: updated_stock.local_stock_id,
+                        requested_units: checkout.checkout_units
+                    }
+                })
+            };
+        })
+
+        return request;
+    }
+
     async newTransferOperation(
         transferInformation: {
             source_id: number,

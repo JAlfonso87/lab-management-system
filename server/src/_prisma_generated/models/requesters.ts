@@ -216,7 +216,6 @@ export type requestersWhereInput = {
   requester_middle_name?: Prisma.StringNullableFilter<"requesters"> | string | null
   requester_last_name?: Prisma.StringNullableFilter<"requesters"> | string | null
   requester_phone_number?: Prisma.StringNullableFilter<"requesters"> | string | null
-  requests?: Prisma.RequestsListRelationFilter
   teachers?: Prisma.XOR<Prisma.TeachersNullableScalarRelationFilter, Prisma.teachersWhereInput> | null
 }
 
@@ -226,7 +225,6 @@ export type requestersOrderByWithRelationInput = {
   requester_middle_name?: Prisma.SortOrderInput | Prisma.SortOrder
   requester_last_name?: Prisma.SortOrderInput | Prisma.SortOrder
   requester_phone_number?: Prisma.SortOrderInput | Prisma.SortOrder
-  requests?: Prisma.requestsOrderByRelationAggregateInput
   teachers?: Prisma.teachersOrderByWithRelationInput
   _relevance?: Prisma.requestersOrderByRelevanceInput
 }
@@ -240,7 +238,6 @@ export type requestersWhereUniqueInput = Prisma.AtLeast<{
   requester_middle_name?: Prisma.StringNullableFilter<"requesters"> | string | null
   requester_last_name?: Prisma.StringNullableFilter<"requesters"> | string | null
   requester_phone_number?: Prisma.StringNullableFilter<"requesters"> | string | null
-  requests?: Prisma.RequestsListRelationFilter
   teachers?: Prisma.XOR<Prisma.TeachersNullableScalarRelationFilter, Prisma.teachersWhereInput> | null
 }, "requester_id">
 
@@ -273,7 +270,6 @@ export type requestersCreateInput = {
   requester_middle_name?: string | null
   requester_last_name?: string | null
   requester_phone_number?: string | null
-  requests?: Prisma.requestsCreateNestedManyWithoutRequestersInput
   teachers?: Prisma.teachersCreateNestedOneWithoutRequestersInput
 }
 
@@ -283,7 +279,6 @@ export type requestersUncheckedCreateInput = {
   requester_middle_name?: string | null
   requester_last_name?: string | null
   requester_phone_number?: string | null
-  requests?: Prisma.requestsUncheckedCreateNestedManyWithoutRequestersInput
   teachers?: Prisma.teachersUncheckedCreateNestedOneWithoutRequestersInput
 }
 
@@ -292,7 +287,6 @@ export type requestersUpdateInput = {
   requester_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requests?: Prisma.requestsUpdateManyWithoutRequestersNestedInput
   teachers?: Prisma.teachersUpdateOneWithoutRequestersNestedInput
 }
 
@@ -302,7 +296,6 @@ export type requestersUncheckedUpdateInput = {
   requester_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requests?: Prisma.requestsUncheckedUpdateManyWithoutRequestersNestedInput
   teachers?: Prisma.teachersUncheckedUpdateOneWithoutRequestersNestedInput
 }
 
@@ -372,20 +365,6 @@ export type RequestersScalarRelationFilter = {
   isNot?: Prisma.requestersWhereInput
 }
 
-export type requestersCreateNestedOneWithoutRequestsInput = {
-  create?: Prisma.XOR<Prisma.requestersCreateWithoutRequestsInput, Prisma.requestersUncheckedCreateWithoutRequestsInput>
-  connectOrCreate?: Prisma.requestersCreateOrConnectWithoutRequestsInput
-  connect?: Prisma.requestersWhereUniqueInput
-}
-
-export type requestersUpdateOneRequiredWithoutRequestsNestedInput = {
-  create?: Prisma.XOR<Prisma.requestersCreateWithoutRequestsInput, Prisma.requestersUncheckedCreateWithoutRequestsInput>
-  connectOrCreate?: Prisma.requestersCreateOrConnectWithoutRequestsInput
-  upsert?: Prisma.requestersUpsertWithoutRequestsInput
-  connect?: Prisma.requestersWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.requestersUpdateToOneWithWhereWithoutRequestsInput, Prisma.requestersUpdateWithoutRequestsInput>, Prisma.requestersUncheckedUpdateWithoutRequestsInput>
-}
-
 export type requestersCreateNestedOneWithoutTeachersInput = {
   create?: Prisma.XOR<Prisma.requestersCreateWithoutTeachersInput, Prisma.requestersUncheckedCreateWithoutTeachersInput>
   connectOrCreate?: Prisma.requestersCreateOrConnectWithoutTeachersInput
@@ -400,62 +379,11 @@ export type requestersUpdateOneRequiredWithoutTeachersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.requestersUpdateToOneWithWhereWithoutTeachersInput, Prisma.requestersUpdateWithoutTeachersInput>, Prisma.requestersUncheckedUpdateWithoutTeachersInput>
 }
 
-export type requestersCreateWithoutRequestsInput = {
-  requester_first_name: string
-  requester_middle_name?: string | null
-  requester_last_name?: string | null
-  requester_phone_number?: string | null
-  teachers?: Prisma.teachersCreateNestedOneWithoutRequestersInput
-}
-
-export type requestersUncheckedCreateWithoutRequestsInput = {
-  requester_id?: number
-  requester_first_name: string
-  requester_middle_name?: string | null
-  requester_last_name?: string | null
-  requester_phone_number?: string | null
-  teachers?: Prisma.teachersUncheckedCreateNestedOneWithoutRequestersInput
-}
-
-export type requestersCreateOrConnectWithoutRequestsInput = {
-  where: Prisma.requestersWhereUniqueInput
-  create: Prisma.XOR<Prisma.requestersCreateWithoutRequestsInput, Prisma.requestersUncheckedCreateWithoutRequestsInput>
-}
-
-export type requestersUpsertWithoutRequestsInput = {
-  update: Prisma.XOR<Prisma.requestersUpdateWithoutRequestsInput, Prisma.requestersUncheckedUpdateWithoutRequestsInput>
-  create: Prisma.XOR<Prisma.requestersCreateWithoutRequestsInput, Prisma.requestersUncheckedCreateWithoutRequestsInput>
-  where?: Prisma.requestersWhereInput
-}
-
-export type requestersUpdateToOneWithWhereWithoutRequestsInput = {
-  where?: Prisma.requestersWhereInput
-  data: Prisma.XOR<Prisma.requestersUpdateWithoutRequestsInput, Prisma.requestersUncheckedUpdateWithoutRequestsInput>
-}
-
-export type requestersUpdateWithoutRequestsInput = {
-  requester_first_name?: Prisma.StringFieldUpdateOperationsInput | string
-  requester_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requester_last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requester_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  teachers?: Prisma.teachersUpdateOneWithoutRequestersNestedInput
-}
-
-export type requestersUncheckedUpdateWithoutRequestsInput = {
-  requester_id?: Prisma.IntFieldUpdateOperationsInput | number
-  requester_first_name?: Prisma.StringFieldUpdateOperationsInput | string
-  requester_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requester_last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requester_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  teachers?: Prisma.teachersUncheckedUpdateOneWithoutRequestersNestedInput
-}
-
 export type requestersCreateWithoutTeachersInput = {
   requester_first_name: string
   requester_middle_name?: string | null
   requester_last_name?: string | null
   requester_phone_number?: string | null
-  requests?: Prisma.requestsCreateNestedManyWithoutRequestersInput
 }
 
 export type requestersUncheckedCreateWithoutTeachersInput = {
@@ -464,7 +392,6 @@ export type requestersUncheckedCreateWithoutTeachersInput = {
   requester_middle_name?: string | null
   requester_last_name?: string | null
   requester_phone_number?: string | null
-  requests?: Prisma.requestsUncheckedCreateNestedManyWithoutRequestersInput
 }
 
 export type requestersCreateOrConnectWithoutTeachersInput = {
@@ -488,7 +415,6 @@ export type requestersUpdateWithoutTeachersInput = {
   requester_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requests?: Prisma.requestsUpdateManyWithoutRequestersNestedInput
 }
 
 export type requestersUncheckedUpdateWithoutTeachersInput = {
@@ -497,38 +423,8 @@ export type requestersUncheckedUpdateWithoutTeachersInput = {
   requester_middle_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_phone_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  requests?: Prisma.requestsUncheckedUpdateManyWithoutRequestersNestedInput
 }
 
-
-/**
- * Count Type RequestersCountOutputType
- */
-
-export type RequestersCountOutputType = {
-  requests: number
-}
-
-export type RequestersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  requests?: boolean | RequestersCountOutputTypeCountRequestsArgs
-}
-
-/**
- * RequestersCountOutputType without action
- */
-export type RequestersCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the RequestersCountOutputType
-   */
-  select?: Prisma.RequestersCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * RequestersCountOutputType without action
- */
-export type RequestersCountOutputTypeCountRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.requestsWhereInput
-}
 
 
 export type requestersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -537,9 +433,7 @@ export type requestersSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   requester_middle_name?: boolean
   requester_last_name?: boolean
   requester_phone_number?: boolean
-  requests?: boolean | Prisma.requesters$requestsArgs<ExtArgs>
   teachers?: boolean | Prisma.requesters$teachersArgs<ExtArgs>
-  _count?: boolean | Prisma.RequestersCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["requesters"]>
 
 
@@ -554,15 +448,12 @@ export type requestersSelectScalar = {
 
 export type requestersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requester_id" | "requester_first_name" | "requester_middle_name" | "requester_last_name" | "requester_phone_number", ExtArgs["result"]["requesters"]>
 export type requestersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  requests?: boolean | Prisma.requesters$requestsArgs<ExtArgs>
   teachers?: boolean | Prisma.requesters$teachersArgs<ExtArgs>
-  _count?: boolean | Prisma.RequestersCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $requestersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "requesters"
   objects: {
-    requests: Prisma.$requestsPayload<ExtArgs>[]
     teachers: Prisma.$teachersPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -911,7 +802,6 @@ readonly fields: requestersFieldRefs;
  */
 export interface Prisma__requestersClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  requests<T extends Prisma.requesters$requestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requesters$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$requestsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   teachers<T extends Prisma.requesters$teachersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requesters$teachersArgs<ExtArgs>>): Prisma.Prisma__teachersClient<runtime.Types.Result.GetResult<Prisma.$teachersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1292,30 +1182,6 @@ export type requestersDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many requesters to delete.
    */
   limit?: number
-}
-
-/**
- * requesters.requests
- */
-export type requesters$requestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the requests
-   */
-  select?: Prisma.requestsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the requests
-   */
-  omit?: Prisma.requestsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.requestsInclude<ExtArgs> | null
-  where?: Prisma.requestsWhereInput
-  orderBy?: Prisma.requestsOrderByWithRelationInput | Prisma.requestsOrderByWithRelationInput[]
-  cursor?: Prisma.requestsWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.RequestsScalarFieldEnum | Prisma.RequestsScalarFieldEnum[]
 }
 
 /**
