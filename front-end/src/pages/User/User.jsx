@@ -4,9 +4,10 @@ import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar"
 
 import userPhoto from "../../assets/images/user-photo.png"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UsernameModal from "../../components/UsernameModal/UsernameModal";
 import PasswordModal from "../../components/PasswordModal/PasswordModal";
+import {api} from "../../axios/api"
 
 function User() {
 
@@ -19,9 +20,28 @@ function User() {
     location: "Laboratorio de Alimentos"
   };
 
+  const getUserData = async () => {
+    api.get('/users/find', { params: { spec: "current" } } )
+    .then((user) => { 
+        setUserData(user.data) 
+        api.get('/locations/lab')
+        .then((lab) => {
+          setAssignedLab(lab.data)
+        })
+        .catch((error) => console.error(error))
+    } )
+    .catch((error) => console.error(error))
+  }
+
+  const [userData, setUserData] = useState({});
+  const [assignedLab, setAssignedLab] = useState({});
+  
   const [usernameModal, setUsernameModal] = useState(false);
   const [passwordModal, setPasswordModal] = useState(false);
 
+  useEffect(() => {
+    getUserData()
+  }, [])
   return (
     <div className="user-page">
       <Header />
@@ -33,7 +53,7 @@ function User() {
         <main className="user-main">
 
           <h1 className="user-title">
-            {user.name}
+            {userData.user_first_name} {userData.user_last_name} {userData.user_middle_name ?? ""} 
           </h1>
 
           <div className="user-data-section">
@@ -54,8 +74,8 @@ function User() {
                   <hr className="user-right-line" />
                 </div>
 
-                <p className="username-text">{user.username}</p>
-                <p className="user-phone-text">Teléfono {user.phone}</p>
+                <p className="username-text">{userData.user_username}</p>
+                <p className="user-phone-text">Teléfono {userData.user_phone_number}</p>
 
               </div>
 
@@ -70,8 +90,8 @@ function User() {
                 </div>
 
 
-                <p className="user-building-text">Edificio {user.building}</p>
-                <p className="user-lab-text">{user.location}</p>
+                <p className="user-building-text">Edificio {assignedLab.host_building}</p>
+                <p className="user-lab-text">LABORATORIO DE {assignedLab.lab_name}</p>
 
               </div>
 
@@ -89,21 +109,25 @@ function User() {
                   <button
                     type="button"
                     className="change-username-button"
-                    onClick={() =>
-                      setUsernameModal(true)
-                    }
+                    onClick={() => setUsernameModal(true)}
                   >
-                    Cambiar nombre <br /> de usuario
+                    Actualizar información <br /> personal
+                  </button>
+
+                  <button
+                    type="button"
+                    className="change-username-button"
+                    onClick={() => setUsernameModal(true)}
+                  >
+                    Actualizar nombre <br /> de usuario
                   </button>
 
                   <button
                     type="button"
                     className="change-password-button"
-                    onClick={() =>
-                      setPasswordModal(true)
-                    }
+                    onClick={() => setPasswordModal(true)}
                   >
-                    Cambiar <br /> contraseña
+                    Actualizar <br /> contraseña
                   </button>
                 </div>
 
@@ -116,7 +140,7 @@ function User() {
           {
             usernameModal ? (
               <UsernameModal
-                username={user.username}
+                username={userData.user_username}
                 onClose={() =>
                   setUsernameModal(false)
                 }

@@ -35,6 +35,25 @@ function Materials() {
   const [materials, setMaterials] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [reagentCount, setReagentCount] = useState(0);
+
+  const getReagentCount = () => {
+   api.get('/reagents/count')
+    .then((response) => setReagentCount(Number(response.data)))
+    .catch((error) => console.error(error))
+  }
+
+  const pageButtonEnabled = (type) => {
+    if(type == "forward"){
+      let max_page = (Math.ceil(reagentCount / 10))
+      return currentPage < max_page ? false : true;
+    }
+    else if (type == "back")
+      return currentPage == 1 ? true : false;
+  }
+
   const nextPage = () => {
     const newPage = Number(searchParams.get('page')) + 1;
     setSearchParams({ 
@@ -139,6 +158,8 @@ function Materials() {
 
     getReagents(risk, page);
 }, [searchParams]);
+
+useEffect(() => getReagentCount(), [])
 
   return (
     <div className="materials-page">
@@ -245,8 +266,18 @@ function Materials() {
 
           <section className="materials-section">
             <div>
-              <button onClick = { prevPage }>&lt;</button>
-              <button onClick = { nextPage }>&gt;</button>
+              <button 
+                onClick = { prevPage }
+                disabled = {pageButtonEnabled("back")}
+              >
+                &lt;
+              </button>
+              <button 
+                onClick = { nextPage }
+                disabled = {pageButtonEnabled("forward")}
+              >
+                &gt;
+              </button>
             </div>
             <h2 className="materials-subtitle">Resultados</h2>
 
@@ -284,8 +315,18 @@ function Materials() {
             </div>
 
             <div>
-              <button onClick = { prevPage }>&lt;</button>
-              <button onClick = { nextPage }>&gt;</button>
+              <button 
+                onClick = { prevPage }
+                disabled = { pageButtonEnabled("back") }
+              >
+                &lt;
+              </button>
+              <button 
+                onClick = { nextPage }
+                disabled = { pageButtonEnabled("forward") }
+              >
+                &gt;
+              </button>
             </div>
 
           </section>

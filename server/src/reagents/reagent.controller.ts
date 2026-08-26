@@ -35,4 +35,9 @@ export class ReagentController{
     getReagentsByRisk(@Query('risk') reagent_risk: string){
         return this.reagentService.getReagentsBySpecs({"reagent_risk": reagent_risk})
     }
+
+    @Get('/count')
+    getReagentCount(){
+        return this.reagentService.getCount()
+    }
 }

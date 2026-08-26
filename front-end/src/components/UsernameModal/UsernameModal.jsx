@@ -1,6 +1,23 @@
+import { useState } from "react";
+import { api } from "../../axios/api";
 import "./UsernameModal.css"
 
 function UsernameModal({ username, onClose }) {
+
+  const [newUsername, setNewUsername] = useState("");
+
+  const updateAttempt = () => {
+    if(newUsername.length != 0 ){
+      api.post('users/user/credentials', { new_username: newUsername }, { params: { type: "usn" } })
+      .then((response) => console.log(response.data))
+      .catch((error) => {
+        if (error.code === "P2002")
+          alert("El nombre de usuario ya está en uso. Elige otro.")
+      })
+    }
+    else
+      alert("Por favor, proporciona un nuevo nombre de usuario.")
+  }
 
   return (
     <div
@@ -52,6 +69,8 @@ function UsernameModal({ username, onClose }) {
               id="new-username"
               placeholder="Nuevo nombre de usuario"
               className="change-username-input"
+              onChange = { setNewUsername }
+              value = { newUsername }
             />
           </div>
         </div>
@@ -61,9 +80,9 @@ function UsernameModal({ username, onClose }) {
 
           <div>
             <button
-              type="button"
-              className="modal-change-username-button"
-              onClick={onClose}
+              type = "button"
+              className = "modal-change-username-button"
+              onClick = {() => updateAttempt()}
             >
               Cambiar
             </button>

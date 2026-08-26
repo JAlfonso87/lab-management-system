@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query, Req, Request } from '@nestjs/common';
 import { UserService } from './user.service.js';
 import { PublicRoute } from '../_nestjs_decorators/public.decorator.js';
 import { Authorized_Roles } from '../_nestjs_decorators/roles.decorator.js';
@@ -27,9 +27,12 @@ export class UserController {
     }
 
     @Get('find')
-    findOne(@Body() body: { username:string }) : Promise<any> {
-        const { username } = body;
-        return this.userService.findUser(username);
+    findOne(
+        @Query('spec') spec,
+        @Request() req ,
+        @Body() body: { username: string }) : Promise<any> 
+    {
+        return this.userService.findUser(spec == "current" ? req.user.username : body.username);
     }
 
     @Delete('terminate')
@@ -42,6 +45,24 @@ export class UserController {
     @Authorized_Roles(['USER'])
     editUser(@Req() req, @Body() body: { username: string, fields: object }) : Promise<any>{
         return this.userService.editUser(req.user, body);
+    }
+
+    @Post('user/credentials')
+    editUserCredentials(
+        @Query('type') type: string,
+        @Request() req,
+        @Body() body: { new_username: string } | { new_password: string }
+    ) {
+        if(type == "pwd")
+        {   
+            const { new_password } = body as { new_password: string };
+            return this.userService.updatePassword(req.user.username, new_password)
+        }
+
+        if(type == "usn"){
+            const { new_username } = body as { new_username: string };
+            return this.userService.updateUsername(req.user.username, new_username)
+        }
     }
 
 }

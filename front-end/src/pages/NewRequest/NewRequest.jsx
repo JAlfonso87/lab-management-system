@@ -78,8 +78,7 @@ function NewRequest() {
                   }
                 } 
                 else {
-                  //alert("ATENCIÓN: PRODUCTO NO REGISTRADO")
-                  console.log(matching_entry)
+                  alert("ATENCIÓN: PRODUCTO NO REGISTRADO")
                 }
 
                 reagent_code = "";

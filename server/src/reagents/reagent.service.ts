@@ -8,6 +8,10 @@ import * as os from 'os';import QRCode from 'qrcode'
 export class ReagentService {
     constructor(private readonly prisma : PrismaService) {}
 
+    async getCount() {
+        return await this.prisma.reagents.count();
+    }
+
     async getReagentLocations(reagent_id: number) {
         const locations = await this.prisma.local_stocks.findMany({
             where: { reagent_id: reagent_id },

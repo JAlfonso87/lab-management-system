@@ -52,6 +52,26 @@ export class UserService {
         return await this.prisma.users.findMany();
     }
 
+    async updateUsername (current_username: string, new_username: string) {
+        return await this.prisma.users.update({
+            data: {
+                user_username: new_username
+            },
+            where: { user_username: current_username }
+        })
+        .catch((error) => console.error(error))
+    }
+
+    async updatePassword (username: string, new_password: string) {
+        return await this.prisma.users.update({
+            data: {
+                user_password: await bcrypt.hash(new_password, 10)
+            },
+            where: { user_username: username }
+        })
+        .catch((error) => console.error(error))
+    }
+
     async getRole( userId?: number, username?: string ): Promise<any> {
         if(userId == undefined && username == undefined)
             throw new TypeError('ARGUMENTOS INSUFICIENTES PARA LA BÚSQUEDA DE ROLES.');
