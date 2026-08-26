@@ -7,6 +7,7 @@ import TransferStock from "./pages/TransferStock/TransferStock"
 import SignUp from "./pages/SignUp/SignUp"
 import Restock from "./pages/Restock/Restock"
 import NewRequest from "./pages/NewRequest/NewRequest"
+import User from "./pages/User/User"
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
       </Link>
       <Link to="/new-request">
         Nueva solicitud
+      </Link>
+      <Link to={"/user"}>
+        User
       </Link>
 
       <Routes>
@@ -68,6 +72,10 @@ function App() {
         <Route
           path="/new-request"
           element={<NewRequest />}
+        />
+        <Route
+          path="/user"
+          element={<User />}
         />
       </Routes>
     </>
