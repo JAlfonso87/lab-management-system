@@ -64,8 +64,11 @@ function SignUp() {
   const getLabs = async () => {
     setLoading(true);
     try {
-      let route = ('/locations/'+ building + '/labs');
-      let labs = await api.get(route);
+      let labs = await api.get('/locations/labs', {
+        params: {
+          host_building: building
+        }
+      });
       setLabs(labs.data)
     }
     finally {

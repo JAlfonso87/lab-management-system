@@ -32,7 +32,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
         await super.canActivate(context);
 
         const userPayload = context.switchToHttp().getRequest().user
-        const user = await this.userService.findUser(userPayload.username)
+        const user = await this.userService.findUserById(userPayload.userId)
 
         if(user)
         {

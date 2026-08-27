@@ -11,17 +11,13 @@ import {api} from "../../axios/api"
 
 function User() {
 
-  const user = {
-    name: "Juan Pérez García",
-    username: "juan-perez",
-    password: "Juan1234!",
-    phone: "5551234567",
-    building: "A",
-    location: "Laboratorio de Alimentos"
-  };
-
   const getUserData = async () => {
-    api.get('/users/find', { params: { spec: "current" } } )
+    api.get('/users/find', { 
+      params: { 
+        spec: "current",
+        method: "id" 
+      } 
+    })
     .then((user) => { 
         setUserData(user.data) 
         api.get('/locations/lab')
@@ -42,6 +38,7 @@ function User() {
   useEffect(() => {
     getUserData()
   }, [])
+
   return (
     <div className="user-page">
       <Header />
@@ -111,14 +108,6 @@ function User() {
                     className="change-username-button"
                     onClick={() => setUsernameModal(true)}
                   >
-                    Actualizar información <br /> personal
-                  </button>
-
-                  <button
-                    type="button"
-                    className="change-username-button"
-                    onClick={() => setUsernameModal(true)}
-                  >
                     Actualizar nombre <br /> de usuario
                   </button>
 
@@ -144,6 +133,7 @@ function User() {
                 onClose={() =>
                   setUsernameModal(false)
                 }
+                setUserData = { setUserData }
               />
             ) : null
           }

@@ -15,8 +15,9 @@ export class AuthService {
         return this.jwtService.sign(payload);
     }
 
-    async isUserActive(username: string) {
-        const status = await this.userService.findUser(username);
+    async isUserActive(userId: number) {
+        console.log(userId)
+        const status = await this.userService.findUserById(Number(userId));
         return status!.user_status;
     }
 
@@ -24,7 +25,7 @@ export class AuthService {
         if(!username || !password)
             throw new HttpException('ERR_EMPTY_FIELDS_DETECTED', HttpStatus.BAD_REQUEST)
 
-        const user = await this.userService.findUser(username);
+        const user = await this.userService.findUserByUsername(username);
 
         if(!user)
             throw new HttpException('ERR_INVALID_CREDENTIALS', HttpStatus.UNAUTHORIZED)

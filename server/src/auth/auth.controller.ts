@@ -12,7 +12,8 @@ export class AuthController {
     @Post('login')
     async login(@Request() req, @Res({passthrough: true}) res){
         if(req.user != 0) {
-            const isUserActive = await this.authService.isUserActive(req.user.user_username);
+            console.log(req.user)
+            const isUserActive = await this.authService.isUserActive(Number(req.user.user_id));
             if(isUserActive == 1){
                 const token = await this.authService.generateToken(req.user);
                 res.cookie('access-token', token, {

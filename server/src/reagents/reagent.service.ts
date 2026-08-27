@@ -140,31 +140,87 @@ export class ReagentService {
         return Object.assign({}, { "reagent": reagent }, { "total_stock": totalStock }, { "locations": locations });
     }
 
-    async getReagents (pageNumber?: number, risk?: string) {
-        let reagents: { reagent_id: number }[] = []
-            if(pageNumber){
-                reagents = await this.prisma.reagents.findMany({
-                    where: risk != null? { reagent_risk: risk } : {},
-                    skip: (pageNumber - 1) * 10,
-                    take: 10
-                })
+    async getPaginatedReagents(page = 1, risk?: string) {
+        const reagents = await this.prisma.reagents.findMany({
+            where: risk !== undefined ? { reagent_risk: risk } : {},
+            skip: (page - 1) * 10,
+            take: 10,
+            select: {
+                reagent_id: true,
+                reagent_name: true,
+                reagent_brand: true,
+                reagent_netweight: true,
+                reagent_risk: true,
+                reagent_code: true,
+                local_stocks: {
+                    select: {
+                        location_id: true,
+                        local_stock_units: true,
+                        locations: {
+                            select: {
+                                shelf_levels: {
+                                    select: {
+                                        shelf_level_id: true,
+                                        shelf_level_number: true,
+                                        shelf_id: true,
+                                        shelves: {
+                                            select: {
+                                                host_building: true,
+                                                shelf_id: true,
+                                                shelf_number: true
+                                            }
+                                        }
+                                    }
+                                },
+                                labs: {
+                                    select: {
+                                        host_building: true,
+                                        lab_id: true,
+                                        lab_name: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            else {
-                reagents = await this.prisma.reagents.findMany({
-                    where: risk != undefined? { reagent_risk: risk } : {},
-                    select: { reagent_id: true },
-                })
-            }
+        })
 
-            let holder: {}[] = [];
-            let reagentEntry = {};
+        // TOMA EL RESULTADO COMPLETO DE LA CONSULTA Y LA DESTRUCTURA EN SUS COMPONENTES.
+        return reagents.map(({ local_stocks, ...reagent }) => {
+            
+            // PARA CADA ENTRADA DE LOCAL_STOCKS, SE TOMAN SUS UNIDADES DE REACTIVO Y SE SUMA CON EL RESULTADO ANTERIOR.
+            const total_stock = local_stocks.reduce((total, stock) => total + (stock.local_stock_units ?? 0), 0 );
 
-            for (const reagent of reagents) {
-                reagentEntry = await this.getReagent({"reagent_id": reagent.reagent_id});
-                holder.push(reagentEntry)
-            }
+            const locations = local_stocks.map(stock => {
 
-        return holder;
+                // SE DEFINE SI EL LOCAL_STOCK ACTUAL ES LABORATORIO O NIVEL, Y SE ESTRUCTURA SU RETORNO ACORDE.
+                const location = stock.locations;
+
+                if (location.labs) {
+                    return {
+                        lab_name: location.labs.lab_name,
+                        host_building: location.labs.host_building,
+                        local_stock_units: stock.local_stock_units
+                    };
+                }
+
+                if (location.shelf_levels) {
+                    return {
+                        shelf_number: location.shelf_levels.shelves.shelf_number,
+                        host_building: location.shelf_levels.shelves.host_building,
+                        shelf_level_number: location.shelf_levels.shelf_level_number,
+                        local_stock_units: stock.local_stock_units
+                    };
+                }
+            });
+
+            return {
+                reagent,
+                total_stock,
+                locations
+            };
+        });
     }
 
     async getReagentBySpecs(

@@ -27,12 +27,20 @@ export class UserController {
     }
 
     @Get('find')
-    findOne(
+    findByUsername(
         @Query('spec') spec,
+        @Query('method') method,
         @Request() req ,
-        @Body() body: { username: string }) : Promise<any> 
+        @Body() body: { username: string } | { userId: number })
     {
-        return this.userService.findUser(spec == "current" ? req.user.username : body.username);
+        if(method == "usn"){
+            const { username } = (body ?? {username: ""}) as { username: string };
+            return this.userService.findUserByUsername(spec == "current" ? req.user.username : username);
+        }
+        if(method == "id"){
+            const { userId } = (body ?? {userId: 0}) as { userId: number };
+            return this.userService.findUserById(spec == "current" ? (req.user.userId) : Number(userId));
+        }
     }
 
     @Delete('terminate')
@@ -56,12 +64,12 @@ export class UserController {
         if(type == "pwd")
         {   
             const { new_password } = body as { new_password: string };
-            return this.userService.updatePassword(req.user.username, new_password)
+            return this.userService.updatePassword(req.user.userId, new_password)
         }
 
         if(type == "usn"){
             const { new_username } = body as { new_username: string };
-            return this.userService.updateUsername(req.user.username, new_username)
+            return this.userService.updateUsername(req.user.userId, new_username)
         }
     }
 

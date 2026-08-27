@@ -42,9 +42,15 @@ export class UserService {
         return status!.user_status;
     }
 
-    async findUser(username: string) {
+    async findUserByUsername(username: string) {
         return await this.prisma.users.findUnique({
             where: { user_username: username },
+        });
+    }
+
+    async findUserById(user_id: number) {
+        return await this.prisma.users.findUnique({
+            where: { user_id: user_id },
         });
     }
 
@@ -52,22 +58,22 @@ export class UserService {
         return await this.prisma.users.findMany();
     }
 
-    async updateUsername (current_username: string, new_username: string) {
+    async updateUsername (user_id: number, new_username: string) {
         return await this.prisma.users.update({
             data: {
                 user_username: new_username
             },
-            where: { user_username: current_username }
+            where: { user_id: Number(user_id) }
         })
         .catch((error) => console.error(error))
     }
 
-    async updatePassword (username: string, new_password: string) {
+    async updatePassword (userId: number, new_password: string) {
         return await this.prisma.users.update({
             data: {
                 user_password: await bcrypt.hash(new_password, 10)
             },
-            where: { user_username: username }
+            where: { user_id: userId }
         })
         .catch((error) => console.error(error))
     }
@@ -148,7 +154,7 @@ export class UserService {
         let allow_operation: boolean;
         allow_operation = userPayload.username == username ? permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others');
 
-        if(await this.findUser(targetUsername) == null)
+        if(await this.findUserByUsername(targetUsername) == null)
             throw new HttpException('ERR_USER_NOT_FOUND.', HttpStatus.NOT_FOUND);
 
         if(allow_operation) {

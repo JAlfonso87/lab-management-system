@@ -9,7 +9,7 @@ export class ReagentController{
     
     @Get('all')
     getAllReagents() : Promise<any> {
-        return this.reagentService.getReagents();
+        return this.reagentService.getPaginatedReagents();
     }
 
     @Get()
@@ -17,7 +17,7 @@ export class ReagentController{
         @Query('risk') risk: string | undefined,
         @Query('page') page: Number
     ) {
-        return this.reagentService.getReagents(Number(page), risk)
+        return this.reagentService.getPaginatedReagents(Number(page), risk)
     }
 
     @Get('/reagent/:id')

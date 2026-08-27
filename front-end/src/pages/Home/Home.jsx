@@ -4,7 +4,8 @@ import searchIcon from "../../assets/images/search.png"
 import addIcon from "../../assets/images/add.png"
 
 import { useLocation, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import {api} from "../../axios/api"
 
 import Header from "../../components/Header/Header.jsx"
 import Sidebar from "../../components/Sidebar/Sidebar.jsx"
@@ -12,9 +13,28 @@ import Sidebar from "../../components/Sidebar/Sidebar.jsx"
 function Home() {
 
   const [search, setSearch] = useState("");
+  const [userData, setUserData] = useState({});
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const getUserData = async () => {
+      api.get('/users/find', { 
+        params: { 
+          spec: "current",
+          method: "id" 
+        } 
+      })
+      .then((user) => { 
+          setUserData(user.data) 
+          api.get('/locations/lab')
+      } )
+      .catch((error) => console.error(error))
+  }
+
+  useEffect(() => {
+    getUserData()
+  }, [])
 
   return (
 
@@ -88,8 +108,8 @@ function Home() {
 
           <p className="welcome-text">
             ¡Bienvenido! <br />
-            a Lab Management System <br />
-            <strong>Usuario</strong>
+            a Lab Management System, <br />
+            <strong>{userData.user_username}</strong>
           </p>
 
         </main>
