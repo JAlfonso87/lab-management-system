@@ -2,6 +2,10 @@ import chalk from 'chalk';
 import { DockerManager } from './DockerManager.js'
 
 export class ServerShutdown{
+    constructor(mode = 0){
+        this.stopServices(mode)
+    }
+
     async stopServices(mode:number) {
         const dockerManager = new DockerManager();  
         try {

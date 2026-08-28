@@ -18,6 +18,7 @@ async function bootstrap() {
   const port = configService.get<number>('NESTJS_SERVER_PORT');
   await app.listen(port!);
   console.log(chalk.magenta("< NESTJS >: SERVIDOR CORRIENDO EN: http://localhost:"+ port));
+  console.log("< SISTEMA >: PRESIONA CTRL+C PARA TERMINAR LOS PROCESOS DEL SISTEMA.");
 }
 
 bootstrap();

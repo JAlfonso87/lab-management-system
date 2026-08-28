@@ -8,7 +8,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "startup": "tsx _tools/ServerInit.ts",
-    "shutdown": "tsx _tools/ServerShutdown.ts",
+    "shutdown": "tsx _tools/ServerShutdownTrigger.ts",
     "start": "nest start",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

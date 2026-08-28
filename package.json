@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "backend": "pnpm --dir server run startup",
+    "frontend": "npm run dev --prefix front-end",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

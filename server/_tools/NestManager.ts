@@ -16,12 +16,12 @@ export class NestManager{
             this.nest.on('error', (error) => {
                 console.error(chalk.red("< NESTJS >: SE HA PRODUCIDO UN ERROR DURANTE LA INICIALIZACIÓN DEL SERVIDOR WEB: " + error))
                 console.error(chalk.red("< NESTJS >: EL SERVIDOR WEB SE HA DETENIDO DE FORMA INESPERADA."))
-                new ServerShutdown().stopServices(1);
+                new ServerShutdown(1)
             })
 
             process.on('SIGINT', () => {
                 console.log(chalk.magenta("< NESTJS >: EL SERVIDOR WEB SE HA DETENIDO CORRECTAMENTE."))
-                new ServerShutdown().stopServices(0);
+                new ServerShutdown();
             });
 
         })

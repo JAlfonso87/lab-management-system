@@ -19,5 +19,5 @@ async function main(){
 main()
 .catch(async (error) => {
     console.log(chalk.red("< SISTEMA >: SE HA PRODUCIDO UN ERROR FATAL: " + error));
-    new ServerShutdown().stopServices(1);
+    new ServerShutdown(1);
 })

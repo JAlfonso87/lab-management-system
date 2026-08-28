@@ -223,22 +223,24 @@ export class ReagentService {
         });
     }
 
-    async getReagentBySpecs(
+    async getReagentBySpecs (
         reagentSpecs: 
             { reagent_name: string, reagent_brand: string, reagent_netweight: string, reagent_risk: string } |
             { reagent_code: string }
     ) {
-        console.log(reagentSpecs)
-        if('reagent_code' in reagentSpecs) {
-            const reagent = await this.prisma.reagents.findUnique({where: { reagent_code: reagentSpecs.reagent_code }})
+        if('reagent_code' in reagentSpecs) 
+        {
+            const reagent = await this.prisma.reagents.findUnique({
+                where: { reagent_code: reagentSpecs.reagent_code }
+            });
             
             if(!reagent)
                 throw new HttpException("ERR_REAGENT_NOT_FOUND", HttpStatus.NOT_FOUND)
             else
                 return reagent;
-
-        } else {
-
+        } 
+        else 
+        {
             const reagent = await this.prisma.reagents.findFirst({
                 where: {
                     reagent_name: reagentSpecs.reagent_name,
@@ -256,21 +258,31 @@ export class ReagentService {
     }
 
     async getReagentsBySpecs( specs: { reagent_risk: string } | { reagent_brand: string } ) {
-        if("reagent_risk" in specs){
-            const reagents = await this.prisma.reagents.findMany({
-                where: { reagent_risk: specs.reagent_risk }
-            });
-            return reagents;
-        } 
-        
-        if ("reagent_brand" in specs){
-            const reagents = await this.prisma.reagents.findMany({
-                where: { reagent_risk: specs.reagent_brand }
-            });
-            return reagents;
+        const reagents = await this.prisma.reagents.findMany({
+            where: "reagent_risk" in specs ? { reagent_risk: specs.reagent_risk } : { reagent_brand: specs.reagent_brand }
+        });
+
+        return reagents ?? [];
+    }
+
+    async exists(
+        reagent_data: {
+            reagent_name: string,
+            reagent_brand: string,
+            reagent_netweight: string,
+            reagent_risk: string
         }
+    ) {
+        const reagent = await this.prisma.reagents.findFirst({
+            where: {
+                reagent_name: reagent_data.reagent_name,
+                reagent_brand: reagent_data.reagent_brand,
+                reagent_netweight: reagent_data.reagent_netweight,
+                reagent_risk: reagent_data.reagent_risk
+            }
+        })
 
-
+        return reagent ?? 0;
     }
 
     async generateCode(params: { reagentId: number }  | { reagent_name: string, reagent_brand: string, reagent_netweight: string, reagent_risk: string | null }): Promise<string>{
@@ -346,25 +358,5 @@ export class ReagentService {
             console.error('Failed to generate QR code:', err);
             throw new TypeError("ERROR");
         }
-    }
-
-    async exists(
-        reagent_data:{
-            reagent_name: string,
-            reagent_brand: string,
-            reagent_netweight: string,
-            reagent_risk: string
-        }
-    ) {
-        const reagent = await this.prisma.reagents.findFirst({
-            where: {
-                reagent_name: reagent_data.reagent_name,
-                reagent_brand: reagent_data.reagent_brand,
-                reagent_netweight: reagent_data.reagent_netweight,
-                reagent_risk: reagent_data.reagent_risk
-            }
-        })
-
-        return reagent ? reagent : 0;
     }
 }
