@@ -39,10 +39,14 @@ function Materials() {
 
   const [reagentCount, setReagentCount] = useState(0);
 
-  const getReagentCount = () => {
-    api.get('/reagents/count')
-      .then((response) => setReagentCount(Number(response.data)))
-      .catch((error) => console.error(error))
+  const updateRiskParams = () => {
+    
+  }
+
+  const getReagentCount = (params) => {
+   api.get('/reagents/count', params)
+    .then((response) => { console.log(response.data); setReagentCount(Number(response.data)) })
+    .catch((error) => console.error(error))
   }
 
   const pageButtonEnabled = (type) => {
@@ -55,18 +59,18 @@ function Materials() {
   }
 
   const nextPage = () => {
-    const newPage = Number(searchParams.get('page')) + 1;
-    setSearchParams({
+    setCurrentPage(currentPage + 1);
+    setSearchParams({ 
       risk: searchParams.get('risk'),
-      page: newPage
+      page: currentPage
     })
   }
 
   const prevPage = () => {
-    const newPage = Number(searchParams.get('page')) - 1;
-    setSearchParams({
+    setCurrentPage(currentPage - 1);
+    setSearchParams({ 
       risk: searchParams.get('risk'),
-      page: newPage
+      page: currentPage
     })
   }
 
@@ -104,18 +108,22 @@ function Materials() {
     let lastKeyTime = 0;
 
     const handleKeyDown = async (event) => {
-      const now = Date.now();
+        const now = Date.now();
 
-      if (now - lastKeyTime > 100) {
-        reagent_code = "";
-      }
+        if (now - lastKeyTime > 100) {
+            reagent_code = "";
+        }
 
-      if (event.key === "Enter") {
-        if (reagent_code.length > 0) {
-          console.log(reagent_code)
-          gotByCode = await api.get('/reagents/code', {
-            params: {
-              code: reagent_code
+        if (event.key === "Enter") {
+            if (reagent_code.length > 0) {
+                console.log(reagent_code)
+                gotByCode = await api.get('/reagents/code', {
+                  params: {
+                    code: reagent_code
+                  }
+                })
+                setSelectedMaterial(gotByCode.data)
+                reagent_code = "";
             }
           })
           console.log(gotByCode.data)
@@ -137,11 +145,21 @@ function Materials() {
   }, []);
 
   useEffect(() => {
-    setSearchParams({
-      risk: appliedColor.toUpperCase(),
-      page: 1
-    })
-  }, [appliedColor])
+    if((searchParams.get('risk') ?? "").toUpperCase() != appliedColor.toUpperCase()) {
+      setSearchParams({
+        risk: appliedColor.toUpperCase(),
+        page: 1
+      })
+      setCurrentPage(1);
+    }
+    else {
+      setSearchParams({
+        risk: appliedColor.toUpperCase(),
+        page: currentPage
+      })
+    }
+      
+  }, [appliedColor, currentPage])
 
   useEffect(() => {
     const risk = searchParams.get('risk');
@@ -156,10 +174,15 @@ function Materials() {
       return;
     }
 
+    getReagentCount({
+      risk: risk.toUpperCase() == "TODOS" ? undefined : risk.toUpperCase(),
+      lid: undefined
+    })
+
     getReagents(risk, page);
   }, [searchParams]);
 
-  useEffect(() => getReagentCount(), [])
+useEffect(() => getReagentCount({}), [])
 
   return (
     <div className="materials-page">
@@ -266,17 +289,15 @@ function Materials() {
 
           <section className="materials-section">
             <div>
-              <button
-                onClick={prevPage}
-                disabled={pageButtonEnabled("back")}
-                className="materials-page-button"
+              <button 
+                onClick = { prevPage }
+                disabled = { pageButtonEnabled("back") }
               >
                 &lt;
               </button>
-              <button
-                onClick={nextPage}
-                disabled={pageButtonEnabled("forward")}
-                className="materials-page-button"
+              <button 
+                onClick = { nextPage }
+                disabled = { pageButtonEnabled("forward") }
               >
                 &gt;
               </button>

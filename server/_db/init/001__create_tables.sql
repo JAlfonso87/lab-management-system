@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS users(
     user_phone_number VARCHAR(20) NULL,
     user_username VARCHAR(20) NOT NULL UNIQUE,
     user_password VARCHAR(255) NOT NULL,
-    user_status INT NOT NULL DEFAULT 0, # WHERE 0 MEANS INACTIVE AND 1 MEANS ACTIVE
+    user_status INT NOT NULL DEFAULT 0, # WHERE 0 MEANS PENDING, 1 MEANS ACTIVE, 2 MEANS DELETED
     FOREIGN KEY(lab_id) REFERENCES labs(lab_id),
     FOREIGN KEY(role_id) REFERENCES roles(role_id)
 );

@@ -26,27 +26,54 @@ export class UserController {
         return this.userService.listAllUsers();
     }
 
+    @Authorized_Roles(['USER'])
     @Get('find')
-    findByUsername(
+    async getUserData(
         @Query('spec') spec,
         @Query('method') method,
         @Request() req ,
         @Body() body: { username: string } | { userId: number })
     {
+
         if(method == "usn"){
             const { username } = (body ?? {username: ""}) as { username: string };
-            return this.userService.findUserByUsername(spec == "current" ? req.user.username : username);
+            const {user_password, role_id, user_status, ...cleanUser} = await this.userService.getUserByUsn(spec == "current" ? req.user.username : username);
+            return cleanUser;
         }
         if(method == "id"){
             const { userId } = (body ?? {userId: 0}) as { userId: number };
-            return this.userService.findUserById(spec == "current" ? (req.user.userId) : Number(userId));
+            const {user_password, role_id, user_status, ...cleanUser} = await this.userService.getUserByID(spec == "current" ? (req.user.userId) : Number(userId));
+            return cleanUser;
         }
     }
 
-    @Delete('terminate')
+    @Get('inactive')
+    getInactiveUsers(){
+        return this.userService.getUsersByStatus(0);
+    }
+
+    @Post('terminate')
     @Authorized_Roles(['USER'])
-    terminateUser(@Req() req, @Body() body:{username:string}) : Promise<any> {
-        return this.userService.deleteUser(req.user, body);
+    terminateUser(
+        @Query('target') target,
+        @Req() req
+    ) : Promise<any> {
+        return this.userService.deleteUser({
+            "request_source_id": Number(req.user.userId),
+            "request_target_id": Number(target)
+        });
+    }
+
+    @Post('approve')
+    approveUserRegistration(
+        @Query('target') target,
+        @Req() req
+    )
+    {
+        return this.userService.approveUser({
+            "request_source_id": Number(req.user.userId),
+            "request_target_id": Number(target)
+        });
     }
 
     @Post('edit')
@@ -56,6 +83,7 @@ export class UserController {
     }
 
     @Post('user/credentials')
+    @Authorized_Roles(['USER'])
     editUserCredentials(
         @Query('type') type: string,
         @Request() req,

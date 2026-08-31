@@ -12,6 +12,7 @@ export class ReagentController{
         return this.reagentService.getPaginatedReagents();
     }
 
+    @Authorized_Roles(['USER'])
     @Get()
     getReagents(
         @Query('risk') risk: string | undefined,
@@ -20,24 +21,34 @@ export class ReagentController{
         return this.reagentService.getPaginatedReagents(Number(page), risk)
     }
 
+    @Authorized_Roles(['USER'])
     @Get('/reagent/:id')
     getReagent(@Param('id') id: string):Promise<any> {
         return this.reagentService.getReagent({"reagent_id": Number(id)});
     }
 
+    @Authorized_Roles(['USER'])
     @Get('/code')
     getReagentByCode(@Query('code') code: string) {
         console.log(code)
         return this.reagentService.getReagent({"reagent_code": code})
     }
 
+    @Authorized_Roles(['USER'])
     @Get('/risk')
     getReagentsByRisk(@Query('risk') reagent_risk: string){
         return this.reagentService.getReagentsBySpecs({"reagent_risk": reagent_risk})
     }
 
+    @Authorized_Roles(['USER'])
     @Get('/count')
-    getReagentCount(){
-        return this.reagentService.getCount()
+    getReagentCount(
+        @Body() 
+            body: {
+                risk?: string,
+                lid?: string
+            }
+    ){
+        return this.reagentService.getCount({})
     }
 }

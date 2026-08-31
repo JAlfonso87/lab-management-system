@@ -7,6 +7,7 @@ import { OperationsService } from "./operations.service.js";
 export class OperationsController {
     constructor(private readonly operationsService: OperationsService){}
 
+    @Authorized_Roles(['USER'])
     @Post('/new_reagent')
     newReagentOperation(@Body() body: 
         {
@@ -29,16 +30,19 @@ export class OperationsController {
         return this.operationsService.newReagentOperation(body)
     }
 
+    @Authorized_Roles(['USER'])
     @Post('/restock')
     newRestock(@Req() req, @Body() body: {stock_data: [{ host_building: string, shelf_number: number, shelf_lvl_id: number, shelf_lvl_number: number, stock_diff: number}], reagent_data: { reagent_id: number, reagent_name: number }}){
         return this.operationsService.newRestockOperation(Object.assign({}, body, req.user));
     }
 
+    @Authorized_Roles(['USER'])
     @Post('/transfer')
     newTransferOperation(@Req() req, @Body() body: { transferInformation: { source_id: number, destination_id: number, reagent_id: number, stock_units: number }}) {
         return this.operationsService.newTransferOperation(Object.assign({}, body, req.user))
     }
 
+    @Authorized_Roles(['USER'])
     @Post('/request')
     newRequestOperation(
         @Req() req, 

@@ -22,8 +22,10 @@ echo =======================================================
 echo.
 
 powershell -NoProfile -Command "Start-Service -Name 'com.docker.service'; while (-not (docker info 2>$null)) { Start-Sleep -Seconds 1 }"
+start "" "%ProgramFiles%\Docker\Docker\Docker Desktop.exe"
 
-powershell -NoProfile -Command "Start-Process cmd.exe -ArgumentList '/c npm run dev' -WorkingDirectory '%~dp0'"
+
+powershell -NoProfile -Command "Start-Process cmd.exe -ArgumentList '/k npm run dev' -WorkingDirectory '%~dp0'"
 
 :waitserver
 powershell -NoProfile -Command "try { Invoke-WebRequest -Uri 'http://localhost:5000/health' -UseBasicParsing -TimeoutSec 1 | Out-Null; exit 0 } catch { exit 1 }"
