@@ -7,10 +7,12 @@ import { JwtStrategy } from "./jwt.strategy.js";
 import { UserModule } from "../users/user.module.js";
 import { LocalStrategy } from "./local.strategy.js";
 import { ConfigService } from "@nestjs/config";
+import { PrismaModule } from "../_prisma_nestjs/prisma.module.js";
 
 @Module({
     imports: [ UserModule, 
                PassportModule,
+               PrismaModule,
                JwtModule.registerAsync({
                     inject: [ConfigService],
                     useFactory: (configService:ConfigService) => ({

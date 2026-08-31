@@ -9,6 +9,7 @@ import { UserService } from "../users/user.service.js";
 export class LocationsController {
     constructor(private readonly locationsService: LocationsService, private readonly userService: UserService){}
     
+    @Authorized_Roles(['USER'])
     @Get(':host_building/shelf')
     async getShelfInventory(
         @Param('host_building') host_building: string,
@@ -26,16 +27,19 @@ export class LocationsController {
         return await this.locationsService.getLabs(host_building);
     }
 
+    @Authorized_Roles(['USER'])
     @Get('lab')
     async getAssignedLab(@Request() req) {
         return await this.userService.getAssignedLab(Number(req.user.userId))
     }
 
+    @Authorized_Roles(['USER'])
     @Get('lab/inventory')
     async getLabInventory(@Query('lab_name') lab_name: string) {
         return await this.locationsService.getLabInventory(lab_name)
     }
 
+    @Authorized_Roles(['USER'])
     @Get('shelves')
     async getShelves(
         @Query('host_building') host_building: string
@@ -43,6 +47,7 @@ export class LocationsController {
         return await this.locationsService.getShelves(host_building);
     }
 
+    @Authorized_Roles(['USER'])
     @Get('shelf/levels')
     async getShelfLevels(
         @Query('shelf_id') shelf_id: number 

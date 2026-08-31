@@ -1,4 +1,5 @@
 import "./Login.css"
+import styles from "../SignUp/SignUp.module.css"
 
 import logo from "../../assets/images/logo.png"
 import { api } from "../../axios/api";
@@ -11,6 +12,8 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [response, setResponse ] = useState(null);
+
+  const [visiblePassword, isPasswordVisible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -36,7 +39,7 @@ function Login() {
             alert("Tu cuenta está pendiente de validación. Ponte en contacto con un administrador.")
         }
         catch (err) {
-          if (err.response?.status === 401) 
+          if (err.response?.status === 400) 
             alert("ERROR: Usuario y/o contraseña incorrectos.");
           else 
             alert(err);
@@ -81,13 +84,20 @@ function Login() {
             />
 
             <label htmlFor="password"> Contraseña </label>
-            <input
-              id = "password"
-              placeholder = "Ingresa tu contraseña"
-              type = "password"
-              value = { password }
-              onChange = { event => setPassword(event.target.value) }
-            />
+            <div style = {{ display: 'flex', justifyItems: "center"}}>
+              <input 
+                id = "password" 
+                placeholder = "Elige una contraseña" 
+                type = { visiblePassword ? "text" : "password" } 
+                onChange = {(e) => setPassword(e.target.value)}/>
+              <img 
+                style = {{marginTop: "5px", backgroundColor: "white", cursor: "pointer", width: "30px", height: "30px", marginLeft: "-50px", zIndex: "2"}} 
+                alt = "Mostrar contraseña" 
+                className = {styles["header-img"]} src = { visiblePassword ? "/src/assets/images/eye.png" : "/src/assets/images/eye-closed.png"}
+                onClick={()=>isPasswordVisible(!visiblePassword)}
+              >
+            </img>
+            </div>
 
             <button type = "submit">Iniciar sesión</button>
 

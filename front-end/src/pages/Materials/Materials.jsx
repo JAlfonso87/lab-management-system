@@ -39,9 +39,13 @@ function Materials() {
 
   const [reagentCount, setReagentCount] = useState(0);
 
-  const getReagentCount = () => {
-   api.get('/reagents/count')
-    .then((response) => setReagentCount(Number(response.data)))
+  const updateRiskParams = () => {
+    
+  }
+
+  const getReagentCount = (params) => {
+   api.get('/reagents/count', params)
+    .then((response) => { console.log(response.data); setReagentCount(Number(response.data)) })
     .catch((error) => console.error(error))
   }
 
@@ -55,18 +59,18 @@ function Materials() {
   }
 
   const nextPage = () => {
-    const newPage = Number(searchParams.get('page')) + 1;
+    setCurrentPage(currentPage + 1);
     setSearchParams({ 
       risk: searchParams.get('risk'),
-      page: newPage
+      page: currentPage
     })
   }
 
   const prevPage = () => {
-    const newPage = Number(searchParams.get('page')) - 1;
+    setCurrentPage(currentPage - 1);
     setSearchParams({ 
       risk: searchParams.get('risk'),
-      page: newPage
+      page: currentPage
     })
   }
 
@@ -118,7 +122,6 @@ function Materials() {
                     code: reagent_code
                   }
                 })
-                console.log(gotByCode.data)
                 setSelectedMaterial(gotByCode.data)
                 reagent_code = "";
             }
@@ -137,11 +140,21 @@ function Materials() {
   }, []);
 
   useEffect(() => {
-    setSearchParams({
-      risk: appliedColor.toUpperCase(),
-      page: 1
-    })
-  }, [appliedColor])
+    if((searchParams.get('risk') ?? "").toUpperCase() != appliedColor.toUpperCase()) {
+      setSearchParams({
+        risk: appliedColor.toUpperCase(),
+        page: 1
+      })
+      setCurrentPage(1);
+    }
+    else {
+      setSearchParams({
+        risk: appliedColor.toUpperCase(),
+        page: currentPage
+      })
+    }
+      
+  }, [appliedColor, currentPage])
 
   useEffect(() => {
     const risk = searchParams.get('risk');
@@ -156,10 +169,15 @@ function Materials() {
         return;
     }
 
+    getReagentCount({
+      risk: risk.toUpperCase() == "TODOS" ? undefined : risk.toUpperCase(),
+      lid: undefined
+    })
+
     getReagents(risk, page);
 }, [searchParams]);
 
-useEffect(() => getReagentCount(), [])
+useEffect(() => getReagentCount({}), [])
 
   return (
     <div className="materials-page">
@@ -268,13 +286,13 @@ useEffect(() => getReagentCount(), [])
             <div>
               <button 
                 onClick = { prevPage }
-                disabled = {pageButtonEnabled("back")}
+                disabled = { pageButtonEnabled("back") }
               >
                 &lt;
               </button>
               <button 
                 onClick = { nextPage }
-                disabled = {pageButtonEnabled("forward")}
+                disabled = { pageButtonEnabled("forward") }
               >
                 &gt;
               </button>

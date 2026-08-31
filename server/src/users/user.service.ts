@@ -8,6 +8,26 @@ import { Prisma } from "../_prisma_generated/client.js";
 export class UserService {
     constructor(private prisma:PrismaService) {}
 
+    async getUsersByStatus(status: number){
+        const users = await this.prisma.users.findMany({
+            where: { user_status: status },
+            select: {
+                user_id: true,
+                user_first_name: true,
+                user_middle_name: true,
+                user_last_name: true,
+                user_phone_number: true,
+                user_username: true,
+                labs: {
+                    select: {
+                        lab_name: true
+                    }
+                }
+            }
+        })
+        
+        return users ?? [];
+    }
     async getAssignedLab(user_id: number, tx?: Prisma.TransactionClient) {
         const client = tx ? tx : this.prisma;
         const lab_id = await client.users.findUnique({
@@ -42,19 +62,53 @@ export class UserService {
         return status!.user_status;
     }
 
-    async findUserByUsername(username: string) {
-        return await this.prisma.users.findUnique({
+    async getUserByUsn(username: string) {
+        return await this.prisma.users.findUniqueOrThrow({
             where: { user_username: username },
+            select: {
+                user_id: true,
+                role_id: true,
+                user_first_name: true,
+                user_last_name: true,
+                user_middle_name: true,
+                user_username: true,
+                user_password: true,
+                user_phone_number: true,
+                user_status: true,
+                labs: {
+                    select: {
+                        host_building: true,
+                        lab_name: true
+                    }
+                }
+            }
         });
     }
 
-    async findUserById(user_id: number) {
-        return await this.prisma.users.findUnique({
+    async getUserByID(user_id: number) {
+        return await this.prisma.users.findUniqueOrThrow({
             where: { user_id: user_id },
+            select: {
+                user_id: true,
+                role_id: true,
+                user_first_name: true,
+                user_last_name: true,
+                user_middle_name: true,
+                user_username: true,
+                user_password: true,
+                user_phone_number: true,
+                user_status: true,
+                labs: {
+                    select: {
+                        host_building: true,
+                        lab_name: true
+                    }
+                }
+            }
         });
     }
 
-    async listAllUsers(){
+    async listAllUsers() {
         return await this.prisma.users.findMany();
     }
 
@@ -78,7 +132,7 @@ export class UserService {
         .catch((error) => console.error(error))
     }
 
-    async getRole( userId?: number, username?: string ): Promise<any> {
+    async getRole( userId?: number, username?: string ) {
         if(userId == undefined && username == undefined)
             throw new TypeError('ARGUMENTOS INSUFICIENTES PARA LA BÚSQUEDA DE ROLES.');
 
@@ -97,9 +151,9 @@ export class UserService {
         if(userId == undefined && username == undefined)
             throw new TypeError("ARGUMENTOS INSUFICIENTES PARA LA BÚSQUEDA DE ROLES.");
 
-        const role: { role_id: number } = await this.getRole(userId);
+        const role = await this.getRole(userId);
         const permissions = await this.prisma.roles_permissions.findMany({
-            where: { role_id : role.role_id },
+            where: { role_id : role!.role_id },
             select: { permission_id: true }
         });
 
@@ -145,24 +199,36 @@ export class UserService {
         return createdUser;
     }
 
-    async deleteUser (userPayload: { userId: number, username: string}, body: { username: string }) {
-        const { userId, username } = userPayload;
-        const { username: targetUsername  } = body;
+    async deleteUser (
+        deletion_request: {
+            request_source_id: number,
+            request_target_id: number
+        }
+    ) {
+        const request_source = await this.prisma.users.findUnique({
+                where: { user_id: deletion_request.request_source_id }
+        });
 
-        const permissions: string[] = await this.getPermissions(userPayload.userId);
+        const permissions = await this.getPermissions(request_source?.user_id);
 
-        let allow_operation: boolean;
-        allow_operation = userPayload.username == username ? permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others');
+        let allow_operation: boolean = deletion_request.request_source_id == deletion_request.request_target_id ? 
+            permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others');
 
-        if(await this.findUserByUsername(targetUsername) == null)
+        const request_target = ( deletion_request.request_source_id == deletion_request.request_target_id ) ? 
+            request_source
+            : 
+            await this.prisma.users.findUnique({
+                where: { user_id: deletion_request.request_target_id }
+            });
+
+        if(!request_target)
             throw new HttpException('ERR_USER_NOT_FOUND.', HttpStatus.NOT_FOUND);
 
         if(allow_operation) {
-            const targetRole:{role_id:number} = await this.getRole(undefined, targetUsername);
-            if(targetRole.role_id == 1){
+            if(request_target.role_id == 1){
 
                 const adminAvailable = await this.prisma.users.count({
-                    where: {role_id:1}
+                    where: { role_id: 1 }
                 });
 
                 if(adminAvailable == 1)
@@ -173,15 +239,43 @@ export class UserService {
                 };
             }
 
-            const deletedUser = await this.prisma.users.delete({
-                where: { user_username: targetUsername }
+            const deletedUser = await this.prisma.users.update({ 
+                    data: { user_status: 2 },
+                    where: { user_id: request_target.user_id } 
             });
 
-            return "EL USUARIO " + deletedUser.user_username + "HA SIDO BORRADO DEFINITIVAMENTE.";
+            return "EL USUARIO " + deletedUser.user_username + "HA SIDO DESCARTADO.";
         }
         else 
             throw new HttpException('ERR_UNAUTHORIZED', HttpStatus.FORBIDDEN);
-        
+    }
+
+    async approveUser (
+        approval_request: {
+            request_source_id: number,
+            request_target_id: number
+        }
+    ) {
+        const request_source = await this.getUserByID(Number(approval_request.request_source_id));
+        const permissions = await this.getPermissions(request_source?.user_id);
+
+        let allow_operation: boolean = permissions.includes('permissions.users.approve_new_signups');
+
+        const request_target = await this.getUserByID(Number(approval_request.request_target_id));
+
+        if(!request_target)
+            throw new HttpException('ERR_USER_NOT_FOUND.', HttpStatus.NOT_FOUND);
+
+        if(allow_operation) {
+            const approvedUser = await this.prisma.users.update({ 
+                    data: { user_status: 1 },
+                    where: { user_id: request_target.user_id } 
+            });
+
+            return "EL USUARIO " + approvedUser.user_username + "HA SIDO APROBADO.";
+        }
+        else 
+            throw new HttpException('ERR_FORBIDDEN', HttpStatus.FORBIDDEN);
     }
 
     async editUser( userPayload: {userId: number, username: string}, body: { username: string, fields: { user_password? :string }}) {
@@ -195,8 +289,8 @@ export class UserService {
         allow_operation = username == targetUsername ? permissions.includes('permissions.users.modify_self') : permissions.includes('permissions.users.modify_others');
         
         if(allow_operation) { 
-
-            if(await this.getRole(userId) == 2)
+            const role = await this.getRole(userId);
+            if(role!.role_id == 2)
                 forbidden_fields.concat(['user_status','role_id']);
 
             const invalidFields = Object.keys(fields).filter(field => forbidden_fields.includes(field));

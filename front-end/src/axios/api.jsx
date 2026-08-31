@@ -11,7 +11,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) 
-        window.location.replace('/login');    
+        window.location.replace('/unauthorized');    
 
     return Promise.reject(error);
   }

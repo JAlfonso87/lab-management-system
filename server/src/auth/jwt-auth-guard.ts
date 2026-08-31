@@ -32,15 +32,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
         await super.canActivate(context);
 
         const userPayload = context.switchToHttp().getRequest().user
-        const user = await this.userService.findUserById(userPayload.userId)
+        const user = await this.userService.getUserByID(userPayload.userId)
 
         if(user)
         {
             const user_role= await this.prisma.roles.findUnique({
-                where: { 
-                    role_id: user.role_id 
-                }
+                where: { role_id: user.role_id }
             })
+            
             if (!user_role)
                 throw new UnauthorizedException;
             

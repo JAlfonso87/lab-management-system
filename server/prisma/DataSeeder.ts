@@ -45,7 +45,7 @@ export class Seeder {
                     },
                     {
                         role_id: 2,         //ROLE: USER
-                        permission_id: 1    //PERMIT: permissions.users.approve_new_signups
+                        permission_id: 1    //PERMIT: permissions.users.modify_self
                     }
                 ],
                 skipDuplicates: true

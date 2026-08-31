@@ -1,0 +1,36 @@
+.user-entry-data td {
+  height: 42px;
+}
+
+.user-entry-edit-button {
+  padding: 11px 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.user-entry-edit-button:hover {
+  background-color: #c6c6c6;
+}
+
+.user-entry-delete-button {
+  background-color: #504f4f;
+  color: white;
+
+  padding: 11px 20px;
+
+  border: 1px solid #D0D0D0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.user-entry-delete-button:hover {
+  background-color: #787878;
+}

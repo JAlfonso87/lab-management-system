@@ -5,8 +5,7 @@ import addIcon from "../../assets/images/add.png"
 
 import { useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import {api} from "../../axios/api"
-
+import { api } from "../../axios/api"
 import Header from "../../components/Header/Header.jsx"
 import Sidebar from "../../components/Sidebar/Sidebar.jsx"
 
@@ -16,7 +15,6 @@ function Home() {
   const [userData, setUserData] = useState({});
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const getUserData = async () => {
       api.get('/users/find', { 
@@ -27,9 +25,9 @@ function Home() {
       })
       .then((user) => { 
           setUserData(user.data) 
-          api.get('/locations/lab')
       } )
       .catch((error) => console.error(error))
+
   }
 
   useEffect(() => {

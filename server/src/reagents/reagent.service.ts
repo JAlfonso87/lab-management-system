@@ -8,8 +8,43 @@ import * as os from 'os';import QRCode from 'qrcode'
 export class ReagentService {
     constructor(private readonly prisma : PrismaService) {}
 
-    async getCount() {
-        return await this.prisma.reagents.count();
+    async getCount(
+        body : {
+            risk?: string,
+            lid?: string
+        }
+    ) {
+        if(body.lid != undefined || body.risk != undefined) {
+            if(body.lid != undefined && body.risk != undefined) {
+                return await this.prisma.reagents.count({
+                    where: {
+                        reagent_risk: body.risk,
+                        local_stocks: {
+                            some: {
+                                location_id: Number(body.lid)
+                            }
+                        }
+                    }
+                });
+            }
+            return await this.prisma.reagents.count({
+                where: body.lid == undefined ?
+                    {
+                        reagent_risk: body.risk,
+                    }
+                    :
+                    {
+                        local_stocks: {
+                            some: {
+                                location_id: Number(body.lid)
+                            }
+                        }
+                    }
+            });
+        }
+
+        if(body.lid == undefined && body.risk == undefined)
+            return await this.prisma.reagents.count();
     }
 
     async getReagentLocations(reagent_id: number) {

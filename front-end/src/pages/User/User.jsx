@@ -11,29 +11,22 @@ import {api} from "../../axios/api"
 
 function User() {
 
+  const [userData, setUserData] = useState({});
+  
+  const [usernameModal, setUsernameModal] = useState(false);
+  const [passwordModal, setPasswordModal] = useState(false);
+
   const getUserData = async () => {
-    api.get('/users/find', { 
+    await api.get('/users/find', { 
       params: { 
         spec: "current",
         method: "id" 
       } 
     })
-    .then((user) => { 
-        setUserData(user.data) 
-        api.get('/locations/lab')
-        .then((lab) => {
-          setAssignedLab(lab.data)
-        })
-        .catch((error) => console.error(error))
-    } )
+    .then((user) => { setUserData(user.data)})
     .catch((error) => console.error(error))
   }
 
-  const [userData, setUserData] = useState({});
-  const [assignedLab, setAssignedLab] = useState({});
-  
-  const [usernameModal, setUsernameModal] = useState(false);
-  const [passwordModal, setPasswordModal] = useState(false);
 
   useEffect(() => {
     getUserData()
@@ -50,7 +43,7 @@ function User() {
         <main className="user-main">
 
           <h1 className="user-title">
-            {userData.user_first_name} {userData.user_last_name} {userData.user_middle_name ?? ""} 
+            {userData?.user_first_name} {userData?.user_last_name} {userData?.user_middle_name ?? ""} 
           </h1>
 
           <div className="user-data-section">
@@ -71,8 +64,8 @@ function User() {
                   <hr className="user-right-line" />
                 </div>
 
-                <p className="username-text">{userData.user_username}</p>
-                <p className="user-phone-text">Teléfono {userData.user_phone_number}</p>
+                <p className="username-text">{userData?.user_username}</p>
+                <p className="user-phone-text">Teléfono {userData?.user_phone_number}</p>
 
               </div>
 
@@ -87,8 +80,8 @@ function User() {
                 </div>
 
 
-                <p className="user-building-text">Edificio {assignedLab.host_building}</p>
-                <p className="user-lab-text">LABORATORIO DE {assignedLab.lab_name}</p>
+                <p className="user-building-text">Edificio {userData?.labs?.host_building}</p>
+                <p className="user-lab-text">LABORATORIO DE {userData?.labs?.lab_name}</p>
 
               </div>
 
