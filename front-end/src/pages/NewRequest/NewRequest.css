@@ -16,7 +16,7 @@
 .new-request-main {
   display: flex;
   flex-direction: column;
-  padding: 70px 50px;
+  padding: 130px 50px 70px 50px;
   flex: 1;
 
   margin-left: 200px;
