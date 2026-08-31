@@ -16,40 +16,6 @@ import AdminProtectedRoutes from "./permissions/AdminProtectedRoutes"
 function App() {
   return (
     <>
-      <Link to="/login">
-        Login
-      </Link>
-      <Link to="/signup">
-        Signup
-      </Link>
-      <Link to="/home">
-        Home
-      </Link>
-      <Link to="/materials">
-        Materiales
-      </Link>
-      <Link to="/add-material">
-        Crear
-      </Link>
-      <Link to="/transfer-stock">
-        Transferir
-      </Link>
-      <Link to="/restock">
-        Restock
-      </Link>
-      <Link to="/new-request">
-        Nueva solicitud
-      </Link>
-      <Link to={"/user"}>
-        User
-      </Link>
-      <Link to={"/admin/approve"}>
-        Approval
-      </Link>
-      <Link to={"/unauthorized"}>
-        Unauthorized
-      </Link>
-
       <Routes>
         <Route
           path="/login"
@@ -61,49 +27,49 @@ function App() {
           element={<Unauthorized />}
         />
 
-        <Route element = {<UserProtectedRoutes />}>
-            <Route
-              path="/home"
-              element={<Home />}
-            />
-            <Route
-              path="/materials"
-              element={<Materials />}
-            />
-            <Route
-              path="/add-material"
-              element={<AddMaterial />}
-            />
-            <Route
-              path="/transfer-stock"
-              element={<TransferStock />}
-            />
-            <Route
-              path="/signup"
-              element={<SignUp />}
-            />
-            <Route
-              path="/restock"
-              element={<Restock />}
-            />
-            <Route
-              path="/new-request"
-              element={<NewRequest />}
-            />
-            <Route
-              path="/user"
-              element={<User />}
-            />
+        <Route element={<UserProtectedRoutes />}>
+          <Route
+            path="/home"
+            element={<Home />}
+          />
+          <Route
+            path="/materials"
+            element={<Materials />}
+          />
+          <Route
+            path="/add-material"
+            element={<AddMaterial />}
+          />
+          <Route
+            path="/transfer-stock"
+            element={<TransferStock />}
+          />
+          <Route
+            path="/signup"
+            element={<SignUp />}
+          />
+          <Route
+            path="/restock"
+            element={<Restock />}
+          />
+          <Route
+            path="/new-request"
+            element={<NewRequest />}
+          />
+          <Route
+            path="/user"
+            element={<User />}
+          />
 
-            <Route element={<AdminProtectedRoutes/>}>
-                <Route
-                  path="/admin/approve"
-                  element={<UserApproval />}
-                />
-            </Route>
+          <Route element={<AdminProtectedRoutes />}>
+            <Route
+              path="/admin/approve"
+              element={<UserApproval />}
+            />
+          </Route>
         </Route>
 
-        
+
 
       </Routes>
     </>

@@ -38,7 +38,7 @@ function AddMaterial() {
       return;
     }
 
-    if(Number(weight) <= 0 || Number(stock) <= 0) {
+    if (Number(weight) <= 0 || Number(stock) <= 0) {
       alert("Valor/es inválido/s detectado/s. NOTA: Las unidades de stock y la masa deben de superar las 0 unidades.");
       return;
     }
@@ -58,14 +58,14 @@ function AddMaterial() {
       operation_data: {
         stock_units: Number(stock)
       }
-      
+
     }
 
     try {
-        const new_reagent = await api.post('/operations/new_reagent', reagent_registration_payload);
-        alert('El reactivo se ha añadido con éxito.')
-        clearData()
-    } catch(error) {
+      const new_reagent = await api.post('/operations/new_reagent', reagent_registration_payload);
+      alert('El reactivo se ha añadido con éxito.')
+      clearData()
+    } catch (error) {
       console.error(error);
       alert(error);
     }
@@ -93,7 +93,7 @@ function AddMaterial() {
             registrar un nuevo reactivo:
           </p>
 
-          <form id = "reagentForm" onSubmit = {handleSubmit}>
+          <form id="reagentForm" onSubmit={handleSubmit}>
 
             <div className="material-properties">
               <div className="subtitle-container">
@@ -193,6 +193,7 @@ function AddMaterial() {
                     placeholder="Imagen"
                     type="file"
                     accept="image/*"
+                    className="image-input"
                     value={image}
                     onChange={event =>
                       setImage(event.target.value)
@@ -203,10 +204,10 @@ function AddMaterial() {
             </div>
 
             <div className="material-location">
-              <LocationSelector 
-                  label = {"Ubicación del reactivo"}
-                  selectedLocation = { selectedLocation }
-                  setSelectedLocation = { setSelectedLocation }
+              <LocationSelector
+                label={"Ubicación del reactivo"}
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
               />
             </div>
 
