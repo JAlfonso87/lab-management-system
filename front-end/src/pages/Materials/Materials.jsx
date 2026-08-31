@@ -50,7 +50,7 @@ function Materials() {
   }
 
   const pageButtonEnabled = (type) => {
-    if(type == "forward"){
+    if (type == "forward") {
       let max_page = (Math.ceil(reagentCount / 10))
       return currentPage < max_page ? false : true;
     }
@@ -125,17 +125,22 @@ function Materials() {
                 setSelectedMaterial(gotByCode.data)
                 reagent_code = "";
             }
-        } else if (event.key.length === 1) {
-            reagent_code += event.key.toUpperCase();
+          })
+          console.log(gotByCode.data)
+          setSelectedMaterial(gotByCode.data)
+          reagent_code = "";
         }
+      } else if (event.key.length === 1) {
+        reagent_code += event.key.toUpperCase();
+      }
 
-        lastKeyTime = now;
+      lastKeyTime = now;
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-        window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -161,12 +166,12 @@ function Materials() {
     const page = searchParams.get('page');
 
     if (risk == null || page == null) {
-        setSearchParams({
-            risk: risk ?? "TODOS",
-            page: page ?? 1
-        });
+      setSearchParams({
+        risk: risk ?? "TODOS",
+        page: page ?? 1
+      });
 
-        return;
+      return;
     }
 
     getReagentCount({
@@ -175,7 +180,7 @@ function Materials() {
     })
 
     getReagents(risk, page);
-}, [searchParams]);
+  }, [searchParams]);
 
 useEffect(() => getReagentCount({}), [])
 
@@ -333,21 +338,23 @@ useEffect(() => getReagentCount({}), [])
             </div>
 
             <div>
-              <button 
-                onClick = { prevPage }
-                disabled = { pageButtonEnabled("back") }
+              <button
+                onClick={prevPage}
+                disabled={pageButtonEnabled("back")}
+                className="materials-page-button"
               >
                 &lt;
               </button>
-              <button 
-                onClick = { nextPage }
-                disabled = { pageButtonEnabled("forward") }
+              <button
+                onClick={nextPage}
+                disabled={pageButtonEnabled("forward")}
+                className="materials-page-button"
               >
                 &gt;
               </button>
-            </div>
+            </div >
 
-          </section>
+          </section >
 
           {selectedMaterial !== null && (
             <MaterialModal
@@ -356,13 +363,14 @@ useEffect(() => getReagentCount({}), [])
               onClose={() => setSelectedMaterial(null)}
               onDelete={deleteMaterial}
             />
-          )}
+          )
+          }
 
-        </main>
+        </main >
 
-      </div>
+      </div >
 
-    </div>
+    </div >
   );
 
 }
