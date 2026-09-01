@@ -12,7 +12,7 @@
 .add-material-main {
   display: flex;
   flex-direction: column;
-  padding: 70px 50px;
+  padding: 130px 50px 70px 50px;
   flex: 1;
 
   margin-left: 200px;
@@ -118,6 +118,11 @@
 .color-input {
   width: 150px;
   box-sizing: border-box;
+}
+
+.image-input {
+  width: 350px;
+  padding-top: 8px;
 }
 
 .properties-container3 {

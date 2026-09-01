@@ -22,14 +22,14 @@ function Restock() {
   const [incomingChanges, setIncomingChanges] = useState([])
 
   const validateTarget = (incomingTarget) => {
-    if(!targets.some(target => target.shelf_level_id === incomingTarget.shelf_level_id))
+    if (!targets.some(target => target.shelf_level_id === incomingTarget.shelf_level_id))
       setTarget(incomingTarget)
     else
       alert("La ubicación especificada ya está registrada.")
   }
 
   const prepareIncomingStock = (targetStock, incomingUnits) => {
-    if (!incomingUnits) 
+    if (!incomingUnits)
       return;
     
     setIncomingChanges((prev) => [
@@ -89,7 +89,7 @@ function Restock() {
   }
 
   useEffect(() => {
-    if(Object.hasOwn(target, 'host_building'))
+    if (Object.hasOwn(target, 'host_building'))
       setTargets((targets) => [...targets, target]);
   }, [target])
 
@@ -182,8 +182,8 @@ function Restock() {
                 </h2>
                 <hr className="edit-stock-right-line" />
               </div>
-              
-              <table className = "stock-table">
+
+              <table className="stock-table">
                 <thead>
                   <tr>
                     <td>Edificio</td>
@@ -218,40 +218,39 @@ function Restock() {
                         ))
                       
                     ) :
-                    (
-                      <tr className="edit-stock-data">
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                      </tr>
-                    )
+                      (
+                        <tr className="edit-stock-data">
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                        </tr>
+                      )
                   }
 
                 </tbody>
               </table>
 
               <div className="subtitle-container">
-                <hr className="edit-stock-left-line" />
                 <hr className="edit-stock-right-line" />
               </div>
-              <div style = {{marginTop: "15px"}}>
-                  <button
-                      className="add-stock-button"
-                      type="submit"
-                  >
-                    Registrar
-                  </button>
+              <div style={{ marginTop: "15px" }}>
+                <button
+                  className="add-stock-button"
+                  type="submit"
+                >
+                  Registrar
+                </button>
 
-                  <button className="cancel-stock-button" type="button" onClick = { handleCancel }>
-                    Cancelar
-                  </button>
+                <button className="cancel-stock-button" type="button" onClick={handleCancel}>
+                  Cancelar
+                </button>
               </div>
 
             </div>
-            
+
           </form>
 
         </main>

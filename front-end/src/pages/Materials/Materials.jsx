@@ -40,17 +40,17 @@ function Materials() {
   const [reagentCount, setReagentCount] = useState(0);
 
   const updateRiskParams = () => {
-    
+
   }
 
   const getReagentCount = (params) => {
-   api.get('/reagents/count', params)
-    .then((response) => { console.log(response.data); setReagentCount(Number(response.data)) })
-    .catch((error) => console.error(error))
+    api.get('/reagents/count', params)
+      .then((response) => { console.log(response.data); setReagentCount(Number(response.data)) })
+      .catch((error) => console.error(error))
   }
 
   const pageButtonEnabled = (type) => {
-    if(type == "forward"){
+    if (type == "forward") {
       let max_page = (Math.ceil(reagentCount / 10))
       return currentPage < max_page ? false : true;
     }
@@ -60,7 +60,7 @@ function Materials() {
 
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
-    setSearchParams({ 
+    setSearchParams({
       risk: searchParams.get('risk'),
       page: currentPage
     })
@@ -68,7 +68,7 @@ function Materials() {
 
   const prevPage = () => {
     setCurrentPage(currentPage - 1);
-    setSearchParams({ 
+    setSearchParams({
       risk: searchParams.get('risk'),
       page: currentPage
     })
@@ -108,39 +108,44 @@ function Materials() {
     let lastKeyTime = 0;
 
     const handleKeyDown = async (event) => {
-        const now = Date.now();
+      const now = Date.now();
 
-        if (now - lastKeyTime > 100) {
-            reagent_code = "";
-        }
+      if (now - lastKeyTime > 100) {
+        reagent_code = "";
+      }
 
-        if (event.key === "Enter") {
-            if (reagent_code.length > 0) {
-                console.log(reagent_code)
-                gotByCode = await api.get('/reagents/code', {
-                  params: {
-                    code: reagent_code
-                  }
-                })
-                setSelectedMaterial(gotByCode.data)
-                reagent_code = "";
+      if (event.key === "Enter") {
+        if (reagent_code.length > 0) {
+          console.log(reagent_code)
+          gotByCode = await api.get('/reagents/code', {
+            params: {
+              code: reagent_code
             }
-        } else if (event.key.length === 1) {
-            reagent_code += event.key.toUpperCase();
+          })
+          setSelectedMaterial(gotByCode.data)
+          reagent_code = "";
         }
 
-        lastKeyTime = now;
+        console.log(gotByCode.data)
+        setSelectedMaterial(gotByCode.data)
+        reagent_code = "";
+      }
+      else if (event.key.length === 1) {
+        reagent_code += event.key.toUpperCase();
+      }
+
+      lastKeyTime = now;
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-        window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
   useEffect(() => {
-    if((searchParams.get('risk') ?? "").toUpperCase() != appliedColor.toUpperCase()) {
+    if ((searchParams.get('risk') ?? "").toUpperCase() != appliedColor.toUpperCase()) {
       setSearchParams({
         risk: appliedColor.toUpperCase(),
         page: 1
@@ -153,7 +158,7 @@ function Materials() {
         page: currentPage
       })
     }
-      
+
   }, [appliedColor, currentPage])
 
   useEffect(() => {
@@ -161,12 +166,12 @@ function Materials() {
     const page = searchParams.get('page');
 
     if (risk == null || page == null) {
-        setSearchParams({
-            risk: risk ?? "TODOS",
-            page: page ?? 1
-        });
+      setSearchParams({
+        risk: risk ?? "TODOS",
+        page: page ?? 1
+      });
 
-        return;
+      return;
     }
 
     getReagentCount({
@@ -175,9 +180,9 @@ function Materials() {
     })
 
     getReagents(risk, page);
-}, [searchParams]);
+  }, [searchParams]);
 
-useEffect(() => getReagentCount({}), [])
+  useEffect(() => getReagentCount({}), [])
 
   return (
     <div className="materials-page">
@@ -284,15 +289,17 @@ useEffect(() => getReagentCount({}), [])
 
           <section className="materials-section">
             <div>
-              <button 
-                onClick = { prevPage }
-                disabled = { pageButtonEnabled("back") }
+              <button
+                onClick={prevPage}
+                disabled={pageButtonEnabled("back")}
+                className="materials-page-button"
               >
                 &lt;
               </button>
-              <button 
-                onClick = { nextPage }
-                disabled = { pageButtonEnabled("forward") }
+              <button
+                onClick={nextPage}
+                disabled={pageButtonEnabled("forward")}
+                className="materials-page-button"
               >
                 &gt;
               </button>
@@ -333,21 +340,23 @@ useEffect(() => getReagentCount({}), [])
             </div>
 
             <div>
-              <button 
-                onClick = { prevPage }
-                disabled = { pageButtonEnabled("back") }
+              <button
+                onClick={prevPage}
+                disabled={pageButtonEnabled("back")}
+                className="materials-page-button"
               >
                 &lt;
               </button>
-              <button 
-                onClick = { nextPage }
-                disabled = { pageButtonEnabled("forward") }
+              <button
+                onClick={nextPage}
+                disabled={pageButtonEnabled("forward")}
+                className="materials-page-button"
               >
                 &gt;
               </button>
-            </div>
+            </div >
 
-          </section>
+          </section >
 
           {selectedMaterial !== null && (
             <MaterialModal
@@ -356,13 +365,14 @@ useEffect(() => getReagentCount({}), [])
               onClose={() => setSelectedMaterial(null)}
               onDelete={deleteMaterial}
             />
-          )}
+          )
+          }
 
-        </main>
+        </main >
 
-      </div>
+      </div >
 
-    </div>
+    </div >
   );
 
 }
