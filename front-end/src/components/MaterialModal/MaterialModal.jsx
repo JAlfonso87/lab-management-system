@@ -127,11 +127,7 @@ function MaterialModal({ material, image, onClose, onDelete }) {
               onClick={() =>
                 { 
                   navigate("/restock", {
-                    state: {
-                      "reagent_id": material.reagent.reagent_id,
-                      "reagent_name": material.reagent.reagent_name,
-                      "locations": material.locations
-                    }
+                    state: material
                   })
                 }
               }

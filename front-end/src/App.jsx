@@ -55,7 +55,10 @@ function App() {
           path="/login"
           element={<Login />}
         />
-
+        <Route
+          path="/signup"
+          element={<SignUp />}
+        />
         <Route
           path="/unauthorized"
           element={<Unauthorized />}
@@ -77,10 +80,6 @@ function App() {
             <Route
               path="/transfer-stock"
               element={<TransferStock />}
-            />
-            <Route
-              path="/signup"
-              element={<SignUp />}
             />
             <Route
               path="/restock"

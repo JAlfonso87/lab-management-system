@@ -21,7 +21,6 @@ function Restock() {
 
   const [incomingChanges, setIncomingChanges] = useState([])
 
-
   const validateTarget = (incomingTarget) => {
     if(!targets.some(target => target.shelf_level_id === incomingTarget.shelf_level_id))
       setTarget(incomingTarget)
@@ -32,55 +31,62 @@ function Restock() {
   const prepareIncomingStock = (targetStock, incomingUnits) => {
     if (!incomingUnits) 
       return;
-
+    
     setIncomingChanges((prev) => [
-      ...prev.filter((element) => element.shelf_level_id !== targetStock.shelf_level_id),
+      ...prev.filter((element) => element.shelf_level_id != targetStock.shelf_level_id),
       {
         ...targetStock,
-        stock_diff: Number(incomingUnits)
+        stock_diff: incomingUnits,
       }
     ])
   }
 
+  const clearHooks = () => {
+    setTarget({});
+    setTargets([]);
+    setIncomingChanges([]);
+  }
+
   const handleRefresh = () => {
-    api.get('reagents/reagent/'+material.reagent_id)
-    .then((response) => setMaterial(response.data))
+    clearHooks();
+    api.get('reagents/reagent/'+material.reagent.reagent_id)
+    .then((response) => { 
+      setMaterial(response.data)
+    })
     .catch((error) => console.error(error))
+
   }
 
   const handleCancel = () => {
-    setTargets([]);
-    setIncomingChanges([]);
-    setTarget({});
-
+    clearHooks();
     navigate('/materials');
+    setMaterial({});
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     let cleanData = incomingChanges.map((data) => {
-      const {location_type, local_stock_units, ...cleanEntry} = data;
-        return cleanEntry;
+      const { location_type, local_stock_units, ...cleanEntry } = data;
+      return cleanEntry;
     })
 
-  const payload = {
-    stock_data: cleanData,
-    reagent_data: {
-      reagent_id: material.reagent_id, 
-      reagent_name: material.reagent_name
+    const payload = {
+      stock_data: cleanData,
+      reagent_data: {
+        reagent_id: material.reagent.reagent_id, 
+        reagent_name: material.reagent.reagent_name
+      }
     }
-  }
 
-  api.post('/operations/restock', payload)
-  .then((response) => {
-    console.log(response.data)
-    alert("Restock registrado exitosamente.")
-    handleRefresh()
-  })
-  .catch((error) => console.error(error))
+    api.post('/operations/restock', payload)
+    .then((response) => {
+      alert("Restock registrado exitosamente.")
+      handleRefresh()
+    })
+    .catch((error) => console.error(error))
 
   }
-  const loadReagentData = () => setMaterial(documentLocation.state);
 
   useEffect(() => {
     if(Object.hasOwn(target, 'host_building'))
@@ -88,7 +94,7 @@ function Restock() {
   }, [target])
 
   useEffect(() => {
-    loadReagentData()
+    setMaterial(documentLocation.state);
   }, [])
 
   return (
@@ -129,7 +135,7 @@ function Restock() {
                 </div>
                 <div className="subtitle-container">
                     <hr className="edit-stock-left-line" />
-                    <h2 className="subtitle-text">Stock registrados</h2>
+                    <h2 className="subtitle-text">Ubicaciones de Almacén Registradas</h2>
                     <hr className="edit-stock-right-line" />
                 </div>
 
@@ -149,7 +155,7 @@ function Restock() {
                   {
                     material.locations != undefined ? (
                       material.locations.map((location) => (
-                          Number(location.local_stock_units) > 0 ? (
+                          (Number(location.local_stock_units) > 0 && Object.hasOwn(location, "shelf_level_number"))? (
                             <Stock
                               key = { location.shelf_level_id }
                               location = { location }
@@ -192,9 +198,9 @@ function Restock() {
                   {
                     targets.length != 0 ? (
                         targets.map((target) => (
-                            <tr className="edit-stock-data">
+                            <tr className="edit-stock-data" key = {target.shelf_level_id}>
                                 <td>{target.host_building}</td>
-                                <td>{Object.hasOwn(target, "shelf_level_number") ? "Almacén" : "Laboratorio"}</td>
+                                <td>{Object.hasOwn(target, "shelf_level_number") ? "ALMACÉN" : "LABORATORIO"}</td>
                                 <td>{target.shelf_number ? target.shelf_number : "-"}</td>
                                 <td>{target.shelf_level_number ? target.shelf_level_number : "-"}</td>
                                 <td>{target.local_stock_units}</td>

@@ -234,6 +234,7 @@ export class ReagentService {
 
                 if (location.labs) {
                     return {
+                        lab_id: location.labs.lab_id,
                         lab_name: location.labs.lab_name,
                         host_building: location.labs.host_building,
                         local_stock_units: stock.local_stock_units
@@ -242,6 +243,7 @@ export class ReagentService {
 
                 if (location.shelf_levels) {
                     return {
+                        shelf_level_id: location.shelf_levels.shelf_level_id,
                         shelf_number: location.shelf_levels.shelves.shelf_number,
                         host_building: location.shelf_levels.shelves.host_building,
                         shelf_level_number: location.shelf_levels.shelf_level_number,

@@ -32,7 +32,17 @@ export class OperationsController {
 
     @Authorized_Roles(['USER'])
     @Post('/restock')
-    newRestock(@Req() req, @Body() body: {stock_data: [{ host_building: string, shelf_number: number, shelf_lvl_id: number, shelf_lvl_number: number, stock_diff: number}], reagent_data: { reagent_id: number, reagent_name: number }}){
+    newRestock(@Req() req, 
+    @Body() 
+        body: {
+            stock_data: any, 
+            reagent_data: { 
+                reagent_id: number, 
+                reagent_name: number 
+            }
+        }
+    )
+    {
         return this.operationsService.newRestockOperation(Object.assign({}, body, req.user));
     }
 

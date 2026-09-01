@@ -172,7 +172,7 @@ function TransferStock() {
                               setTarget = { Object.hasOwn(source, 'host_building') ? setDestination : setSource }
                               targets = { targets }
                               setTargets = { setTargets }
-                              disablingCondition = { disable }
+                              globalDisable = { disable }
                             />
                           ) : null
                         )

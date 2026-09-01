@@ -16,10 +16,9 @@ function NewRequest() {
   const [checkouts, setCheckouts] = useState([])
 
   const updateCheckout = (checkout) => {
-    const {local_stock_id, checkout_units} = checkout;
-    console.log(local_stock_id)
-    console.log(checkout_units)
-    console.log(checkouts)
+
+    const { local_stock_id, checkout_units } = checkout;
+
     if(checkouts.some((element) => element.local_stock_id == local_stock_id))
       setCheckouts(prev =>
           prev.map(element =>
@@ -41,10 +40,8 @@ function NewRequest() {
       return currentPage == 1 ? true : false;
   }
 
-  const addMaterialEnabled = (material) => {
-    return selectedMaterials.some((entry) => entry === material)
-  }
-
+  const addMaterialEnabled = (material) => selectedMaterials.some((entry) => entry === material);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     if(checkouts.length != 0)
@@ -166,7 +163,7 @@ function NewRequest() {
                             type="button"
                             className="availables-button"
                             onClick={() => setSelectedMaterials([...selectedMaterials, entry])}
-                            disabled = {addMaterialEnabled(entry)}
+                            disabled = { addMaterialEnabled(entry) }
                           >
                             Seleccionar
                           </button>

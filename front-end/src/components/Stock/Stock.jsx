@@ -7,26 +7,18 @@ function Stock({
   setTarget,
   targets,
   setTargets,
-  disablingCondition
+  globalDisable
 }) {
 
   const [selected, setSelected] = useState({})
 
-  const alreadyStored = () => {
-    let locationType = Object.hasOwn(selected, "shelf_level_id") ? "Almacen" : Object.hasOwn(selected, "lab_name") ? "Laboratorio" : null;
-    
-    if(disablingCondition == false)
-      return targets.some((target_record) => {
-          if(locationType == "Almacen")
-            return target_record.shelf_level_id == selected.shelf_level_id;
-          
-          if (locationType == "Laboratorio")
-            return target_record.lab_name == selected.lab_name;
-      });
-    else if (disablingCondition == true)
-        return true;
-  }
-
+  const addMaterialEnabled = () => {
+    if(!globalDisable)
+      return targets.some((element) => element === selected)
+    else
+      return globalDisable;
+  };
+  
   return (
     <tr className="stock-data">
       <td>{location.host_building}</td>
@@ -44,7 +36,7 @@ function Stock({
                   setSelected(location); 
                   setTarget(location);
                 }}
-                disabled = { alreadyStored() }
+                disabled = { addMaterialEnabled() }
               >
                 Seleccionar Ubicación
               </button>

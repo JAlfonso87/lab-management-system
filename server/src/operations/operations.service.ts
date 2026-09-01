@@ -245,17 +245,67 @@ export class OperationsService {
 
     async newRestockOperation(
         data: {
-            stock_data: [{ host_building: string, shelf_number: number, shelf_level_id: number, shelf_lvl_number: number, stock_diff: number}],
-            reagent_data: { reagent_id: number, reagent_name: number },
+            stock_data: any,
+            reagent_data: { 
+                reagent_id: number, 
+                reagent_name: number 
+            },
             userId: number, 
             username: string
         }
     ) {
+        const shelf_level_data = data.stock_data;
+
         const restock = await this.prisma.$transaction(async (tx) => {
 
+            const shelfLevels = await tx.shelf_levels.findMany({
+                where: {
+                    shelf_level_id: {
+                        in: shelf_level_data.map((element) => element.shelf_level_id)
+                    }
+                }
+            });
+
+            const locationIds = [
+                ...shelfLevels.map(element => element.shelf_level_id),
+            ];
+
+            let found_local_stocks: any[] = await tx.local_stocks.findMany({
+                where: {
+                    reagent_id: data.reagent_data.reagent_id,
+                    location_id: {
+                        in: locationIds
+                    }
+                }
+            })
+
+            const pendingLocationIds = locationIds.filter((id) => 
+                !found_local_stocks.map(
+                    (found_local_stock) => found_local_stock.location_id
+                ).includes(id)
+            )
+
+            if(pendingLocationIds.length != 0){
+                await tx.local_stocks.createMany({ 
+                    data: pendingLocationIds.map((id) => ({
+                        reagent_id: data.reagent_data.reagent_id,
+                        location_id: id
+                    }))
+                });
+
+                const new_local_stocks = await tx.local_stocks.findMany({
+                    where: {
+                        reagent_id: data.reagent_data.reagent_id,
+                        location_id: { in: pendingLocationIds }
+                    }
+                })
+
+                found_local_stocks = [...found_local_stocks, ...new_local_stocks];
+            }
+
             for(const stock of data.stock_data){
-                console.log(stock)
-                const local_stock = await tx.local_stocks.findUnique({
+                const update = await tx.local_stocks.update({
+                    data: { local_stock_units: { increment: Number(stock.stock_diff) } },
                     where: {
                         reagent_id_location_id: {
                             reagent_id: data.reagent_data.reagent_id,
@@ -264,29 +314,16 @@ export class OperationsService {
                     }
                 })
 
-                if(!local_stock)
-                    await this.newLocalStock(data.reagent_data.reagent_id, stock.shelf_level_id, tx);
-            }
-
-            for(const stock of data.stock_data){
-                await tx.local_stocks.update({
-                    data: {
-                        local_stock_units: { increment: Number(stock.stock_diff)}
-                    },
-                    where: { 
-                        local_stock_id: Number(await this.locationsService.getLocalStock(stock.shelf_level_id, data.reagent_data.reagent_id, tx))
-                    }
-                })
-
                 await tx.restocks.create({
                     data: {
                         reagent_id: data.reagent_data.reagent_id,
                         user_id: data.userId,
-                        local_stock_id: Number(await this.locationsService.getLocalStock(stock.shelf_level_id, data.reagent_data.reagent_id, tx)),
-                        restock_units: stock.stock_diff,
+                        local_stock_id: update.local_stock_id,
+                        restock_units: Number(stock.stock_diff),
                         restock_date: new Date()
                     }
                 })
+                
             }
         })
 
