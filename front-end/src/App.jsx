@@ -12,6 +12,7 @@ import UserApproval from "./pages/UserApproval/UserApproval"
 import Unauthorized from "./pages/Unauthorized/Unauthorized"
 import UserProtectedRoutes from "./permissions/UserProtectedRoutes"
 import AdminProtectedRoutes from "./permissions/AdminProtectedRoutes"
+import UserManagement from "./pages/UserManagement/UserManagement"
 
 function App() {
   return (
@@ -60,16 +61,18 @@ function App() {
               element={<User />}
             />
 
-          <Route element={<AdminProtectedRoutes />}>
-            <Route
-              path="/admin/approve"
-              element={<UserApproval />}
-            />
-          </Route>
+            <Route element={<AdminProtectedRoutes />}>
+              <Route
+                path="/admin/approve"
+                element={<UserApproval />}
+              />
+              <Route
+                path="/admin/user-management"
+                element={<UserManagement />}
+              />
+            </Route>
+
         </Route>
-
-
-
       </Routes>
     </>
   );

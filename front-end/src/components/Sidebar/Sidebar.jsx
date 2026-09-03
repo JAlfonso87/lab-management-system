@@ -6,6 +6,9 @@ import addIcon from "../../assets/images/add.png"
 import checkIcon from "../../assets/images/check.png"
 import user from "../../assets/images/user.png"
 import log_out from "../../assets/images/log_out.png"
+import reqIcon from "../../assets/images/request.png"
+import usersIcon from "../../assets/images/users.png"
+
 
 import { usePermissions } from "../../permissions/PermissionValidator.jsx"
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -79,7 +82,7 @@ function Sidebar() {
             className="sidebar-img"
           />
           <p className="sidebar-text">
-            Agregar
+            Nuevo Material
           </p>
         </Link>
 
@@ -99,12 +102,52 @@ function Sidebar() {
                 className="sidebar-img"
               />
               <p className="sidebar-text">
-                Registros
+                Aprobar Registros
               </p>
             </Link>
           ): null
         }
         
+        <Link
+          to={"/new-request"}
+          className={
+            `sidebar-link ${location.pathname === "/new-request"
+              ? "selected-link" : ""
+            }`
+          }
+        >
+          <img
+            src={reqIcon}
+            alt="Icono de agregar"
+            className="sidebar-img"
+          />
+          <p className="sidebar-text">
+            Realizar Solicitud
+          </p>
+        </Link>
+
+        {
+          hasPermission("permissions.users.modify_others") == true ? (
+            <Link
+              to={"/admin/user-management"}
+              className={
+                `sidebar-link ${location.pathname === "/admin/user-management"
+                  ? "selected-link" : ""
+                }`
+              }
+            >
+              <img
+                src = {usersIcon}
+                alt = "Gestión de Usuarios"
+                className="sidebar-img"
+              />
+              <p className="sidebar-text">
+                Gestión de Usuarios
+              </p>
+            </Link>
+          ): null
+        }
+
       </div>
 
       <div className="sidebar-bottom">

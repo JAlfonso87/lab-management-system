@@ -117,7 +117,7 @@ function NewRequest() {
         <main className="new-request-main">
 
           <h1 className="new-request-title">
-            Nueva Solicitud
+            Realizar Solicitud
           </h1>
 
           <h2 className="new-request-location">

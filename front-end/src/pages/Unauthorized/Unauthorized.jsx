@@ -38,7 +38,7 @@ function Unauthorized() {
                     transition: "0.2s"
                   }} 
                   type = "button" 
-                  onClick = {() => navigate(-1)}
+                  onClick = {() => navigate('/login')}
                 >
                   Volver
                 </button>

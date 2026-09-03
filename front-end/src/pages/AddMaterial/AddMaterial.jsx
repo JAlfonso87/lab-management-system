@@ -85,7 +85,7 @@ function AddMaterial() {
         <main className="add-material-main">
 
           <h1 className="add-material-title">
-            Agregar
+            Nuevo Material
           </h1>
 
           <p className="add-material-text">
