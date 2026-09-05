@@ -1,14 +1,17 @@
-import "./AddMaterial.css"
+import styles from "./AddMaterial.module.css";
+import "../../assets/styles/common.css";
 
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import LineSubtitle from "../../mini-components/LineSubtitle";
 
 import { useState } from "react";
 import { api } from "../../axios/api";
 import LocationSelector from "../../components/LocationSelector/LocationSelector";
+import TextInput from "../../mini-components/TextInput";
+import SelectorInput from "../../mini-components/SelectorInput";
 
 function AddMaterial() {
-
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [weight, setWeight] = useState("");
@@ -28,7 +31,7 @@ function AddMaterial() {
     setImage("");
     setStock("");
     setSelectedLocation({});
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,7 +42,9 @@ function AddMaterial() {
     }
 
     if (Number(weight) <= 0 || Number(stock) <= 0) {
-      alert("Valor/es inválido/s detectado/s. NOTA: Las unidades de stock y la masa deben de superar las 0 unidades.");
+      alert(
+        "Valor/es inválido/s detectado/s. NOTA: Las unidades de stock y la masa deben de superar las 0 unidades.",
+      );
       return;
     }
 
@@ -53,200 +58,127 @@ function AddMaterial() {
       location_data: {
         host_building: selectedLocation.host_building.toUpperCase(),
         shelf_id: Number(selectedLocation.shelf_id),
-        shelf_level_id: Number(selectedLocation.shelf_level_id)
+        shelf_level_id: Number(selectedLocation.shelf_level_id),
       },
       operation_data: {
-        stock_units: Number(stock)
-      }
-
-    }
+        stock_units: Number(stock),
+      },
+    };
 
     try {
-      const new_reagent = await api.post('/operations/new_reagent', reagent_registration_payload);
-      alert('El reactivo se ha añadido con éxito.')
-      clearData()
+      const new_reagent = await api.post(
+        "/operations/new_reagent",
+        reagent_registration_payload,
+      );
+      alert("El reactivo se ha añadido con éxito.");
+      clearData();
     } catch (error) {
       console.error(error);
       alert(error);
     }
-
-  }
-
+  };
 
   return (
-    <div className="add-material-page">
-
+    <div className={styles["add-material-page"]}>
       <Header />
 
-      <div className="add-material-content">
-
+      <div className={styles["add-material-content"]}>
         <Sidebar />
 
-        <main className="add-material-main">
+        <main className={styles["add-material-main"]}>
+          <h1 className={styles["add-material-title"]}>Nuevo Material</h1>
 
-          <h1 className="add-material-title">
-            Nuevo Material
-          </h1>
-
-          <p className="add-material-text">
-            Escribe los siguientes datos para
-            registrar un nuevo reactivo:
+          <p className={styles["add-material-text"]}>
+            Escribe los siguientes datos para registrar un nuevo reactivo:
           </p>
 
           <form id="reagentForm" onSubmit={handleSubmit}>
+            <div className={styles["material-properties"]}>
+              <LineSubtitle subtitle={"Datos del reactivo"} />
 
-            <div className="material-properties">
-              <div className="subtitle-container">
-                <hr className="add-material-left-line" />
-                <h2 className="subtitle-text">Datos del reactivo</h2>
-                <hr className="add-material-right-line" />
+              <div className={styles["properties-container"]}>
+                <TextInput
+                  id={"Nombre"}
+                  type={"text"}
+                  size={"XXL"}
+                  target={name}
+                  setter={setName}
+                />
+
+                <TextInput
+                  id={"Marca"}
+                  type={"text"}
+                  size={"L"}
+                  target={brand}
+                  setter={setBrand}
+                />
               </div>
 
-              <div className="properties-container1">
-                <div className="name-input-container input-label">
-                  <label htmlFor="name">Nombre</label>
-                  <input
-                    id="name"
-                    placeholder="Nombre"
-                    type="text"
-                    className="name-input"
-                    value={name}
-                    onChange={event =>
-                      setName(event.target.value)
-                    }
+              <div className={styles["properties-container"]}>
+                <div className={styles["weight-unit-container"]}>
+                  <TextInput
+                    id={"Masa"}
+                    type={"number"}
+                    size={"XS"}
+                    target={weight}
+                    setter={setWeight}
+                  />
+
+                  <span className={styles["weight-unit-sign"]}>+</span>
+
+                  <TextInput
+                    id={"Unidad"}
+                    type={"text"}
+                    size={"XS"}
+                    target={unit}
+                    setter={setUnit}
                   />
                 </div>
 
-                <div className="brand-input-container input-label">
-                  <label htmlFor="brand">Marca</label>
-                  <input
-                    id="brand"
-                    placeholder="Marca"
-                    type="text"
-                    className="brand-input"
-                    value={brand}
-                    onChange={event =>
-                      setBrand(event.target.value)
-                    }
-                  />
-                </div>
+                <SelectorInput
+                  id={"Color"}
+                  size={"S"}
+                  target={color}
+                  setter={setColor}
+                  options={["Blanco", "Amarillo", "Rojo", "Verde", "Azul"]}
+                />
               </div>
 
-              <div className="properties-container2">
-
-                <div className="weight-unit-container">
-                  <div className="weight-input-container input-label">
-                    <label htmlFor="weight">Masa</label>
-                    <input
-                      id="weight"
-                      placeholder="Masa"
-                      type="number"
-                      className="weight-input"
-                      value={weight}
-                      onChange={event =>
-                        setWeight(event.target.value)
-                      }
-                    />
-                  </div>
-
-                  <span className="weight-unit-sign">+</span>
-
-                  <div className="unit-input-container input-label">
-                    <label htmlFor="unit">Unidad</label>
-                    <input
-                      id="unit"
-                      placeholder="Unidad"
-                      type="text"
-                      className="unit-input"
-                      value={unit}
-                      onChange={event =>
-                        setUnit(event.target.value)
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="color-input-container input-label">
-                  <label htmlFor="color">Color</label>
-                  <select
-                    id="color"
-                    className="color-input"
-                    value={color}
-                    onChange={event =>
-                      setColor(event.target.value)
-                    }
-                  >
-                    <option value="" disabled>Color</option>
-                    <option value="Blanco">Blanco</option>
-                    <option value="Amarillo">Amarillo</option>
-                    <option value="Rojo">Rojo</option>
-                  </select>
-                </div>
-
-              </div>
-
-              <div className="properties-container3">
-                <div className="input-label">
-                  <label htmlFor="image">Imagen</label>
-                  <input
-                    id="image"
-                    placeholder="Imagen"
-                    type="file"
-                    accept="image/*"
-                    className="image-input"
-                    value={image}
-                    onChange={event =>
-                      setImage(event.target.value)
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="material-location">
-              <LocationSelector
-                label={"Ubicación del reactivo"}
-                selectedLocation={selectedLocation}
-                setSelectedLocation={setSelectedLocation}
-              />
-            </div>
-
-            <div className="material-stock">
-              <div className="subtitle-container">
-                <hr className="add-material-left-line" />
-                <h2 className="subtitle-text">Stock del reactivo</h2>
-                <hr className="add-material-right-line" />
-              </div>
-
-              <div className="input-label">
-                <label htmlFor="stock">Stock</label>
-                <input
-                  id="stock"
-                  placeholder="Stock"
-                  type="number"
-                  className="stock-input"
-                  value={stock}
-                  onChange={event =>
-                    setStock(event.target.value)
-                  }
+              <div className={styles["properties-container"]}>
+                <TextInput
+                  id={"Imagen"}
+                  type={"file"}
+                  size={"M"}
+                  target={image}
+                  setter={setImage}
+                  config={{ accept: "image/*" }}
                 />
               </div>
             </div>
 
-            <hr className="add-bottom-line" />
-            <button
-              type="submit"
-              className="add-material-button"
-            >
+            <LocationSelector
+              label={"Ubicación del reactivo"}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+              deact={Object.keys(selectedLocation).length != 0}
+            />
+
+            <LineSubtitle subtitle={"Stock del reactivo"} />
+            <TextInput
+              id={"Stock"}
+              type={"number"}
+              size={"XS"}
+              target={stock}
+              setter={setStock}
+            />
+
+            <hr style={{ marginTop: "20px", marginBottom: "20px" }} />
+            <button type="submit" className="gray-button">
               Añadir reactivo
             </button>
-
           </form>
-
         </main>
-
       </div>
-
     </div>
   );
 }

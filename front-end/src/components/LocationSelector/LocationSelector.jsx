@@ -1,303 +1,292 @@
 import { useEffect, useState } from "react";
 import { api } from "../../axios/api";
 
-import "./LocationSelector.css"
+import "./LocationSelector.css";
+import "../../assets/styles/common.css";
+
+import LineSubtitle from "../../mini-components/LineSubtitle";
+import SelectorInput from "../../mini-components/SelectorInput";
 
 function LocationSelector({
-    label,
-    selectedLocation,
-    setSelectedLocation,
-    restricted
-}) 
-{
-    const [shelves, setShelves] = useState([]);
-    const [shelfLevels, setShelfLevels] = useState([]);
-    const [labs, setLabs] = useState([]);
+  label,
+  selectedLocation,
+  setSelectedLocation,
+  restricted,
+  deact = false,
+}) {
+  const [shelves, setShelves] = useState([]);
+  const [shelfLevels, setShelfLevels] = useState([]);
+  const [labs, setLabs] = useState([]);
 
-    const [selectedBuilding, setSelectedBuilding] = useState("");
-    const [selectedLocationType, setSelectedLocationType] = useState("");
+  const [selectedBuilding, setSelectedBuilding] = useState("");
+  const [selectedLocationType, setSelectedLocationType] = useState("");
 
-    const [selectedShelf, setSelectedShelf] = useState("")
-    const [shelfObject, setShelfObject] = useState({});
+  const [selectedShelf, setSelectedShelf] = useState("");
+  const [shelfObject, setShelfObject] = useState({});
 
-    const [selectedShelfLevel, setSelectedShelfLevel] = useState("")
-    const [shelfLevelObject, setShelfLevelObject] = useState({})
+  const [selectedShelfLevel, setSelectedShelfLevel] = useState("");
+  const [shelfLevelObject, setShelfLevelObject] = useState({});
 
-    const [selectedLab, setSelectedLab] = useState("")
-    const [labObject, setLabObject] = useState({})
+  const [selectedLab, setSelectedLab] = useState("");
+  const [labObject, setLabObject] = useState({});
 
-    const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(false);
 
-    const alreadyStored = (location) => {
-        return Object.hasOwn(location, "host_building");
-    }
+  const alreadyStored = (location) => {
+    return Object.hasOwn(location, "host_building");
+  };
 
-    const clearFields = () => {
-        setShelves([]);
-        setShelfLevels([]);
-        setLabs([]);
-        setSelectedBuilding("");
-        setSelectedLocationType("");
-        setSelectedShelf("");
-        setSelectedShelfLevel("");
-        setSelectedLab("");
-        setReady(false);
-    }
+  const availableLocations = () => {
+    const locations = ["Almacen", "Laboratorio"].map((type) => {
+      if (restricted == true) {
+        if (type == "Almacen") {
+          return type;
+        }
+      } else return type;
+    });
+    return locations;
+  };
 
-    const findShelf = (shelf_id) => {
-        if(shelves.length != 0)
-            setShelfObject(shelves.find(shelf => shelf.shelf_id == shelf_id))
-    }
+  const clearFields = () => {
+    setShelves([]);
+    setShelfLevels([]);
+    setLabs([]);
+    setSelectedBuilding("");
+    setSelectedLocationType("");
+    setSelectedShelf("");
+    setSelectedShelfLevel("");
+    setSelectedLab("");
+    setReady(false);
+  };
 
-    const findShelfLevel = (shelf_level_id) => {
-        if(shelfLevels.length != 0) 
-            setShelfLevelObject(shelfLevels.find(shelfLevel => shelfLevel.shelf_level_id == shelf_level_id))
-    }
+  const findShelf = (shelf_id) => {
+    if (shelves.length != 0)
+      setShelfObject(shelves.find((shelf) => shelf.shelf_id == shelf_id));
+  };
 
-    const findLab = (lab_id) => {
-        if(labs.length != 0) 
-            setLabObject(labs.find(lab => lab.lab_id == lab_id))
-    }
+  const findShelfLevel = (shelf_level_id) => {
+    if (shelfLevels.length != 0)
+      setShelfLevelObject(
+        shelfLevels.find(
+          (shelfLevel) => shelfLevel.shelf_level_id == shelf_level_id,
+        ),
+      );
+  };
 
-    const getLabs = () => {
-        if(selectedLocationType == "Laboratorio")
-            api.get('/locations/labs', { params: { host_building: selectedBuilding } } )
-            .then((labs) => setLabs(labs.data))
-            .catch((error) => console.error(error))
-    }
+  const findLab = (lab_id) => {
+    if (labs.length != 0)
+      setLabObject(labs.find((lab) => lab.lab_id == lab_id));
+  };
 
-    const getShelves = () => {
-        if(selectedLocationType == "Almacen")
-            api.get('/locations/shelves', { params: { host_building: selectedBuilding } } )
-            .then((shelves) => setShelves(shelves.data))
-            .catch((error) => console.error(error))
-    }
-    
-    const getShelfLevels = () => {
-        if(selectedShelf) 
-            api.get('/locations/shelf/levels', { params: { shelf_id: selectedShelf } } )
-            .then((levels) => setShelfLevels(levels.data))
-            .catch((error) => console.error(error))
-    }
+  const getLabs = () => {
+    if (selectedLocationType == "Laboratorio")
+      api
+        .get("/locations/labs", { params: { host_building: selectedBuilding } })
+        .then((labs) => setLabs(labs.data))
+        .catch((error) => console.error(error));
+  };
 
-    const isPayloadReady = () => {
-        return (!selectedBuilding || !selectedLocationType) ? false : (() => {
-            if(selectedLocationType == "Almacen")
-                return (!selectedShelf || !selectedShelfLevel) ? false : true;
-
-            else if(selectedLocationType == "Laboratorio") 
-                return (!selectedLab) ? false : true;
+  const getShelves = () => {
+    if (selectedLocationType == "Almacen")
+      api
+        .get("/locations/shelves", {
+          params: { host_building: selectedBuilding },
         })
+        .then((shelves) => setShelves(shelves.data))
+        .catch((error) => console.error(error));
+  };
+
+  const getShelfLevels = () => {
+    if (selectedShelf)
+      api
+        .get("/locations/shelf/levels", { params: { shelf_id: selectedShelf } })
+        .then((levels) => setShelfLevels(levels.data))
+        .catch((error) => console.error(error));
+  };
+
+  const isPayloadReady = () => {
+    return !selectedBuilding || !selectedLocationType
+      ? false
+      : () => {
+          if (selectedLocationType == "Almacen")
+            return !selectedShelf || !selectedShelfLevel ? false : true;
+          else if (selectedLocationType == "Laboratorio")
+            return !selectedLab ? false : true;
+        };
+  };
+
+  const prepareLocationPayload = () => {
+    let payload = {};
+
+    if (!selectedBuilding) {
+      alert(
+        "Por favor, selecciona un edificio para continuar con el registro de ubicación.",
+      );
+      return;
     }
 
-    const prepareLocationPayload = () => {
-        let payload = {};
+    if (selectedLocationType === "Almacen") {
+      if (!selectedShelf || !selectedShelfLevel) {
+        alert("Por favor, completa los datos del estante objetivo.");
+        return;
+      }
 
-        if(!selectedBuilding){
-            alert("Por favor, selecciona un edificio para continuar con el registro de ubicación.")
-            return
-        }
+      payload = {
+        location_type: selectedLocationType,
+        host_building: selectedBuilding,
+        shelf_number: shelfObject.shelf_number,
+        shelf_id: shelfObject.shelf_id,
+        shelf_level_id: shelfLevelObject.shelf_level_id,
+        shelf_level_number: shelfLevelObject.shelf_level_number,
+      };
+    } else if (selectedLocationType === "Laboratorio") {
+      if (!selectedLab) {
+        alert("Por favor, completa los datos del laboratorio objetivo.");
+        return;
+      }
 
-        if(selectedLocationType === "Almacen"){
-            if(!selectedShelf || !selectedShelfLevel) {
-                alert("Por favor, completa los datos del estante objetivo.")
-                return
-            }
-
-            payload = {
-                "location_type": selectedLocationType,
-                "host_building": selectedBuilding,
-                "shelf_number": shelfObject.shelf_number,
-                "shelf_level_id": shelfLevelObject.shelf_level_id,
-                "shelf_level_number": shelfLevelObject.shelf_level_number,
-            }
-
-        } 
-        else if (selectedLocationType === "Laboratorio") {
-            if(!selectedLab) {
-                alert("Por favor, completa los datos del laboratorio objetivo.")
-                return
-            }
-
-            payload = {
-                "location_type": selectedLocationType,
-                "host_building": selectedBuilding,
-                "lab_name": labObject.lab_name,
-                "lab_id": labObject.lab_id
-            }
-        } 
-        else
-        {
-            alert("Por favor, especifica el tipo de ubicación.")
-            return
-        }
-
-        setSelectedLocation(payload);
+      payload = {
+        location_type: selectedLocationType,
+        host_building: selectedBuilding,
+        lab_name: labObject.lab_name,
+        lab_id: labObject.lab_id,
+      };
+    } else {
+      alert("Por favor, especifica el tipo de ubicación.");
+      return;
     }
-    
-    useEffect(() => {
-        if(alreadyStored(selectedLocation) == false)
-            clearFields();
-    }, [selectedLocation])
 
-    useEffect(() => {
-        findShelf(selectedShelf)
-        getShelfLevels()
-    }, [selectedShelf])
+    setSelectedLocation(payload);
+  };
 
-    useEffect(() => {
-        findShelfLevel(selectedShelfLevel)
-    }, [selectedShelfLevel])
+  useEffect(() => {
+    console.log(selectedLocation);
+  }, []);
 
-    useEffect(() => {
-        findLab(selectedLab)
-    }, [selectedLab])
+  useEffect(() => {
+    if (alreadyStored(selectedLocation) == false) clearFields();
+  }, [selectedLocation]);
 
-    useEffect(() => { 
-        if(selectedBuilding && selectedLocationType)
-            selectedLocationType == "Almacen" ? getShelves() : getLabs()
-    }, [selectedLocationType, selectedBuilding])
+  useEffect(() => {
+    findShelf(selectedShelf);
+    getShelfLevels();
+  }, [selectedShelf]);
 
-    useEffect(() => setReady(isPayloadReady()), [selectedBuilding, selectedLocationType, selectedShelf, selectedShelfLevel, selectedLab])
+  useEffect(() => {
+    findShelfLevel(selectedShelfLevel);
+  }, [selectedShelfLevel]);
 
-    return (
-        <div className="material-location">
-            <div className="subtitle-container">
-                <hr className="add-material-left-line" />
-                <h2 className="subtitle-text">{label}</h2>
-                <hr className="add-material-right-line" />
-            </div>
+  useEffect(() => {
+    findLab(selectedLab);
+  }, [selectedLab]);
 
-            <div className="location-container">
-                <div className="building-input-container input-label">
-                    <label htmlFor="building">Edificio</label>
-                    <select
-                        id="building"
-                        className="building-input"
-                        value = { selectedBuilding }
-                        onChange = {event => setSelectedBuilding(event.target.value)}
-                        //disabled = { alreadyStored(selectedLocation) }
-                    >
-                        <option value = "" disabled>Edificio</option>
-                        <option value = "A">A</option>
-                    </select>
-                </div>
-                
-                { 
-                  selectedBuilding ? (
-                    <div className="location-input-container input-label">
-                      <label htmlFor="location">Ubicación</label>
-                      <select
-                        id="location"
-                        className="location-input"
-                        value={selectedLocationType}
-                        onChange={event => setSelectedLocationType(event.target.value) }
-                        //disabled = { alreadyStored(selectedLocation) }
-                      > 
-                        <option value="" disabled>Ubicación</option>
-                        {
-                            ["Almacen", "Laboratorio"].map((type) => 
-                                restricted == true? 
-                                ( (type == "Almacen") ? (<option value={type}>{type}</option>) : null ) 
-                                :
-                                ( <option value={type}>{type}</option> )
-                            )
-                        }
+  useEffect(() => {
+    if (selectedBuilding && selectedLocationType)
+      selectedLocationType == "Almacen" ? getShelves() : getLabs();
+  }, [selectedLocationType, selectedBuilding]);
 
-                      </select>
-                    </div>
-                  ) : null
-                }
-                
+  useEffect(
+    () => setReady(isPayloadReady()),
+    [
+      selectedBuilding,
+      selectedLocationType,
+      selectedShelf,
+      selectedShelfLevel,
+      selectedLab,
+    ],
+  );
 
-                {
-                  selectedLocationType === "Almacen" ? (
-                  <>
-                    <div className="shelf-input-container input-label">
-                      <label htmlFor="shelf">Estante</label>
-                      <select 
-                        value = {selectedShelf} 
-                        className = "shelf-input" 
-                        onChange = {event => setSelectedShelf(event.target.value)}
-                        //disabled = { alreadyStored(selectedLocation) }
-                        >
-                          <option value = "" disabled>Estante</option>
-                          {
-                            shelves.map((shelf) => (
-                              <option key = {shelf.shelf_number} value = {shelf.shelf_id}>
-                                {shelf.shelf_number}
-                              </option>
-                            ))
-                          }
-                      </select>
-                    </div> 
-                  </>
-                  ) : null
-                }
-                
-                {
-                  selectedShelf != "" && selectedLocationType === "Almacen" ? 
-                  (
-                    <div className="level-input-container input-label">
-                      <label htmlFor="level">Nivel</label>
-                      <select 
-                        value = {selectedShelfLevel} 
-                        className = "level-input" 
-                        onChange = {event => setSelectedShelfLevel(event.target.value)}
-                        //disabled = { alreadyStored(selectedLocation) }
-                        >
-                          <option value = "" disabled>Nivel</option>
-                          {
-                            shelfLevels.map((level) => (
-                              <option key = {level.shelf_level_id} value = {level.shelf_level_id}>
-                                {level.shelf_level_number}
-                              </option>
-                            ))
-                          }
-                      </select>
-                    </div>
-                  ) : null
-                }
+  return (
+    <div>
+      <LineSubtitle subtitle={label} />
 
-                {
-                    selectedLocationType == "Laboratorio" ? (
-                        <div className="level-input-container input-label">
-                            <label htmlFor="Designación">Designación</label>
-                            <select 
-                                value = {selectedLab}
-                                style={{width: "200px"}} 
-                                className = "level-input" 
-                                onChange = {event => setSelectedLab(event.target.value)}
-                                //disabled = { alreadyStored(selectedLocation) }
-                                >
-                                <option value = "" disabled>Designación</option>
-                                {
-                                    labs.map((lab) => (
-                                    <option key = {lab.lab_id} value = {lab.lab_id}>
-                                        {lab.lab_name.replace("_", " ")}
-                                    </option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                    ) : null
-                }
+      <div className="location-container" style={{ gap: "20px" }}>
+        <SelectorInput
+          id={"Edificio"}
+          size={"XS"}
+          target={selectedBuilding}
+          setter={setSelectedBuilding}
+          options={["A"]}
+          config={{
+            required: true,
+            disabled: deact,
+          }}
+        />
 
-                {
-                    ready ? (
-                        <button
-                            type = "button"
-                            className = "location-selector-button"
-                            onClick = {() => prepareLocationPayload()}
-                            //disabled = { alreadyStored(selectedLocation) }
-                        >
-                        Agregar ubicación
-                        </button>
-                    ) : null
-                }
-              </div>
-        </div>
-    )
+        {selectedBuilding ? (
+          <SelectorInput
+            id={"Ubicación"}
+            size={"S"}
+            target={selectedLocationType}
+            setter={setSelectedLocationType}
+            options={availableLocations()}
+            config={{
+              required: true,
+              disabled: deact,
+            }}
+          />
+        ) : null}
+
+        {selectedLocationType === "Almacen" ? (
+          <SelectorInput
+            id={"Estante"}
+            size={"S"}
+            target={selectedShelf}
+            setter={setSelectedShelf}
+            options={shelves}
+            idspec={"shelf_id"}
+            opspec={"shelf_number"}
+            config={{
+              required: true,
+              disabled: deact,
+            }}
+          />
+        ) : null}
+
+        {selectedShelf != "" && selectedLocationType === "Almacen" ? (
+          <SelectorInput
+            id={"Nivel"}
+            size={"S"}
+            target={selectedShelfLevel}
+            setter={setSelectedShelfLevel}
+            options={shelfLevels}
+            idspec={"shelf_level_id"}
+            opspec={"shelf_level_number"}
+            config={{
+              required: true,
+              disabled: deact,
+            }}
+          />
+        ) : null}
+
+        {selectedLocationType == "Laboratorio" ? (
+          <SelectorInput
+            id={"Designación"}
+            size={"M"}
+            target={selectedLab}
+            setter={setSelectedLab}
+            options={labs}
+            idspec={"lab_id"}
+            opspec={"lab_name"}
+            config={{
+              required: true,
+              disabled: deact,
+            }}
+          />
+        ) : null}
+
+        {ready ? (
+          <button
+            type="button"
+            className="gray-button location-selector-button"
+            onClick={() => prepareLocationPayload()}
+          >
+            Agregar ubicación
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
 }
 
 export default LocationSelector;

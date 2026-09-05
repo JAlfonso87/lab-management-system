@@ -1,12 +1,17 @@
 .location-selector-button {
-    height: 37px;
-    margin-left: 25px;
-    margin-left: 25px;
-    align-self: flex-end;
-    padding: 10px 30px;
-    border: 1px solid #D0D0D0;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
-    box-shadow: 0 0 10px rgb(194, 194, 194);
+  margin-left: 25px;
+  margin-left: 25px;
+  align-self: flex-end;
+}
+
+.location-container {
+  display: flex;
+}
+
+.building-input-container {
+  margin-right: 25px;
+}
+
+.building-input {
+  width: 100px;
 }

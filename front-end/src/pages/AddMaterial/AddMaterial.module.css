@@ -46,7 +46,7 @@
   align-items: center;
   font-size: 14px;
   font-weight: 400;
-  margin: 0
+  margin: 0;
 }
 
 .add-material-left-line {
@@ -63,32 +63,19 @@
   margin: 12px 0 12px 5px;
 }
 
-.properties-container1 {
+.properties-container {
   display: flex;
   margin-bottom: 15px;
-}
-
-.name-input-container {
-  flex: 2;
-  margin-right: 25px;
+  gap: 20px;
 }
 
 .name-input {
   width: 100%;
 }
 
-.brand-input-container {
-  flex: 1.5;
-}
-
 .brand-input {
   width: 100%;
   box-sizing: border-box;
-}
-
-.properties-container2 {
-  display: flex;
-  margin-bottom: 15px;
 }
 
 .weight-unit-container {
@@ -108,7 +95,6 @@
 .weight-input {
   width: 80px;
 }
-
 
 .unit-input {
   width: 100px;
@@ -190,7 +176,7 @@
   height: 39px;
   padding-left: 25px;
   box-sizing: border-box;
-  border: 1px solid #D0D0D0;
+  border: 1px solid #d0d0d0;
   border-radius: 15px;
   outline: none;
   box-shadow: 0 0 10px rgb(194, 194, 194);
@@ -199,24 +185,5 @@
 
 .add-material-page input:focus,
 .add-material-page select:focus {
-  border-color: #4A90E2;
-}
-
-.add-bottom-line {
-  border-top: 1px solid #949494;
-  width: 300px;
-  margin-bottom: 15px;
-}
-
-.add-material-button {
-  padding: 10px 30px;
-  border: 1px solid #D0D0D0;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-  box-shadow: 0 0 10px rgb(194, 194, 194);
-}
-
-.add-material-button:hover {
-  background-color: #dddddd;
+  border-color: #4a90e2;
 }

@@ -1,31 +1,30 @@
-import "./Materials.css"
+import styles from "./Materials.module.css";
 
-import searchIcon from "../../assets/images/search.png"
-import image from "../../assets/images/image.png"
+import searchIcon from "../../assets/images/search.png";
+import image from "../../assets/images/image.png";
 
 import { useEffect, useState } from "react";
 import { api } from "../../axios/api";
 import { useSearchParams } from "react-router-dom";
 
-import Header from "../../components/Header/Header.jsx"
+import Header from "../../components/Header/Header.jsx";
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import MaterialCard from "../../components/MaterialCard/MaterialCard.jsx";
 import MaterialModal from "../../components/MaterialModal/MaterialModal.jsx";
 
-const normalizeText = text =>
+const normalizeText = (text) =>
   text
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 
 function Materials() {
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
 
   const [search, setSearch] = useState("");
   const [colorFilter, setColorFilter] = useState("Todos");
-  const [locationFilter, setLocationFilter] = useState("Todos")
+  const [locationFilter, setLocationFilter] = useState("Todos");
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -39,68 +38,67 @@ function Materials() {
 
   const [reagentCount, setReagentCount] = useState(0);
 
-  const updateRiskParams = () => {
-
-  }
-
   const getReagentCount = (params) => {
-    api.get('/reagents/count', params)
-      .then((response) => { console.log(response.data); setReagentCount(Number(response.data)) })
-      .catch((error) => console.error(error))
-  }
+    api
+      .get("/reagents/count", params)
+      .then((response) => {
+        console.log(response.data);
+        setReagentCount(Number(response.data));
+      })
+      .catch((error) => console.error(error));
+  };
 
   const pageButtonEnabled = (type) => {
     if (type == "forward") {
-      let max_page = (Math.ceil(reagentCount / 10))
+      let max_page = Math.ceil(reagentCount / 10);
       return currentPage < max_page ? false : true;
-    }
-    else if (type == "back")
-      return currentPage == 1 ? true : false;
-  }
+    } else if (type == "back") return currentPage == 1 ? true : false;
+  };
 
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
     setSearchParams({
-      risk: searchParams.get('risk'),
-      page: currentPage
-    })
-  }
+      risk: searchParams.get("risk"),
+      page: currentPage,
+    });
+  };
 
   const prevPage = () => {
     setCurrentPage(currentPage - 1);
     setSearchParams({
-      risk: searchParams.get('risk'),
-      page: currentPage
-    })
-  }
+      risk: searchParams.get("risk"),
+      page: currentPage,
+    });
+  };
 
-  const filteredMaterials = materials.filter(material =>
-    normalizeText(material.reagent.reagent_name).includes(normalizeText(searchTerm)) &&
-    (material.reagent.reagent_risk === appliedColor.toUpperCase() || appliedColor.toUpperCase() === "TODOS") /*&&
-    (material.location === appliedLocation || appliedLocation === "Todos")*/
+  const filteredMaterials = materials.filter(
+    (material) =>
+      normalizeText(material.reagent.reagent_name).includes(
+        normalizeText(searchTerm),
+      ) &&
+      (material.reagent.reagent_risk === appliedColor.toUpperCase() ||
+        appliedColor.toUpperCase() === "TODOS") /*&&
+    (material.location === appliedLocation || appliedLocation === "Todos")*/,
   );
 
   const deleteMaterial = (id) => {
-    setMaterials(
-      materials.filter(material => material.reagent_id !== id)
-    );
-  }
+    setMaterials(materials.filter((material) => material.reagent_id !== id));
+  };
 
   const getReagents = async (risk, page) => {
     setLoading(true);
     try {
-      let reagents = await api.get('reagents', {
+      let reagents = await api.get("reagents", {
         params: {
           risk: risk == "TODOS" ? undefined : risk,
-          page: page
-        }
+          page: page,
+        },
       });
-      setMaterials(reagents.data)
-    }
-    finally {
+      setMaterials(reagents.data);
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     let reagent_code = "";
@@ -116,21 +114,20 @@ function Materials() {
 
       if (event.key === "Enter") {
         if (reagent_code.length > 0) {
-          console.log(reagent_code)
-          gotByCode = await api.get('/reagents/code', {
+          console.log(reagent_code);
+          gotByCode = await api.get("/reagents/code", {
             params: {
-              code: reagent_code
-            }
-          })
-          setSelectedMaterial(gotByCode.data)
+              code: reagent_code,
+            },
+          });
+          setSelectedMaterial(gotByCode.data);
           reagent_code = "";
         }
 
-        console.log(gotByCode.data)
-        setSelectedMaterial(gotByCode.data)
+        console.log(gotByCode.data);
+        setSelectedMaterial(gotByCode.data);
         reagent_code = "";
-      }
-      else if (event.key.length === 1) {
+      } else if (event.key.length === 1) {
         reagent_code += event.key.toUpperCase();
       }
 
@@ -145,30 +142,31 @@ function Materials() {
   }, []);
 
   useEffect(() => {
-    if ((searchParams.get('risk') ?? "").toUpperCase() != appliedColor.toUpperCase()) {
+    if (
+      (searchParams.get("risk") ?? "").toUpperCase() !=
+      appliedColor.toUpperCase()
+    ) {
       setSearchParams({
         risk: appliedColor.toUpperCase(),
-        page: 1
-      })
+        page: 1,
+      });
       setCurrentPage(1);
-    }
-    else {
+    } else {
       setSearchParams({
         risk: appliedColor.toUpperCase(),
-        page: currentPage
-      })
+        page: currentPage,
+      });
     }
-
-  }, [appliedColor, currentPage])
+  }, [appliedColor, currentPage]);
 
   useEffect(() => {
-    const risk = searchParams.get('risk');
-    const page = searchParams.get('page');
+    const risk = searchParams.get("risk");
+    const page = searchParams.get("page");
 
     if (risk == null || page == null) {
       setSearchParams({
         risk: risk ?? "TODOS",
-        page: page ?? 1
+        page: page ?? 1,
       });
 
       return;
@@ -176,33 +174,27 @@ function Materials() {
 
     getReagentCount({
       risk: risk.toUpperCase() == "TODOS" ? undefined : risk.toUpperCase(),
-      lid: undefined
-    })
+      lid: undefined,
+    });
 
     getReagents(risk, page);
   }, [searchParams]);
 
-  useEffect(() => getReagentCount({}), [])
+  useEffect(() => getReagentCount({}), []);
 
   return (
-    <div className="materials-page">
-
+    <div className={styles["materials-page"]}>
       <Header />
 
-      <div className="materials-content">
-
+      <div className={styles["materials-content"]}>
         <Sidebar />
 
-        <main className="main-section">
+        <main className={styles["main-section"]}>
+          <h1 className={styles["materials-title"]}>Materiales</h1>
 
-          <h1 className="materials-title">
-            Materiales
-          </h1>
-
-          <section className="search-section">
-
+          <section className={styles["search-section"]}>
             <form
-              className="search-form"
+              className={styles["search-form"]}
               onSubmit={(event) => {
                 event.preventDefault();
 
@@ -211,47 +203,31 @@ function Materials() {
                 setAppliedLocation(locationFilter);
               }}
             >
-
-              <div className="search-container">
-
+              <div className={styles["search-container"]}>
                 <input
                   placeholder="Buscar reactivo"
                   type="text"
-                  className="search-input"
+                  className={styles["search-input"]}
                   value={search}
-                  onChange={event =>
-                    setSearch(event.target.value)
-                  }
+                  onChange={(event) => setSearch(event.target.value)}
                 />
 
-                <button
-                  type="submit"
-                  className="search-button"
-                >
-                  <img
-                    src={searchIcon}
-                    alt="Icono de buscar"
-                  />
+                <button type="submit" className={styles["search-button"]}>
+                  <img src={searchIcon} alt="Icono de buscar" />
                 </button>
-
               </div>
 
-              <div className="filter-container">
+              <div className={styles["filter-container"]}>
                 <span>Filtros:</span>
 
-                <label
-                  htmlFor="color"
-                  className="filter-label"
-                >
+                <label htmlFor="color" className={styles["filter-label"]}>
                   Color
                 </label>
                 <select
                   id="color"
-                  className="material-filter"
+                  className={styles["material-filter"]}
                   value={colorFilter}
-                  onChange={event =>
-                    setColorFilter(event.target.value)
-                  }
+                  onChange={(event) => setColorFilter(event.target.value)}
                 >
                   <option>Todos</option>
                   <option>Blanco</option>
@@ -260,19 +236,14 @@ function Materials() {
                   <option>Verde</option>
                 </select>
 
-                <label
-                  htmlFor="location"
-                  className="filter-label"
-                >
+                <label htmlFor="location" className={styles["filter-label"]}>
                   Ubicación
                 </label>
                 <select
                   id="location"
-                  className="material-filter"
+                  className={styles["material-filter"]}
                   value={locationFilter}
-                  onChange={event =>
-                    setLocationFilter(event.target.value)
-                  }
+                  onChange={(event) => setLocationFilter(event.target.value)}
                 >
                   <option>Todos</option>
                   <option>Almacen</option>
@@ -280,55 +251,46 @@ function Materials() {
                   <option>Laboratorio 2</option>
                   <option>Laboratorio 3</option>
                 </select>
-
               </div>
-
             </form>
-
           </section>
 
-          <section className="materials-section">
+          <section className={styles["materials-section"]}>
             <div>
               <button
                 onClick={prevPage}
                 disabled={pageButtonEnabled("back")}
-                className="materials-page-button"
+                className={styles["materials-page-button"]}
               >
                 &lt;
               </button>
               <button
                 onClick={nextPage}
                 disabled={pageButtonEnabled("forward")}
-                className="materials-page-button"
+                className={styles["materials-page-button"]}
               >
                 &gt;
               </button>
             </div>
-            <h2 className="materials-subtitle">Resultados</h2>
+            <h2 className={styles["materials-subtitle"]}>Resultados</h2>
 
-            {
-              loading ?
-                (
-                  <p className="no-results">
-                    Cargando...<br />
-                  </p>
-                )
-                :
-                filteredMaterials.length === 0 ?
-                  (
-                    <p className="no-results">
-                      No se encontraron resultados relacionados a:<br />
-                      Busqueda: <strong>{searchTerm}</strong> <br />
-                      Color: <strong>{appliedColor}</strong> <br />
-                      Ubicación: <strong>{appliedLocation}</strong>
-                    </p>
-                  )
-                  : null
-            }
+            {loading ? (
+              <p className={styles["no-results"]}>
+                Cargando...
+                <br />
+              </p>
+            ) : filteredMaterials.length === 0 ? (
+              <p className={styles["no-results"]}>
+                No se encontraron resultados relacionados a:
+                <br />
+                Busqueda: <strong>{searchTerm}</strong> <br />
+                Color: <strong>{appliedColor}</strong> <br />
+                Ubicación: <strong>{appliedLocation}</strong>
+              </p>
+            ) : null}
 
-            <div className="cards-container">
-
-              {filteredMaterials.map(material => (
+            <div className={styles["cards-container"]}>
+              {filteredMaterials.map((material) => (
                 <MaterialCard
                   key={material.reagent.reagent_id}
                   image={image}
@@ -336,27 +298,25 @@ function Materials() {
                   onClick={() => setSelectedMaterial(material)}
                 />
               ))}
-
             </div>
 
             <div>
               <button
                 onClick={prevPage}
                 disabled={pageButtonEnabled("back")}
-                className="materials-page-button"
+                className={styles["materials-page-button"]}
               >
                 &lt;
               </button>
               <button
                 onClick={nextPage}
                 disabled={pageButtonEnabled("forward")}
-                className="materials-page-button"
+                className={styles["materials-page-button"]}
               >
                 &gt;
               </button>
-            </div >
-
-          </section >
+            </div>
+          </section>
 
           {selectedMaterial !== null && (
             <MaterialModal
@@ -365,16 +325,11 @@ function Materials() {
               onClose={() => setSelectedMaterial(null)}
               onDelete={deleteMaterial}
             />
-          )
-          }
-
-        </main >
-
-      </div >
-
-    </div >
+          )}
+        </main>
+      </div>
+    </div>
   );
-
 }
 
 export default Materials;
