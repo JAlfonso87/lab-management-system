@@ -9,9 +9,22 @@ function SelectorInput({
   options,
   idspec,
   opspec,
+  returnType,
   config,
 }) {
   const [style, setStyle] = useState("");
+  const returnLoader = (event) => {
+    if (returnType == "object") {
+      const selected = options.find(
+        (option) => String(option[idspec]) === event.target.value,
+      );
+
+      setter(selected);
+    } else {
+      setter(event.target.value);
+    }
+  };
+
   useEffect(() => {
     if (size == "XS") setStyle("input-XS");
     if (size == "S") setStyle("input-S");
@@ -27,7 +40,7 @@ function SelectorInput({
         id={id}
         value={target}
         className={style}
-        onChange={(event) => setter(event.target.value)}
+        onChange={(event) => returnLoader(event)}
         {...config}
       >
         <option value="" disabled>

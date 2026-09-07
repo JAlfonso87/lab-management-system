@@ -26,83 +26,8 @@
   margin: 0 0 40px 0;
 }
 
-.materials-page .search-section {
-  display: flex;
-  justify-content: center;
-}
-
-.materials-page .search-form {
-  margin-bottom: 30px;
-}
-
-.materials-page .search-container {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.materials-page .filter-container {
-  display: flex;
-}
-
-.materials-page .search-input {
-  width: 480px;
-  height: 35px;
-  padding-left: 25px;
-  margin-right: 15px;
-  border: 1px solid #D0D0D0;
-  border-radius: 15px;
-  outline: none;
-  box-shadow: 0 0 10px rgb(194, 194, 194);
-  transition: 0.2s;
-}
-
-.materials-page .search-input:focus {
-  border-color: #4A90E2;
-}
-
-.materials-page .search-button {
-  background-color: #E4E4E4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 39px;
-  height: 39px;
-  border: 1px solid #D0D0D0;
-  border-radius: 30px;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgb(194, 194, 194);
-  transition: 0.2s;
-}
-
-.materials-page .search-button img {
-  width: 23px;
-}
-
-.materials-page .search-button:hover,
 .materials-page .add-button:hover {
   background-color: #dddddd;
-}
-
-.materials-page .filter-container {
-  font-size: 13px;
-}
-
-.material-filter {
-  width: 120px;
-  height: 25px;
-  background-color: #E4E4E4;
-  border: 1px solid #D0D0D0;
-  border-radius: 5px;
-  outline: none;
-  transition: 0.2s;
-}
-
-.material-filter:focus {
-  border-color: #4A90E2;
-}
-
-.filter-label {
-  margin: 0 5px;
 }
 
 .materials-subtitle {
@@ -120,18 +45,4 @@
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 20px;
   place-items: center;
-}
-
-.materials-page-button {
-  background-color: #E4E4E4;
-  width: 30px;
-  height: 30px;
-  margin: 0 20px;
-
-  border: 1px solid #D0D0D0;
-  border-radius: 10px;
-
-  box-shadow: 0 0 10px rgb(194, 194, 194);
-  cursor: pointer;
-  transition: 0.2s;
 }

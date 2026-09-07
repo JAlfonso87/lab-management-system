@@ -1,6 +1,5 @@
 import styles from "./Materials.module.css";
 
-import searchIcon from "../../assets/images/search.png";
 import image from "../../assets/images/image.png";
 
 import { useEffect, useState } from "react";
@@ -11,6 +10,9 @@ import Header from "../../components/Header/Header.jsx";
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import MaterialCard from "../../components/MaterialCard/MaterialCard.jsx";
 import MaterialModal from "../../components/MaterialModal/MaterialModal.jsx";
+import Paginator from "../../mini-components/Paginator.jsx";
+import CodeReader from "../../mini-components/CodeReader.jsx";
+import SearchBar from "./SearchBar/SearchBar.jsx";
 
 const normalizeText = (text) =>
   text
@@ -22,14 +24,10 @@ function Materials() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
 
-  const [search, setSearch] = useState("");
-  const [colorFilter, setColorFilter] = useState("Todos");
-  const [locationFilter, setLocationFilter] = useState("Todos");
-
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [appliedColor, setAppliedColor] = useState("Todos");
-  const [appliedLocation, setAppliedLocation] = useState("Todos");
+  const [riskFilter, setRiskFilter] = useState("Todos");
+  const [locationFilter, setLocationFilter] = useState(null);
 
   const [materials, setMaterials] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
@@ -38,37 +36,12 @@ function Materials() {
 
   const [reagentCount, setReagentCount] = useState(0);
 
+  //obtiene un conteo de materiales que cumplen con los filtros
   const getReagentCount = (params) => {
     api
-      .get("/reagents/count", params)
-      .then((response) => {
-        console.log(response.data);
-        setReagentCount(Number(response.data));
-      })
+      .get("/reagents/count", { params })
+      .then((response) => setReagentCount(Number(response.data)))
       .catch((error) => console.error(error));
-  };
-
-  const pageButtonEnabled = (type) => {
-    if (type == "forward") {
-      let max_page = Math.ceil(reagentCount / 10);
-      return currentPage < max_page ? false : true;
-    } else if (type == "back") return currentPage == 1 ? true : false;
-  };
-
-  const nextPage = () => {
-    setCurrentPage(currentPage + 1);
-    setSearchParams({
-      risk: searchParams.get("risk"),
-      page: currentPage,
-    });
-  };
-
-  const prevPage = () => {
-    setCurrentPage(currentPage - 1);
-    setSearchParams({
-      risk: searchParams.get("risk"),
-      page: currentPage,
-    });
   };
 
   const filteredMaterials = materials.filter(
@@ -76,22 +49,23 @@ function Materials() {
       normalizeText(material.reagent.reagent_name).includes(
         normalizeText(searchTerm),
       ) &&
-      (material.reagent.reagent_risk === appliedColor.toUpperCase() ||
-        appliedColor.toUpperCase() === "TODOS") /*&&
-    (material.location === appliedLocation || appliedLocation === "Todos")*/,
+      (material.reagent.reagent_risk === riskFilter.toUpperCase() ||
+        riskFilter.toUpperCase() === "TODOS"),
   );
 
   const deleteMaterial = (id) => {
     setMaterials(materials.filter((material) => material.reagent_id !== id));
   };
 
-  const getReagents = async (risk, page) => {
+  //obtiene los reactivos que cumplen con los filtros
+  const getReagents = async (risk, page, loc) => {
     setLoading(true);
     try {
       let reagents = await api.get("reagents", {
         params: {
           risk: risk == "TODOS" ? undefined : risk,
           page: page,
+          loc: loc,
         },
       });
       setMaterials(reagents.data);
@@ -100,90 +74,52 @@ function Materials() {
     }
   };
 
+  //reinicia el conteo de página al cambiar los filtros
   useEffect(() => {
-    let reagent_code = "";
-    let gotByCode = {};
-    let lastKeyTime = 0;
+    setCurrentPage(1);
+  }, [riskFilter, locationFilter]);
 
-    const handleKeyDown = async (event) => {
-      const now = Date.now();
-
-      if (now - lastKeyTime > 100) {
-        reagent_code = "";
-      }
-
-      if (event.key === "Enter") {
-        if (reagent_code.length > 0) {
-          console.log(reagent_code);
-          gotByCode = await api.get("/reagents/code", {
-            params: {
-              code: reagent_code,
-            },
-          });
-          setSelectedMaterial(gotByCode.data);
-          reagent_code = "";
-        }
-
-        console.log(gotByCode.data);
-        setSelectedMaterial(gotByCode.data);
-        reagent_code = "";
-      } else if (event.key.length === 1) {
-        reagent_code += event.key.toUpperCase();
-      }
-
-      lastKeyTime = now;
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
+  //construye la nueva URL cuando cambian los filtros
   useEffect(() => {
-    if (
-      (searchParams.get("risk") ?? "").toUpperCase() !=
-      appliedColor.toUpperCase()
-    ) {
-      setSearchParams({
-        risk: appliedColor.toUpperCase(),
-        page: 1,
-      });
-      setCurrentPage(1);
-    } else {
-      setSearchParams({
-        risk: appliedColor.toUpperCase(),
-        page: currentPage,
-      });
+    const params = new URLSearchParams();
+    if (riskFilter) {
+      params.set("risk", riskFilter.toUpperCase());
     }
-  }, [appliedColor, currentPage]);
+    if (locationFilter != null) {
+      params.set("loc", locationFilter.toString());
+    }
+    params.set("page", currentPage.toString());
+    setSearchParams(params);
+  }, [riskFilter, locationFilter, currentPage]);
 
+  //monitoriza y envía los parámetros de búsqueda
   useEffect(() => {
     const risk = searchParams.get("risk");
     const page = searchParams.get("page");
+    const loc = searchParams.get("loc");
 
     if (risk == null || page == null) {
       setSearchParams({
         risk: risk ?? "TODOS",
-        page: page ?? 1,
+        page: page ?? "1",
+        ...(loc != null && { loc }),
       });
-
       return;
     }
 
     getReagentCount({
-      risk: risk.toUpperCase() == "TODOS" ? undefined : risk.toUpperCase(),
-      lid: undefined,
+      risk: risk.toUpperCase() === "TODOS" ? undefined : risk.toUpperCase(),
+      lid: loc ?? undefined,
     });
 
-    getReagents(risk, page);
+    getReagents(risk, page, loc);
   }, [searchParams]);
 
   useEffect(() => getReagentCount({}), []);
 
   return (
     <div className={styles["materials-page"]}>
+      <CodeReader setter={setSelectedMaterial} />
       <Header />
 
       <div className={styles["materials-content"]}>
@@ -192,86 +128,21 @@ function Materials() {
         <main className={styles["main-section"]}>
           <h1 className={styles["materials-title"]}>Materiales</h1>
 
-          <section className={styles["search-section"]}>
-            <form
-              className={styles["search-form"]}
-              onSubmit={(event) => {
-                event.preventDefault();
-
-                setSearchTerm(search);
-                setAppliedColor(colorFilter);
-                setAppliedLocation(locationFilter);
-              }}
-            >
-              <div className={styles["search-container"]}>
-                <input
-                  placeholder="Buscar reactivo"
-                  type="text"
-                  className={styles["search-input"]}
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                />
-
-                <button type="submit" className={styles["search-button"]}>
-                  <img src={searchIcon} alt="Icono de buscar" />
-                </button>
-              </div>
-
-              <div className={styles["filter-container"]}>
-                <span>Filtros:</span>
-
-                <label htmlFor="color" className={styles["filter-label"]}>
-                  Color
-                </label>
-                <select
-                  id="color"
-                  className={styles["material-filter"]}
-                  value={colorFilter}
-                  onChange={(event) => setColorFilter(event.target.value)}
-                >
-                  <option>Todos</option>
-                  <option>Blanco</option>
-                  <option>Amarillo</option>
-                  <option>Rojo</option>
-                  <option>Verde</option>
-                </select>
-
-                <label htmlFor="location" className={styles["filter-label"]}>
-                  Ubicación
-                </label>
-                <select
-                  id="location"
-                  className={styles["material-filter"]}
-                  value={locationFilter}
-                  onChange={(event) => setLocationFilter(event.target.value)}
-                >
-                  <option>Todos</option>
-                  <option>Almacen</option>
-                  <option>Laboratorio 1</option>
-                  <option>Laboratorio 2</option>
-                  <option>Laboratorio 3</option>
-                </select>
-              </div>
-            </form>
-          </section>
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            setRiskFilter={setRiskFilter}
+            setLocationFilter={setLocationFilter}
+          />
 
           <section className={styles["materials-section"]}>
-            <div>
-              <button
-                onClick={prevPage}
-                disabled={pageButtonEnabled("back")}
-                className={styles["materials-page-button"]}
-              >
-                &lt;
-              </button>
-              <button
-                onClick={nextPage}
-                disabled={pageButtonEnabled("forward")}
-                className={styles["materials-page-button"]}
-              >
-                &gt;
-              </button>
-            </div>
+            <Paginator
+              index={currentPage}
+              setter={setCurrentPage}
+              count={reagentCount}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
             <h2 className={styles["materials-subtitle"]}>Resultados</h2>
 
             {loading ? (
@@ -284,8 +155,7 @@ function Materials() {
                 No se encontraron resultados relacionados a:
                 <br />
                 Busqueda: <strong>{searchTerm}</strong> <br />
-                Color: <strong>{appliedColor}</strong> <br />
-                Ubicación: <strong>{appliedLocation}</strong>
+                Color: <strong>{riskFilter}</strong> <br />
               </p>
             ) : null}
 
@@ -300,22 +170,13 @@ function Materials() {
               ))}
             </div>
 
-            <div>
-              <button
-                onClick={prevPage}
-                disabled={pageButtonEnabled("back")}
-                className={styles["materials-page-button"]}
-              >
-                &lt;
-              </button>
-              <button
-                onClick={nextPage}
-                disabled={pageButtonEnabled("forward")}
-                className={styles["materials-page-button"]}
-              >
-                &gt;
-              </button>
-            </div>
+            <Paginator
+              index={currentPage}
+              setter={setCurrentPage}
+              count={reagentCount}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
           </section>
 
           {selectedMaterial !== null && (

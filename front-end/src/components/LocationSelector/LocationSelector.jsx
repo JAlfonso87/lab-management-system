@@ -6,6 +6,9 @@ import "../../assets/styles/common.css";
 
 import LineSubtitle from "../../mini-components/LineSubtitle";
 import SelectorInput from "../../mini-components/SelectorInput";
+import LocationManager from "../../mini-components/LocationManager";
+
+import { PropertyValidator } from "../../assets/utils/PropertyValidator";
 
 function LocationSelector({
   label,
@@ -22,13 +25,8 @@ function LocationSelector({
   const [selectedLocationType, setSelectedLocationType] = useState("");
 
   const [selectedShelf, setSelectedShelf] = useState("");
-  const [shelfObject, setShelfObject] = useState({});
-
   const [selectedShelfLevel, setSelectedShelfLevel] = useState("");
-  const [shelfLevelObject, setShelfLevelObject] = useState({});
-
   const [selectedLab, setSelectedLab] = useState("");
-  const [labObject, setLabObject] = useState({});
 
   const [ready, setReady] = useState(false);
 
@@ -37,7 +35,7 @@ function LocationSelector({
   };
 
   const availableLocations = () => {
-    const locations = ["Almacen", "Laboratorio"].map((type) => {
+    const locations = ["Almacen", "Laboratorio"].filter((type) => {
       if (restricted == true) {
         if (type == "Almacen") {
           return type;
@@ -59,51 +57,6 @@ function LocationSelector({
     setReady(false);
   };
 
-  const findShelf = (shelf_id) => {
-    if (shelves.length != 0)
-      setShelfObject(shelves.find((shelf) => shelf.shelf_id == shelf_id));
-  };
-
-  const findShelfLevel = (shelf_level_id) => {
-    if (shelfLevels.length != 0)
-      setShelfLevelObject(
-        shelfLevels.find(
-          (shelfLevel) => shelfLevel.shelf_level_id == shelf_level_id,
-        ),
-      );
-  };
-
-  const findLab = (lab_id) => {
-    if (labs.length != 0)
-      setLabObject(labs.find((lab) => lab.lab_id == lab_id));
-  };
-
-  const getLabs = () => {
-    if (selectedLocationType == "Laboratorio")
-      api
-        .get("/locations/labs", { params: { host_building: selectedBuilding } })
-        .then((labs) => setLabs(labs.data))
-        .catch((error) => console.error(error));
-  };
-
-  const getShelves = () => {
-    if (selectedLocationType == "Almacen")
-      api
-        .get("/locations/shelves", {
-          params: { host_building: selectedBuilding },
-        })
-        .then((shelves) => setShelves(shelves.data))
-        .catch((error) => console.error(error));
-  };
-
-  const getShelfLevels = () => {
-    if (selectedShelf)
-      api
-        .get("/locations/shelf/levels", { params: { shelf_id: selectedShelf } })
-        .then((levels) => setShelfLevels(levels.data))
-        .catch((error) => console.error(error));
-  };
-
   const isPayloadReady = () => {
     return !selectedBuilding || !selectedLocationType
       ? false
@@ -116,74 +69,50 @@ function LocationSelector({
   };
 
   const prepareLocationPayload = () => {
-    let payload = {};
+    let required = [];
 
-    if (!selectedBuilding) {
-      alert(
-        "Por favor, selecciona un edificio para continuar con el registro de ubicación.",
-      );
+    if (selectedLocationType === "Almacen")
+      required = [
+        selectedLocationType,
+        selectedBuilding,
+        selectedShelf,
+        selectedShelfLevel,
+      ];
+
+    if (selectedLocationType === "Laboratorio")
+      required = [selectedLocationType, selectedBuilding, selectedLab];
+
+    if (PropertyValidator(required) == false) {
+      alert("Por favor, completa todos los campos requeridos.");
       return;
     }
 
-    if (selectedLocationType === "Almacen") {
-      if (!selectedShelf || !selectedShelfLevel) {
-        alert("Por favor, completa los datos del estante objetivo.");
-        return;
-      }
+    let payload = {};
 
+    if (selectedLocationType === "Almacen") {
       payload = {
         location_type: selectedLocationType,
         host_building: selectedBuilding,
-        shelf_number: shelfObject.shelf_number,
-        shelf_id: shelfObject.shelf_id,
-        shelf_level_id: shelfLevelObject.shelf_level_id,
-        shelf_level_number: shelfLevelObject.shelf_level_number,
+        shelf_number: selectedShelf.shelf_number,
+        shelf_id: selectedShelf.shelf_id,
+        shelf_level_id: selectedShelfLevel.shelf_level_id,
+        shelf_level_number: selectedShelfLevel.shelf_level_number,
       };
     } else if (selectedLocationType === "Laboratorio") {
-      if (!selectedLab) {
-        alert("Por favor, completa los datos del laboratorio objetivo.");
-        return;
-      }
-
       payload = {
         location_type: selectedLocationType,
         host_building: selectedBuilding,
-        lab_name: labObject.lab_name,
-        lab_id: labObject.lab_id,
+        lab_name: selectedLab.lab_name,
+        lab_id: selectedLab.lab_id,
       };
-    } else {
-      alert("Por favor, especifica el tipo de ubicación.");
-      return;
     }
 
     setSelectedLocation(payload);
   };
 
   useEffect(() => {
-    console.log(selectedLocation);
-  }, []);
-
-  useEffect(() => {
     if (alreadyStored(selectedLocation) == false) clearFields();
   }, [selectedLocation]);
-
-  useEffect(() => {
-    findShelf(selectedShelf);
-    getShelfLevels();
-  }, [selectedShelf]);
-
-  useEffect(() => {
-    findShelfLevel(selectedShelfLevel);
-  }, [selectedShelfLevel]);
-
-  useEffect(() => {
-    findLab(selectedLab);
-  }, [selectedLab]);
-
-  useEffect(() => {
-    if (selectedBuilding && selectedLocationType)
-      selectedLocationType == "Almacen" ? getShelves() : getLabs();
-  }, [selectedLocationType, selectedBuilding]);
 
   useEffect(
     () => setReady(isPayloadReady()),
@@ -198,6 +127,16 @@ function LocationSelector({
 
   return (
     <div>
+      <LocationManager
+        selectedLocationType={selectedLocationType}
+        selectedBuilding={selectedBuilding}
+        selectedShelf={selectedShelf}
+        selectedShelfLevel={selectedShelfLevel}
+        selectedLab={selectedLab}
+        setShelves={setShelves}
+        setShelfLevels={setShelfLevels}
+        setLabs={setLabs}
+      />
       <LineSubtitle subtitle={label} />
 
       <div className="location-container" style={{ gap: "20px" }}>
@@ -236,6 +175,7 @@ function LocationSelector({
             options={shelves}
             idspec={"shelf_id"}
             opspec={"shelf_number"}
+            returnType={"object"}
             config={{
               required: true,
               disabled: deact,
@@ -252,6 +192,7 @@ function LocationSelector({
             options={shelfLevels}
             idspec={"shelf_level_id"}
             opspec={"shelf_level_number"}
+            returnType={"object"}
             config={{
               required: true,
               disabled: deact,
@@ -268,6 +209,7 @@ function LocationSelector({
             options={labs}
             idspec={"lab_id"}
             opspec={"lab_name"}
+            returnType={"object"}
             config={{
               required: true,
               disabled: deact,

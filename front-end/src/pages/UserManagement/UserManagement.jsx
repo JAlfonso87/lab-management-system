@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import UserTableEntry from "../../components/UserTableEntry/UserTableEntry";
 import UserCard from "../../components/UserCard/UserCard";
 import image from "../../assets/images/image.png";
 import UserModal from "../../components/UserModal/UserModal";
