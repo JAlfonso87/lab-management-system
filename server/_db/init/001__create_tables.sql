@@ -182,3 +182,8 @@ CREATE TABLE IF NOT EXISTS restocks(
     FOREIGN KEY (reagent_id) REFERENCES reagents(reagent_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+CREATE TABLE IF NOS EXISTS seeder_status(
+    seeder_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    seeder_status INTEGER DEFAULT 0
+);

@@ -140,8 +140,6 @@ function Materials() {
               index={currentPage}
               setter={setCurrentPage}
               count={reagentCount}
-              searchParams={searchParams}
-              setSearchParams={setSearchParams}
             />
             <h2 className={styles["materials-subtitle"]}>Resultados</h2>
 
@@ -174,8 +172,6 @@ function Materials() {
               index={currentPage}
               setter={setCurrentPage}
               count={reagentCount}
-              searchParams={searchParams}
-              setSearchParams={setSearchParams}
             />
           </section>
 

@@ -1,5 +1,5 @@
 import "../assets/styles/common.css";
-function Paginator({ index, setter, count, searchParams, setSearchParams }) {
+function Paginator({ index, setter, count }) {
   const enabler = (type) => {
     if (type == "forward") {
       let max_page = Math.ceil(count / 10);
@@ -7,21 +7,8 @@ function Paginator({ index, setter, count, searchParams, setSearchParams }) {
     } else if (type == "back") return index == 1 ? true : false;
   };
 
-  const nextPage = () => {
-    setter(index + 1);
-    setSearchParams({
-      risk: searchParams.get("risk"),
-      page: index,
-    });
-  };
-
-  const prevPage = () => {
-    setter(index - 1);
-    setSearchParams({
-      risk: searchParams.get("risk"),
-      page: index,
-    });
-  };
+  const nextPage = () => setter(index + 1);
+  const prevPage = () => setter(index - 1);
 
   return (
     <div>

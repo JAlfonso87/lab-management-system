@@ -1,4 +1,4 @@
-import { SetMetadata } from "@nestjs/common";
-//import { Reflector } from "@nestjs/core";
+import { SetMetadata } from '@nestjs/common';
 
-export const Authorized_Roles = (roles:String[]) => SetMetadata('AUTHORIZED_ROLES', roles);
+export const Authorized_Roles = (roles: String[]) =>
+  SetMetadata('AUTHORIZED_ROLES', roles);

@@ -161,6 +161,7 @@ function AddMaterial() {
               selectedLocation={selectedLocation}
               setSelectedLocation={setSelectedLocation}
               deact={Object.keys(selectedLocation).length != 0}
+              restricted={true}
             />
 
             <LineSubtitle subtitle={"Stock del reactivo"} />
