@@ -4,8 +4,7 @@ import searchIcon from "../../../assets/images/search.png";
 
 import "../../../assets/styles/common.css";
 import "./SearchBar.css";
-import LocationManager from "../../../mini-components/LocationManager";
-
+import { LocationManager } from "../../../mini-components/Minicomponents";
 function SearchBar({
   searchTerm,
   setSearchTerm,

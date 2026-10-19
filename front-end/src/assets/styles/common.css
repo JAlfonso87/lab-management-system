@@ -32,33 +32,6 @@
   margin-bottom: 15px;
 }
 
-.subtitle-container {
-  display: flex;
-  justify-content: left;
-}
-
-.subtitle-text {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 400;
-  margin: 0;
-}
-
-.left-line {
-  border: none;
-  border-top: 1px solid #949494;
-  width: 20px;
-  margin: 12px 1px 12px 0;
-}
-
-.right-line {
-  border: none;
-  border-top: 1px solid #949494;
-  flex: 1;
-  margin: 12px 0 12px 5px;
-}
-
 .input-label {
   display: flex;
   flex-direction: column;

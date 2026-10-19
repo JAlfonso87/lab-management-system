@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import { api } from "../../axios/api";
 import { useSearchParams } from "react-router-dom";
 
-import Header from "../../components/Header/Header.jsx";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
-import MaterialCard from "../../components/MaterialCard/MaterialCard.jsx";
-import MaterialModal from "../../components/MaterialModal/MaterialModal.jsx";
-import Paginator from "../../mini-components/Paginator.jsx";
-import CodeReader from "../../mini-components/CodeReader.jsx";
+import {
+  Header,
+  Sidebar,
+  MaterialCard,
+  MaterialModal,
+} from "../../components/Components";
+import { Paginator, CodeReader } from "../../mini-components/Minicomponents";
+
 import SearchBar from "./SearchBar/SearchBar.jsx";
 
 const normalizeText = (text) =>

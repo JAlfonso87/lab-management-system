@@ -1,0 +1,32 @@
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.button-base button {
+  padding: 11px 20px;
+
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+
+  box-shadow: 0 0 10px rgb(194, 194, 194);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.button-secondary {
+  background-color: #e4e4e4;
+}
+
+.button-secondary:hover {
+  background-color: #dddddd;
+}
+
+.button-primary {
+  background-color: #525252;
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: #686868;
+}

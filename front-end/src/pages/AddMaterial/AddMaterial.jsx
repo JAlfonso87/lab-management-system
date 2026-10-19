@@ -1,15 +1,14 @@
 import styles from "./AddMaterial.module.css";
 import "../../assets/styles/common.css";
 
-import Header from "../../components/Header/Header";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import LineSubtitle from "../../mini-components/LineSubtitle";
-
 import { useState } from "react";
 import { api } from "../../axios/api";
-import LocationSelector from "../../components/LocationSelector/LocationSelector";
-import TextInput from "../../mini-components/TextInput";
-import SelectorInput from "../../mini-components/SelectorInput";
+import { Header, Sidebar, LocationSelector } from "../../components/Components";
+import {
+  LineSubtitle,
+  TextInput,
+  SelectorInput,
+} from "../../mini-components/Minicomponents";
 
 function AddMaterial() {
   const [name, setName] = useState("");

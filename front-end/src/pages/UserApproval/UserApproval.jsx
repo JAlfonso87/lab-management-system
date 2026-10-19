@@ -3,11 +3,8 @@ import "./UserApproval.css";
 import { api } from "../../axios/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import Header from "../../components/Header/Header";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import LineSubtitle from "../../mini-components/LineSubtitle";
-import UserTable from "../../components/UserTable/UserTable";
+import { Header, Sidebar, UserTable } from "../../components/Components";
+import { LineSubtitle } from "../../mini-components/Minicomponents";
 
 function UserApproval() {
   const navigate = useNavigate();

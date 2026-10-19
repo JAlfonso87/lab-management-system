@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { api } from "../../axios/api";
 
 import "./LocationSelector.css";
 import "../../assets/styles/common.css";
 
-import LineSubtitle from "../../mini-components/LineSubtitle";
-import SelectorInput from "../../mini-components/SelectorInput";
-import LocationManager from "../../mini-components/LocationManager";
+import {
+  LineSubtitle,
+  SelectorInput,
+  LocationManager,
+} from "../../mini-components/Minicomponents";
 
 import { PropertyValidator } from "../../assets/utils/PropertyValidator";
 
@@ -24,9 +25,9 @@ function LocationSelector({
   const [selectedBuilding, setSelectedBuilding] = useState("");
   const [selectedLocationType, setSelectedLocationType] = useState("");
 
-  const [selectedShelf, setSelectedShelf] = useState("");
-  const [selectedShelfLevel, setSelectedShelfLevel] = useState("");
-  const [selectedLab, setSelectedLab] = useState("");
+  const [selectedShelf, setSelectedShelf] = useState();
+  const [selectedShelfLevel, setSelectedShelfLevel] = useState();
+  const [selectedLab, setSelectedLab] = useState();
 
   const [ready, setReady] = useState(false);
 

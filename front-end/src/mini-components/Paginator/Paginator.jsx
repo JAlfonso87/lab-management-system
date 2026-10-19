@@ -1,4 +1,4 @@
-import "../assets/styles/common.css";
+import "../../assets/styles/common.css";
 function Paginator({ index, setter, count }) {
   const enabler = (type) => {
     if (type == "forward") {

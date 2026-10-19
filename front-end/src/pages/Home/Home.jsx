@@ -6,8 +6,7 @@ import addIcon from "../../assets/images/add.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../axios/api";
-import Header from "../../components/Header/Header.jsx";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import { Header, Sidebar } from "../../components/Components";
 
 function Home() {
   const [search, setSearch] = useState("");

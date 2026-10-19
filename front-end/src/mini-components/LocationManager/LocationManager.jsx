@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { api } from "../axios/api";
-import { PropertyValidator } from "../assets/utils/PropertyValidator";
+import { api } from "../../axios/api";
+import { PropertyValidator } from "../../assets/utils/PropertyValidator";
 
 function LocationManager({
   selectedLocationType,
@@ -24,7 +24,10 @@ function LocationManager({
         .get("/locations/shelves", {
           params: { host_building: selectedBuilding },
         })
-        .then((shelves) => setShelves(shelves.data))
+        .then((shelves) => {
+          console.log(shelves);
+          setShelves(shelves.data);
+        })
         .catch((error) => console.error(error));
   };
 
@@ -34,7 +37,10 @@ function LocationManager({
         .get("/locations/shelf/levels", {
           params: { shelf_id: selectedShelf.shelf_id },
         })
-        .then((levels) => setShelfLevels(levels.data))
+        .then((levels) => {
+          console.log(levels);
+          setShelfLevels(levels.data);
+        })
         .catch((error) => console.error(error));
   };
 

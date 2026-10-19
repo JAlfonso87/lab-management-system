@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { api } from "../axios/api";
+import { api } from "../../axios/api";
 
 function CodeReader({ setter }) {
   useEffect(() => {

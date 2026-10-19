@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../assets/styles/common.css";
+import "../../assets/styles/common.css";
 
 function TextInput({ id, type, size, target, setter, config }) {
   const [style, setStyle] = useState("");
